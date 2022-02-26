@@ -6,20 +6,28 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 17:56:57 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:15:34 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include <stdlib.h>
+#include <fcntl.h>
 
 int	main(int argc, char **argv)
 {
 	int	fd_conf;
 
 	if (argc != 2)
+	{
 		print_error("n_arg\n");
-	if (is_valid_file_name == false);
+		exit(EXIT_FAILURE);
+	}
+	if (is_valid_file_name(argv[1]) == false)
+	{
 		print_error("extansion");
+		exit(EXIT_FAILURE);
+	}
 	fd_conf = open(argv[1], O_RDONLY);
 	if (!fd_conf)
 	{
