@@ -6,13 +6,14 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 18:18:15 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:20:27 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 int	main(int argc, char **argv)
 {
@@ -34,4 +35,5 @@ int	main(int argc, char **argv)
 		print_error("file\n");
 		exit(EXIT_FAILURE);
 	}
+	close(fd_conf);
 }
