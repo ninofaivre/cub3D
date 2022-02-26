@@ -6,7 +6,7 @@
 #    By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 10:25:16 by nfaivre           #+#    #+#              #
-#    Updated: 2022/02/26 17:34:50 by nfaivre          ###   ########.fr        #
+#    Updated: 2022/02/26 20:22:12 by nfaivre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.c
 
 $(NAME):
 	make -C Get-Next-Line DIR_OBJ=$(addprefix $(PWD)/, $(DIR_OBJ))
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(GNL_OBJ) -o $(NAME)
 
 all: mkdir_DIR_OBJ $(OBJ) $(NAME)
 

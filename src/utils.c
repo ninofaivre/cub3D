@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:27:18 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 18:13:14 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:55:03 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,17 @@ bool	is_same_string(char *str1, char *str2)
 		str2++;
 	}
 	return (*str1 == *str2);
+}
+
+bool	is_charset(char c, char *charset)
+{
+	if (!charset)
+		return (false);
+	while (*charset)
+	{
+		if (*charset == c)
+			return (true);
+		charset++;
+	}
+	return (false);
 }

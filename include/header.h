@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 18:32:59 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/26 20:17:56 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 # define HEADER_H
 
 #include <stdbool.h>
+
+typedef struct s_position
+{
+	int	x;
+	int	y;
+}	t_position;
 
 typedef struct s_rgb
 {
@@ -41,5 +47,13 @@ void	print_error(char *error);
 
 int		str_len(char *str);
 bool	is_same_string(char *str1, char *str2);
+bool	is_charset(char c, char *charset);
+
+char	**add_str_to_str_tab(char **str_tab, char *str);
+int		str_tab_len(char **str_tab);
+char	**free_str_tab(char ***str_tab);
+void	print_str_tab(char **str_tab);
+
+bool	parse_map(char **map);
 
 #endif
