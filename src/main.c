@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 18:20:27 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:37:46 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 int	main(int argc, char **argv)
 {
-	int	fd_conf;
+	int		fd_conf;
+	t_conf	conf;
 
 	if (argc != 2)
 	{
@@ -35,5 +36,6 @@ int	main(int argc, char **argv)
 		print_error("file\n");
 		exit(EXIT_FAILURE);
 	}
+	if (parsing_file(fd_conf, &conf))
 	close(fd_conf);
 }
