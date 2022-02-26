@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 18:15:34 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:18:15 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int	main(int argc, char **argv)
 	}
 	if (is_valid_file_name(argv[1]) == false)
 	{
-		print_error("extansion");
+		print_error("extansion\n");
 		exit(EXIT_FAILURE);
 	}
 	fd_conf = open(argv[1], O_RDONLY);
-	if (!fd_conf)
+	if (fd_conf == -1)
 	{
 		print_error("file\n");
 		exit(EXIT_FAILURE);
