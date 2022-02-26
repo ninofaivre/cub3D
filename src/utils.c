@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 17:56:57 by nfaivre          ###   ########.fr       */
+/*   Created: 2022/02/26 17:27:18 by nfaivre           #+#    #+#             */
+/*   Updated: 2022/02/26 17:53:02 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include <stdbool.h>
 
-int	main(int argc, char **argv)
+int	str_len(char *str)
 {
-	int	fd_conf;
+	int	len;
 
-	if (argc != 2)
-		print_error("n_arg\n");
-	if (is_valid_file_name == false);
-		print_error("extansion");
-	fd_conf = open(argv[1], O_RDONLY);
-	if (!fd_conf)
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
+
+bool	is_same_string(char *str1, char *str2)
+{
+	if (!str1 || !str2)
+		return (false);
+	while (*str1 && *str2 && *str1 == *str2)
 	{
-		print_error("file\n");
-		exit(EXIT_FAILURE);
+		str1++;
+		str2++;
 	}
+	return (*str1 == *str2)
 }

@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 17:56:57 by nfaivre          ###   ########.fr       */
+/*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
+/*   Updated: 2022/02/26 17:53:44 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#ifndef HEADER_H
+# define HEADER_H
 
-int	main(int argc, char **argv)
-{
-	int	fd_conf;
+char	*get_next_line(int fd);
 
-	if (argc != 2)
-		print_error("n_arg\n");
-	if (is_valid_file_name == false);
-		print_error("extansion");
-	fd_conf = open(argv[1], O_RDONLY);
-	if (!fd_conf)
-	{
-		print_error("file\n");
-		exit(EXIT_FAILURE);
-	}
-}
+void	print_error(char *error);
+
+int		str_len(char *str);
+bool	is_same_string(char *str1, char *str2);
+
+#endif
