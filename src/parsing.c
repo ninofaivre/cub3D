@@ -6,11 +6,14 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 18:25:00 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/02/27 18:51:24 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
 bool	is_valid_file_name(char *file_name)
 {
@@ -27,13 +30,13 @@ int		skip_space(char *str, int i)
 		i++;
 	return (i);
 }
-char	put_string_struc(char *str, int i)
+char	*put_string_struct(char *str, int i)
 {
 	int	j;
 	char	*new_str;
 	
 	j = 0;
-	while (str[i + j] !+ '\0')
+	while (str[i + j] != '\0')
 		j++;
 	new_str = malloc(sizeof(char) * j + 1);
 	if (!new_str)
@@ -57,7 +60,7 @@ char	put_string_struc(char *str, int i)
 
 bool	pars_texture_info(char *str, int i, t_conf *conf)
 {
-	if ((str[i] == 'N' && str[i + 1] == 'O')
+	if (str[i] == 'N' && str[i + 1] == 'O')
 	{
 		i = skip_space(str, ++i);
 		conf->NO = put_string_struct(str, i);
@@ -180,7 +183,7 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 	str = get_next_line(fd_conf);
 	while (str)
 	{
-		if (!pars_string_info(str, conf)
+		if (!pars_string_info(str, conf))
 			return (false);
 		str = get_next_line(fd_conf);
 	}

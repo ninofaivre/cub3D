@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 17:57:35 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 18:50:51 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ typedef struct s_map
 
 typedef	struct s_conf
 {
-	char			*N;
+	char			*NO;
+	char			*SO;
+	char			*WE;
+	char			*EA;
 	char			*S;
-	char			*O;
-	char			*E;
 	struct s_rgb	C;
 	struct s_rgb	F;
 }	t_conf;
