@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 16:35:14 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 17:00:34 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,21 @@ static bool	is_there_islands(char **map)
 
 static bool	is_in_map(char **map, int x, int y)
 {
-
+	if ()
 }
 
-static bool	is_zero_surrounded()
+static bool	is_zero_surrounded(char **map, int x, int y)
 
-static bool	is_map_closed(char **map)
+static bool	is_map_closed(t_map *map)
 {
 	int	y;
 	int	x;
 
 	y = 0;
-	while (map[y])
+	while (map->content[y])
 	{
 		x = 0;
-		while (map[y][x])
+		while (map->content[y][x])
 		{
 			if (!is_zero_surrounded(map, x, y))
 				return (false);
@@ -110,13 +110,13 @@ static bool	is_map_closed(char **map)
 
 bool	parse_map(t_map *map, t_player *player)
 {
-	if (parse_map_wrong_char(map->content))
+	if (parse_map_wrong_char(map->content)
 	{
 		print_error("wrong char\n");
 		return (true);
 	}
-	else if ((get_n_char_in_map('N', map) + get_n_char_in_map('S', map)
-		+ get_n_char_in_map('E', map) +get_n_char_in_map('O', map)) != 1)
+	else if ((get_n_char_in_map('N', map->content) + get_n_char_in_map('S', map->content)
+		+ get_n_char_in_map('E', map->content) +get_n_char_in_map('O', map->content)) != 1)
 	{
 		print_error("n_player\n");
 		return (true);
