@@ -6,12 +6,34 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 20:42:00 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 20:19:41 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 17:43:15 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+
+char	**str_tab_dupe(char **str_tab)
+{
+	int		i;
+	char	**duped;
+
+	i = 0;
+	if (!str_tab)
+		return (NULL);
+	duped = malloc(sizeof(char *) * (str_tab_len(str_tab) + 1));
+	if (!duped)
+		return (NULL);
+	while (*str_tab)
+	{
+		duped[i++] = str_dupe(*str_tab);
+		if (!duped[i - 1])
+			return (free_str_tab(&duped));
+		str_tab++;
+	}
+	duped[i] = NULL;
+	return (str_tab_dupe);
+}
 
 void	print_str_tab(char **str_tab)
 {
