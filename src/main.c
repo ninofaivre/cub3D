@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 20:25:28 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 16:27:40 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ char **get_test_map(int fd);
 
 int	main(int argc, char **argv)
 {
-	int		fd_conf;
+	t_map		map;
+	t_player	player;
+	int			fd_conf;
 
 	if (argc != 2)
 	{
@@ -36,8 +38,10 @@ int	main(int argc, char **argv)
 		print_error("file\n");
 		exit(EXIT_FAILURE);
 	}
-	char	**map = get_test_map(fd_conf);
-	print_str_tab(map);
-	parse_map(map);
+	map.content = get_test_map(fd_conf);
 	close(fd_conf);
+	if (parse_map(&map, &player))
+		exit(EXIT_FAILURE);
+	else
+		exit(EXIT_SUCCESS);
 }

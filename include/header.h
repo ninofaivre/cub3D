@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 20:17:56 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 16:57:48 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 typedef struct s_position
 {
-	int	x;
-	int	y;
+	float	x;
+	float	y;
 }	t_position;
 
 typedef struct s_rgb
@@ -28,6 +28,19 @@ typedef struct s_rgb
 	int	b;
 }	t_rgb;
 
+typedef struct s_player
+{
+	struct s_position	position;
+	float				orientation;
+}	t_player;
+
+typedef struct s_map
+{
+	char	**content;
+	int		width;
+	int		height;
+}	t_map;
+
 typedef	struct s_conf
 {
 	char			*N;
@@ -36,7 +49,6 @@ typedef	struct s_conf
 	char			*E;
 	struct s_rgb	C;
 	struct s_rgb	F;
-	char			**map;
 }	t_conf;
 
 char	*get_next_line(int fd);
@@ -54,6 +66,6 @@ int		str_tab_len(char **str_tab);
 char	**free_str_tab(char ***str_tab);
 void	print_str_tab(char **str_tab);
 
-bool	parse_map(char **map);
+bool	parse_map(struct s_map *map, struct s_player *player);
 
 #endif

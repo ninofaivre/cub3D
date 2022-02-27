@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 20:53:28 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 16:35:14 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,85 +14,123 @@
 #include <stdio.h>
 #include <unistd.h>
 
-enum {RIGHT, LEFT, BOT, TOP};
-
-static bool	parse_one_line_wrong_char(char *line)
-{
-	if (!line)
-		return (true);
-	while (*line)
-	{
-		if (!is_charset(*line, "012 NSOE"))
-			return (true);
-		line++;
-	}
-	return (false);
-}
-
 static bool	parse_map_wrong_char(char **map)
 {
+	char	*line;
+
 	if (!map)
 		return (true);
 	while (*map)
 	{
-		if (parse_one_line_wrong_char(*map))
-			return (true);
+		line = *map;
+		while (*line)
+		{
+			if (!is_charset(*line, "012 NSOE"))
+				return (true);
+			line++;
+		}
 		map++;
 	}
 	return (false);
 }
 
-static bool	valid_pos(int y, int x, char **map)
+static int	get_n_char_in_map(char c, char **map)
 {
-	return (!(y < 0 || x < 0 || !map[y] || !map[y][x]));
-}
+	int		number;
+	char	*line;
 
-static void	go_right_bottom(char **map, t_position *pos)
-{
-	int	last_dir;
-
-	last_dir = RIGHT; 
-	while (map[pos->y])
+	number = 0;
+	if (!map)
+		return (0);
+	while (*map)
 	{
-		printf("x : %i, y : %i\n", pos->x, pos->y);
-		if (valid_pos(pos->y, (pos->x + 1), map) && map[pos->y][pos->x + 1] == '1' && last_dir != LEFT)
+		line = *map;
+		while (*line)
 		{
-			pos->x++;
-			last_dir = RIGHT;
+			if (*line == c)
+				number++;
+			line++;
 		}
-		else if (valid_pos((pos->y + 1), pos->x, map) && map[pos->y + 1][pos->x] == '1' && last_dir != TOP)
-		{
-			pos->y++;
-			last_dir = BOT;
-		}
-		else if (valid_pos((pos->y), (pos->x - 1), map) && map[pos->y][pos->x - 1] == '1')
-		{
-			pos->x--;
-			last_dir = LEFT;
-		}
-		else if (valid_pos((pos->y - 1), pos->x, map) && map[pos->y - 1][pos->x] == '1')
-		{
-			pos->y--;
-			last_dir = TOP;
-		}
+		map++;
 	}
+	return (number);
 }
+
+static void	replace_one_by_M(char **map, int y, int x)
+{
+	if (y < 0 || x < 0 || y >= str_tab_len(map) || x >= str_len(map[y]) || map[y][x] != '1')
+		return ;
+	map[y][x] = 'M';
+	replace_one_by_M(map, y - 1, x);
+	replace_one_by_M(map, y + 1, x);
+	replace_one_by_M(map, y, x - 1);
+	replace_one_by_M(map, y, x + 1);
+}
+
+static bool	is_there_islands(char **map)
+{
+	int	x;
+
+	x = 0;
+	while (map[0][x] != '1')
+		x++;
+	replace_one_by_M(map, 0, x);
+	if (get_number_of(map, '1'))
+		return (true);
+	else
+		return (false);
+}
+
+static bool	is_in_map(char **map, int x, int y)
+{
+
+}
+
+static bool	is_zero_surrounded()
 
 static bool	is_map_closed(char **map)
 {
-	t_position	position;
+	int	y;
+	int	x;
 
-	position.y = 0;
-	position.x = 0;
-	while (map[0][position.x] != '1' && map[0][position.x])
-		position.x++;
-	go_right_bottom(map, &position);
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			if (!is_zero_surrounded(map, x, y))
+				return (false);
+			x++;
+		}
+		y++;
+	}
 	return (true);
 }
 
-bool	parse_map(char **map)
+bool	parse_map(t_map *map, t_player *player)
 {
-	if (parse_map_wrong_char(map) || !is_map_closed(map))
+	if (parse_map_wrong_char(map->content))
+	{
+		print_error("wrong char\n");
 		return (true);
+	}
+	else if ((get_n_char_in_map('N', map) + get_n_char_in_map('S', map)
+		+ get_n_char_in_map('E', map) +get_n_char_in_map('O', map)) != 1)
+	{
+		print_error("n_player\n");
+		return (true);
+	}
+	if (!is_map_closed(map))
+	{
+		print_error("unclosed map\n");
+		return (true);
+	}
+	//get_player(map, player);
+	if (is_there_islands(map))
+	{
+		print_error("islands\n");
+		return (true);
+	}
 	return (false);
 }
