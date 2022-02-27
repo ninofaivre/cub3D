@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 18:51:24 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/02/27 20:04:30 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,11 @@ char	*put_string_struct(char *str, int i)
 	int	j;
 	char	*new_str;
 	
-	j = 0;
-	while (str[i + j] != '\0')
-		j++;
-	new_str = malloc(sizeof(char) * j + 1);
+	j = str_len(&str[i]);
+	new_str = malloc(sizeof(char) * (j + 1));
 	if (!new_str)
 		return (NULL);
-	new_str[j + 1] = '\0';
-	while (j)
-	{
-		new_str[j] = str[i + j];
-		j--;
-	}
+	str_ncpy(new_str, &str[i], j);
 	j = open(str, O_RDONLY);
 	if (j == -1)
 	{
@@ -62,35 +55,40 @@ bool	pars_texture_info(char *str, int i, t_conf *conf)
 {
 	if (str[i] == 'N' && str[i + 1] == 'O')
 	{
-		i = skip_space(str, ++i);
+		i += 2;
+		i = skip_space(str, i);
 		conf->NO = put_string_struct(str, i);
 		if (!conf->NO)
 			return (false);
 	}
 	else if (str[i] == 'S' && str[i + 1] == 'O')
 	{
-		i = skip_space(str, ++i);
+		i += 2;
+		i = skip_space(str, i);
 		conf->SO = put_string_struct(str, i);
 		if (!conf->SO)
 			return (false);
 	}
 	else if (str[i] == 'W' && str[i + 1] == 'E')
 	{
-		i = skip_space(str, ++i);
+		i += 2;
+		i = skip_space(str, i);
 		conf->WE = put_string_struct(str, i);
 		if (!conf->WE)
 			return (false);
 	}
 	else if (str[i] == 'E' && str[i + 1] == 'A')
 	{
-		i = skip_space(str, ++i);
+		i += 2;
+		i = skip_space(str, i);
 		conf->EA = put_string_struct(str, i);
 		if (!conf->EA)
 			return (false);
 	}
 	else if (str[i] == 'S' && str[i + 1] == ' ')
 	{
-		i = skip_space(str, i++);
+		i++;
+		i = skip_space(str, i);
 		conf->S = put_string_struct(str, i);
 		if (!conf->S)
 			return (false);
@@ -163,7 +161,7 @@ bool	pars_string_info(char *str, t_conf *conf)
 
 	i = 0;
 	i = skip_space(str, i);
-	if (str[i] == 'N'|| str[i] == 'S' || str[i] == 'W' || str[i] == 'E')
+	if (is_charset(str[i], "NSWE"))
 		return (pars_texture_info(str, i, conf));
 	else if (str[i] == 'F')
 		return (pars_RGB(str, i, &conf->F));

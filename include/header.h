@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 18:50:51 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/02/27 20:03:56 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ typedef	struct s_conf
 
 char	*get_next_line(int fd);
 
+char	*str_dupe(char *str);
+void	str_ncpy(char *dest, char *src, int n_char);
+
 bool	is_valid_file_name(char *file_name);
 
 void	print_error(char *error);
@@ -69,5 +72,6 @@ char	**free_str_tab(char ***str_tab);
 void	print_str_tab(char **str_tab);
 
 bool	parse_map(struct s_map *map, struct s_player *player);
+bool	parsing_file(int fd_conf, t_conf *conf);
 
 #endif

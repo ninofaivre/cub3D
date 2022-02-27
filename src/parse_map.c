@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 18:49:16 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 19:33:35 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,11 +166,14 @@ static void	fill_player(t_player *player, char **map)
 	float	y;
 
 	y = 0;
+	(void)player;
 	while (map[(int)y])
 	{
 		x = 0;
-		while (!is_charset(map[(int)x][(int)y], "NSEW"))
+		while (!is_charset(map[(int)y][(int)x], "NSEW") && map[(int)y][(int)x])
 			x++;
+		if (map[(int)y][(int)x])
+			break ;
 		y++;
 	}
 	player->position.x = x;
@@ -183,6 +186,8 @@ static void	fill_player(t_player *player, char **map)
 
 bool	parse_map(t_map *map, t_player *player)
 {
+	//à faire dans la récupération de la map :
+	map->height = str_tab_len(map->content);
 	if (parse_map_wrong_char(map->content))
 	{
 		print_error("wrong char\n");
@@ -195,7 +200,7 @@ bool	parse_map(t_map *map, t_player *player)
 		return (true); 
 	}
 	fill_player(player, map->content);
-	replace_all_charset_by_char_in_str_tab("NSEW", '1', map->content);
+	replace_all_charset_by_char_in_str_tab("NSEW", '0', map->content);
 	if (!is_map_closed(map))
 	{
 		print_error("unclosed map\n");

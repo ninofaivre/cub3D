@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 16:27:40 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 20:07:35 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+
 char **get_test_map(int fd);
 
 int	main(int argc, char **argv)
 {
-	t_map		map;
-	t_player	player;
+	//t_map		map;
+	//t_player	player;
+	t_conf		conf;
 	int			fd_conf;
 
 	if (argc != 2)
@@ -38,10 +40,19 @@ int	main(int argc, char **argv)
 		print_error("file\n");
 		exit(EXIT_FAILURE);
 	}
+	if (!parsing_file(fd_conf, &conf))
+	{
+		close(fd_conf);
+		exit(EXIT_FAILURE);
+	}
+	close(fd_conf);
+	/*
 	map.content = get_test_map(fd_conf);
 	close(fd_conf);
 	if (parse_map(&map, &player))
 		exit(EXIT_FAILURE);
 	else
 		exit(EXIT_SUCCESS);
+	*/
+	exit(EXIT_SUCCESS);
 }
