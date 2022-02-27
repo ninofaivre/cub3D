@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 18:36:17 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/27 18:49:16 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ static void	fill_player(t_player *player, char **map)
 	while (map[(int)y])
 	{
 		x = 0;
-		while (!is_charset(map[(int)x][(int)y], "NSEO"))
+		while (!is_charset(map[(int)x][(int)y], "NSEW"))
 			x++;
 		y++;
 	}
@@ -177,7 +177,7 @@ static void	fill_player(t_player *player, char **map)
 	player->position.y = y;
 	player->orientation = (float)(90 *(((map[(int)y][(int)x] == 'E') * 0)
 							+ ((map[(int)y][(int)x] == 'S') * 1)
-							+ ((map[(int)y][(int)x] == 'O') * 2)
+							+ ((map[(int)y][(int)x] == 'W') * 2)
 							+ ((map[(int)y][(int)x] == 'N') * 3)));
 }
 
@@ -195,7 +195,7 @@ bool	parse_map(t_map *map, t_player *player)
 		return (true); 
 	}
 	fill_player(player, map->content);
-	replace_all_charset_by_char_in_str_tab("NSEO", '1', map->content);
+	replace_all_charset_by_char_in_str_tab("NSEW", '1', map->content);
 	if (!is_map_closed(map))
 	{
 		print_error("unclosed map\n");
