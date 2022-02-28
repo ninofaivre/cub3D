@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:27:18 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 18:55:03 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/28 23:58:48 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,11 @@ bool	is_charset(char c, char *charset)
 		charset++;
 	}
 	return (false);
+}
+
+int	skip_space(char *str, int i)
+{
+	while (str[i] == ' ')
+		i++;
+	return (i);
 }

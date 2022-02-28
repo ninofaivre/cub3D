@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/28 14:44:59 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/01 00:27:33 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,16 @@ void	print_error(char *error);
 int		str_len(char *str);
 bool	is_same_string(char *str1, char *str2);
 bool	is_charset(char c, char *charset);
+int		skip_space(char *str, int i);
+
+bool	pars_rgb(char *str, int i, t_rgb *rgb);
+bool	error_rgb(int error, int r, int g, int b);
+int		next_nb(char *str, int i);
+int		fake_atoi(char *str, int i);
+
+char	*split_path_texture(char *str, int i);
+bool	put_texture_in_struct(char *str, int i, char **texture);
+bool	pars_texture_info(char *str, int i, t_conf *conf);
 
 char	**str_tab_dupe(char **str_tab);
 char	**add_str_to_str_tab(char **str_tab, char *str);
