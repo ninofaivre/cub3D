@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
 {
 	t_map		*map;
 	t_player	player;
-	//t_conf		conf;
+	t_conf		conf;
 	int			fd_conf;
 
 	if (argc != 2)
@@ -40,14 +40,11 @@ int	main(int argc, char **argv)
 		print_error("file\n");
 		exit(EXIT_FAILURE);
 	}
-	/*
 	if (!parsing_file(fd_conf, &conf))
 	{
 		close(fd_conf);
 		exit(EXIT_FAILURE);
 	}
-	close(fd_conf);
-	*/
 	map = get_map(fd_conf);
 	close(fd_conf);
 	if (!map)
