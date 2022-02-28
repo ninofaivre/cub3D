@@ -105,7 +105,7 @@ int	fake_atoi(char *str, int i)
 	int	nb;
 
 	nb = 0;
-	while(str[i] != ',')
+	while(str[i] >= '0' && str[i] <= '9')
 	{
 		if (str[i] < '0' || str[i] > '9')
 			return (-1);
@@ -180,6 +180,12 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 {
 	char	*str;
 
+	conf->C.r = -1;
+	conf->C.g = -1;
+	conf->C.b = -1;
+	conf->F.r = -1;
+	conf->F.g = -1;
+	conf->F.b = -1;
 	str = get_next_line(fd_conf);
 	while (str)
 	{
