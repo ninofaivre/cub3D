@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 20:03:56 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/28 14:44:59 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_player
 typedef struct s_map
 {
 	char	**content;
-	int		width;
 	int		height;
 }	t_map;
 
@@ -71,6 +70,7 @@ int		str_tab_len(char **str_tab);
 char	**free_str_tab(char ***str_tab);
 void	print_str_tab(char **str_tab);
 
+t_map	*get_map(int fd_conf);
 bool	parse_map(struct s_map *map, struct s_player *player);
 bool	parsing_file(int fd_conf, t_conf *conf);
 

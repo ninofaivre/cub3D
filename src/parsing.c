@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 20:04:30 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/28 14:40:44 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		skip_space(char *str, int i)
 		i++;
 	return (i);
 }
-char	*put_string_struct(char *str, int i)
+char	*put_string_struct(char *str, int i)//ne met pas une string dans une struct (mb get_texture)
 {
 	int	j;
 	char	*new_str;

@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 19:33:35 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/02/28 14:38:24 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,8 +186,6 @@ static void	fill_player(t_player *player, char **map)
 
 bool	parse_map(t_map *map, t_player *player)
 {
-	//à faire dans la récupération de la map :
-	map->height = str_tab_len(map->content);
 	if (parse_map_wrong_char(map->content))
 	{
 		print_error("wrong char\n");
