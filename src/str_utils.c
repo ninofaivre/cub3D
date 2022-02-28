@@ -12,6 +12,7 @@
 
 #include "header.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 char	*str_dupe(char *str)
 {
@@ -43,4 +44,5 @@ void	str_ncpy(char *dest, char *src, int n_char)
 		dest[i] = src[i];
 		i++;
 	}
+	dest[i] = '\0';
 }

@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <stdio.h>
 
 bool	is_valid_file_name(char *file_name)
 {
@@ -30,17 +31,18 @@ int		skip_space(char *str, int i)
 		i++;
 	return (i);
 }
-char	*put_string_struct(char *str, int i)//ne met pas une string dans une struct (mb get_texture)
+char	*put_string_struct(char *str, int i)
 {
 	int	j;
 	char	*new_str;
 	
 	j = str_len(&str[i]);
 	new_str = malloc(sizeof(char) * (j + 1));
+	j--;
 	if (!new_str)
 		return (NULL);
 	str_ncpy(new_str, &str[i], j);
-	j = open(str, O_RDONLY);
+	j = open(new_str, O_RDONLY);
 	if (j == -1)
 	{
 		print_error("Wrong texture's PATH/NAME \n");
