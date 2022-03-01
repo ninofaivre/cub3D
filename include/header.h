@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/01 00:27:33 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:03:28 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ typedef	struct s_conf
 	char			*WE;
 	char			*EA;
 	char			*S;
-	struct s_rgb	C;
-	struct s_rgb	F;
+	struct s_rgb	*C;
+	struct s_rgb	*F;
 }	t_conf;
 
 char	*get_next_line(int fd);

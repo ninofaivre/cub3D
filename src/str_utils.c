@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:56:33 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/27 20:03:45 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/01 12:43:08 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,8 @@ char	*str_dupe(char *str)
 
 void	str_ncpy(char *dest, char *src, int n_char)
 {
-	int	i;
-
-	i = 0;
-	if (!src || !dest)
+	if (!src || !dest || n_char <= 0)
 		return ;
-	while (i < n_char && src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
+	while (n_char--)
+		dest[n_char] = src[n_char];
 }

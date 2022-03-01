@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/01 00:31:06 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/01 12:33:48 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,8 @@
 
 bool	is_valid_file_name(char *file_name)
 {
-	if (str_len(file_name) < 5)
-		return (false);
-	while (file_name[4])
-		file_name++;
-	return (is_same_string(file_name, ".cub"));
+	return (str_len(file_name) > 4
+		&& is_same_string(&file_name[str_len(file_name) - 4], ".cub"));
 }
 
 bool	pars_string_info(char *str, t_conf *conf)
@@ -54,8 +51,7 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 	conf->F.g = -1;
 	conf->F.b = -1;
 	str = get_next_line(fd_conf);
-	while (str)
-	{
+	while (str)new_str
 		if (!pars_string_info(str, conf))
 			return (false);
 		str = get_next_line(fd_conf);

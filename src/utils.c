@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:27:18 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/28 23:58:48 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/01 12:13:06 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	str_len(char *str)
 	int	len;
 
 	len = 0;
+	if (!str)
+		return (-1);
 	while (str[len])
 		len++;
 	return (len);
