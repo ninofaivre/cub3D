@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/01 12:33:48 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/01 18:00:43 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,8 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 {
 	char	*str;
 
-	conf->C.r = -1;
-	conf->C.g = -1;
-	conf->C.b = -1;
-	conf->F.r = -1;
-	conf->F.g = -1;
-	conf->F.b = -1;
 	str = get_next_line(fd_conf);
-	while (str)new_str
+	while (str)
 		if (!pars_string_info(str, conf))
 			return (false);
 		str = get_next_line(fd_conf);

@@ -6,7 +6,7 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/28 23:47:29 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/01 18:00:41 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@
 #include <unistd.h>
 
 char **get_test_map(int fd);
+
+void	init_struct(t_conf *conf)
+{
+	conf->C.r = NULL;
+	conf->C.g = NULL;
+	conf->C.b = NULL;
+	conf->F.r = NULL;
+	conf->F.g = NULL;
+	conf->F.b = NULL;
+}
 
 int	main(int argc, char **argv)
 {
