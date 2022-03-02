@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:36:03 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 16:55:45 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ char	*open_texture(char *str, int i)
 	return (str_dupe(&str[i]));
 }
 
-bool	put_texture_in_struct(char *str, int i, char *ptr_path_texture)
+bool	put_texture_in_struct(char *str, int i, char **ptr_path_texture)
 {
 	i += 1 + !(str[i] == 'S' && str[i + 1] != 'O');
 	i = skip_space(str, i);
-	if (ptr_path_texture)
+	if (*ptr_path_texture)
 	{
 		print_error("double texture\n");
 		return (false);
 	}
-	ptr_path_texture = open_texture(str, i);
+	*ptr_path_texture = open_texture(str, i);
 	if (!ptr_path_texture)
 		return (false);
 	return (true);
@@ -48,15 +48,15 @@ bool	put_texture_in_struct(char *str, int i, char *ptr_path_texture)
 bool	pars_texture_info(char *str, int i, t_conf *conf)
 {
 	if (str[i] == 'N' && str[i + 1] == 'O')
-		return (put_texture_in_struct(str, i, conf->texture_path[north]));
+		return (put_texture_in_struct(str, i, &conf->texture_path[north]));
 	else if (str[i] == 'S' && str[i + 1] == 'O')
-		return (put_texture_in_struct(str, i, conf->texture_path[south]));
+		return (put_texture_in_struct(str, i, &conf->texture_path[south]));
 	else if (str[i] == 'W' && str[i + 1] == 'E')
-		return (put_texture_in_struct(str, i, conf->texture_path[west]));
+		return (put_texture_in_struct(str, i, &conf->texture_path[west]));
 	else if (str[i] == 'E' && str[i + 1] == 'A')
-		return (put_texture_in_struct(str, i, conf->texture_path[east]));
+		return (put_texture_in_struct(str, i, &conf->texture_path[east]));
 	else if (str[i] == 'S' && str[i + 1] == ' ')
-		return (put_texture_in_struct(str, i, conf->texture_path[sprite]));
+		return (put_texture_in_struct(str, i, &conf->texture_path[sprite]));
 	else
 		return (false);
 	return (true);

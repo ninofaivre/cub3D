@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:46:07 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 16:56:18 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int				next_nb(char *str, int i);
 int				fake_atoi(char *str, int i);
 
 char			*split_path_texture(char *str, int i);
-bool			put_texture_in_struct(char *str, int i, char *ptr_path_texture);
+bool			put_texture_in_struct(char *str, int i, char **ptr_path_texture);
 bool			pars_texture_info(char *str, int i, t_conf *conf);
 
 char			**str_tab_dupe(char **str_tab);

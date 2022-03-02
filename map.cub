@@ -2,6 +2,7 @@ NO ./textures/brick.xpm
 SO ./textures/cobblestone_mossy.xpm
 WE ./textures/planks_big_oak.xpm
 EA ./textures/stone_bricks.xpm
+S ./textures/sprites.xpm
 
 F 220,100,0
 C 225,30,0
