@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 13:16:42 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:39:12 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:44:33 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static bool	check_argc_and_file_name(int argc, char **argv)
 	return (false);
 }
 
-static t_global_info	*error_parsing(t_global_info *info, int fd_conf, char *error)
+static t_global_info	*error_parsing(t_global_info *info,
+int fd_conf, char *error)
 {
 	if (fd_conf > 0)
 		close(fd_conf);

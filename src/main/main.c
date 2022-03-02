@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 14:16:07 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:43:20 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int	main(int argc, char **argv)
 {
 	t_global_info	*info;
-	
+
 	info = parsing(argc, argv);
 	if (!info)
 		exit(EXIT_FAILURE);
