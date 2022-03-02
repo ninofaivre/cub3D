@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_info.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/01 18:00:43 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/02 13:16:34 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h>
-
-bool	is_valid_file_name(char *file_name)
-{
-	return (str_len(file_name) > 4
-		&& is_same_string(&file_name[str_len(file_name) - 4], ".cub"));
-}
 
 bool	pars_string_info(char *str, t_conf *conf)
 {
@@ -46,6 +40,7 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 
 	str = get_next_line(fd_conf);
 	while (str)
+	{
 		if (!pars_string_info(str, conf))
 			return (false);
 		str = get_next_line(fd_conf);

@@ -6,14 +6,14 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/01 13:03:28 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 13:21:34 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 # define HEADER_H
 
-#include <stdbool.h>
+# include <stdbool.h>
 
 typedef struct s_position
 {
@@ -40,24 +40,36 @@ typedef struct s_map
 	int		height;
 }	t_map;
 
-typedef	struct s_conf
+enum { north, south, west, east, sprite };
+
+typedef struct s_conf
 {
-	char			*NO;
-	char			*SO;
-	char			*WE;
-	char			*EA;
-	char			*S;
-	struct s_rgb	*C;
-	struct s_rgb	*F;
+	char			**texture_path;
+	/*
+	char			*north_texture_path;
+	char			*south_texture_path;
+	char			*west_texture_path;
+	char			*east_texture_path;
+	char			*sprite_texutre_path;
+	*/
+	struct s_rgb	*ceilling_rgb;
+	struct s_rgb	*floor_rgb;
 }	t_conf;
+
+typedef struct s_global_info
+{
+	struct s_conf	*conf;
+	struct s_map	*map;
+	struct s_player	*player;
+}	t_global_info;
 
 char	*get_next_line(int fd);
 
 char	*str_dupe(char *str);
 void	str_ncpy(char *dest, char *src, int n_char);
 
-bool	is_valid_file_name(char *file_name);
-
+void	free_conf(t_conf *conf);
+void	free_map(t_map *map);
 void	print_error(char *error);
 
 int		str_len(char *str);

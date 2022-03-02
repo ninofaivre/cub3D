@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/26 17:35:27 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/02/26 17:35:33 by nfaivre          ###   ########.fr       */
+/*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
+/*   Updated: 2022/03/02 14:16:07 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
 
-void	print_error(char *error)
+int	main(int argc, char **argv)
 {
-	write(2, "Error\n", 6);
-	write(2, error, str_len(error));
+	t_global_info	*info;
+	
+	info = parsing(argc, argv);
+	if (!info)
+		exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
