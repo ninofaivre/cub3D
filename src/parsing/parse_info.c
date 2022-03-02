@@ -32,6 +32,25 @@ bool	pars_string_info(char *str, t_conf *conf)
 		return (false);
 }
 
+bool	is_info_full(t_conf *conf)
+{
+	if (!conf->texture_path[north])
+		return (false);
+	else if (!conf->texture_path[south])
+		return (false);
+	else if (!conf->texture_path[east])
+		return (false);
+	else if (!conf->texture_path[west])
+		return (false);
+	else if (!conf->texture_path[sprite])
+		return (false);
+	else if (!conf->ceilling_rgb)
+		return (false);
+	else if (!conf->floor_rgb)
+		return (false);
+	return (true);
+}
+
 bool	parsing_file(int fd_conf, t_conf *conf)
 {
 	char	*str;
@@ -43,7 +62,9 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 			str[str_len(str) - 1] = '\0';
 		if (str_len(str) && !pars_string_info(str, conf))
 			return (false);
+		if (is_info_full(conf))
+			return (true);
 		str = get_next_line(fd_conf);
 	}
-	return (true);
+	return (false);
 }
