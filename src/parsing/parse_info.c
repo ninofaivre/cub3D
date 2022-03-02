@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:26:39 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 16:01:42 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ bool	pars_string_info(char *str, t_conf *conf)
 		return (pars_rgb(str, i, &conf->floor_rgb));
 	else if (str[i] == 'C')
 		return (pars_rgb(str, i, &conf->ceilling_rgb));
-	else if (str[i] == '\n')
-		return (true);
 	else
 		return (false);
 }
@@ -41,7 +39,9 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 	str = get_next_line(fd_conf);
 	while (str)
 	{
-		if (!pars_string_info(str, conf))
+		if (str[str_len(str) - 1] == '\n')
+			str[str_len(str) - 1] = '\0';
+		if (str_len(str) && !pars_string_info(str, conf))
 			return (false);
 		str = get_next_line(fd_conf);
 	}
