@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 14:01:38 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:36:03 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ bool	put_texture_in_struct(char *str, int i, char *ptr_path_texture)
 bool	pars_texture_info(char *str, int i, t_conf *conf)
 {
 	if (str[i] == 'N' && str[i + 1] == 'O')
-		return (put_texture_in_struct(str, i, conf->texture[north]));
+		return (put_texture_in_struct(str, i, conf->texture_path[north]));
 	else if (str[i] == 'S' && str[i + 1] == 'O')
-		return (put_texture_in_struct(str, i, conf->texture[south]));
+		return (put_texture_in_struct(str, i, conf->texture_path[south]));
 	else if (str[i] == 'W' && str[i + 1] == 'E')
-		return (put_texture_in_struct(str, i, conf->texture[west]));
+		return (put_texture_in_struct(str, i, conf->texture_path[west]));
 	else if (str[i] == 'E' && str[i + 1] == 'A')
-		return (put_texture_in_struct(str, i, conf->texture[east]));
+		return (put_texture_in_struct(str, i, conf->texture_path[east]));
 	else if (str[i] == 'S' && str[i + 1] == ' ')
-		return (put_texture_in_struct(str, i, conf->texture[sprite]));
+		return (put_texture_in_struct(str, i, conf->texture_path[sprite]));
 	else
 		return (false);
 	return (true);

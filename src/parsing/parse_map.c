@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 14:14:26 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:33:18 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static bool	is_there_islands(char **map)
 	x = 0;
 	while (map[0][x] != '1')
 		x++;
-	replace_connected_1_by_M(cpy_map, 0, x);
+	replace_connected_1_by_3(cpy_map, 0, x);
 	if (get_n_char_in_str_tab('1', cpy_map))
 	{
 		free_str_tab(&cpy_map);
@@ -87,7 +87,7 @@ static bool	is_map_closed(t_map *map)
 	return (true);
 }
 
-static bool	fill_player(t_player *player, char **map)
+static void	fill_player(t_player *player, char **map)
 {
 	float	x;
 	float	y;
@@ -110,11 +110,11 @@ static bool	fill_player(t_player *player, char **map)
 				+ ((map[(int)y][(int)x] == 'N') * 3)));
 }
 
-bool	parse_map(t_map *map, t_player **player)
+bool	parse_map(t_map *map, t_player *player)
 {
 	if (does_str_tab_contains_empty_str(map->content))
 	{
-		str_error("empty line in map\n");
+		print_error("empty line in map\n");
 		return (true);
 	}
 	else if (parse_map_wrong_char(map->content))

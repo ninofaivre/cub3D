@@ -6,12 +6,13 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:35:27 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 13:55:00 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:39:31 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include <unistd.h>
+#include <stdlib.h>
 
 static void	free_texture_path(char **texture_path)
 {

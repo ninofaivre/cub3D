@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_info.c                                     :+:      :+:    :+:   */
+/*   parse_info.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 13:16:34 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:26:39 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ bool	pars_string_info(char *str, t_conf *conf)
 	if (is_charset(str[i], "NSWE"))
 		return (pars_texture_info(str, i, conf));
 	else if (str[i] == 'F')
-		return (pars_rgb(str, i, &conf->F));
+		return (pars_rgb(str, i, &conf->floor_rgb));
 	else if (str[i] == 'C')
-		return (pars_rgb(str, i, &conf->C));
+		return (pars_rgb(str, i, &conf->ceilling_rgb));
 	else if (str[i] == '\n')
 		return (true);
 	else

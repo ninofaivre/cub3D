@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 14:08:13 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:34:15 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ bool	pars_rgb(char *str, int i, t_rgb **rgb)
 	if (!*rgb)
 		return (error_rgb(-1, 0, 0, 0));
 	i = skip_space(str, ++i);
-	rgb->r = fake_atoi(str, i);
+	(*rgb)->r = fake_atoi(str, i);
 	i = next_nb(str, i);
-	rgb->g = fake_atoi(str, i);
+	(*rgb)->g = fake_atoi(str, i);
 	i = next_nb(str, i);
-	rgb->b = fake_atoi(str, i);
-	return (error_rgb(0, rgb->r, rgb->g, rgb->b));
+	(*rgb)->b = fake_atoi(str, i);
+	return (error_rgb(0, (*rgb)->r, (*rgb)->g, (*rgb)->b));
 }

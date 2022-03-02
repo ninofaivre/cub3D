@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 14:45:56 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 12:54:55 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:25:50 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*skip_empty_line(int fd_conf)
 	return (line);
 }
 
-t_map	*get_map(int fd_conf, t_conf *conf)
+t_map	*get_map(int fd_conf)
 {
 	t_map	*map;
 	char	*line;

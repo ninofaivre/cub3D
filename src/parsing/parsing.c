@@ -6,11 +6,14 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 13:16:42 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 14:11:34 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/02 15:39:12 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
 static bool	is_valid_file_name(char *file_name)
 {
@@ -43,8 +46,6 @@ static t_global_info	*error_parsing(t_global_info *info, int fd_conf, char *erro
 			free_conf(info->conf);
 		if (info->map)
 			free_map(info->map);
-		if (info->player)
-			free(info->player);
 		free(info);
 	}
 	if (error)
@@ -55,20 +56,19 @@ static t_global_info	*error_parsing(t_global_info *info, int fd_conf, char *erro
 static bool	init_info(t_global_info *info)
 {
 	info->map = NULL;
-	info->player = NULL;
 	info->conf = malloc(sizeof(t_conf));
-	if (!conf)
+	if (!info->conf)
 		return (true);
 	info->conf->ceilling_rgb = NULL;
 	info->conf->floor_rgb = NULL;
-	info->texture_path = malloc(sizeof(char *) * 6);
-	if (!info->texture_path)
+	info->conf->texture_path = malloc(sizeof(char *) * 6);
+	if (!info->conf->texture_path)
 		return (true);
-	info->texture_path[north] = NULL;
-	info->texture_path[south] = NULL;
-	info->texture_path[west] = NULL;
-	info->texture_path[east] = NULL;
-	info->texture_path[sprite] = NULL;
+	info->conf->texture_path[north] = NULL;
+	info->conf->texture_path[south] = NULL;
+	info->conf->texture_path[west] = NULL;
+	info->conf->texture_path[east] = NULL;
+	info->conf->texture_path[sprite] = NULL;
 	return (false);
 }
 
@@ -77,7 +77,7 @@ t_global_info	*parsing(int argc, char **argv)
 	int				fd_conf;
 	t_global_info	*info;
 
-	if (check_argc_and_file_name)
+	if (check_argc_and_file_name(argc, argv))
 		exit (EXIT_FAILURE);
 	fd_conf = open(argv[1], O_RDONLY);
 	if (fd_conf == -1)
@@ -90,7 +90,7 @@ t_global_info	*parsing(int argc, char **argv)
 	info->map = get_map(fd_conf);
 	if (!info->map)
 		return (error_parsing(info, fd_conf, "Alloc\n"));
-	if (parse_map(info->map))
+	if (parse_map(info->map, &(info->player)))
 		return (error_parsing(info, fd_conf, NULL));
 	close(fd_conf);
 	return (info);
