@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 16:01:42 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:33:16 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,16 @@ bool	parsing_file(int fd_conf, t_conf *conf)
 		if (str[str_len(str) - 1] == '\n')
 			str[str_len(str) - 1] = '\0';
 		if (str_len(str) && !pars_string_info(str, conf))
+		{
+			free(str);
 			return (false);
+		}
 		if (is_info_full(conf))
+		{
+			free(str);
 			return (true);
+		}
+		free(str);
 		str = get_next_line(fd_conf);
 	}
 	return (false);

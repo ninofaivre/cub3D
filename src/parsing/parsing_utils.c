@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:35:27 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:39:31 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/03 18:00:03 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,41 @@ static void	free_texture_path(char **texture_path)
 	free(texture_path);
 }
 
-void	free_conf(t_conf *conf)
+#include <stdio.h>
+
+static void	free_conf(t_conf *conf)
 {
 	if (!conf)
 		return ;
 	if (conf->texture_path)
 		free_texture_path(conf->texture_path);
 	if (conf->ceilling_rgb)
+	{
+		printf("on free ceilling_rgb\n");
 		free(conf->ceilling_rgb);
+	}
 	if (conf->floor_rgb)
 		free(conf->floor_rgb);
+	free(conf);
 }
 
-void	free_map(t_map *map)
+static void	free_map(t_map *map)
 {
 	if (map && map->content)
 		free_str_tab(&(map->content));
 	if (map)
 		free(map);
+}
+
+void	free_info(t_global_info *info)
+{
+	if (!info)
+		return ;
+	if (info->map)
+		free_map(info->map);
+	if (info->conf)
+		free_conf(info->conf);
+	free(info);
 }
 
 void	print_error(char *error)

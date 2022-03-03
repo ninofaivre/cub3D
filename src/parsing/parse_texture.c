@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 16:55:45 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/03 18:03:34 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	put_texture_in_struct(char *str, int i, char **ptr_path_texture)
 		return (false);
 	}
 	*ptr_path_texture = open_texture(str, i);
-	if (!ptr_path_texture)
+	if (!*ptr_path_texture)
 		return (false);
 	return (true);
 }

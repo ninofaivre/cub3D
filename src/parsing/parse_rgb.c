@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:34:15 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:55:09 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ bool	pars_rgb(char *str, int i, t_rgb **rgb)
 {
 	if (*rgb)
 		return (error_rgb(1, 0, 0, 0));
+	printf("on est dans pars_rgb \n");
 	*rgb = malloc(sizeof(t_rgb));
 	if (!*rgb)
 		return (error_rgb(-1, 0, 0, 0));

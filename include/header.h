@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 16:56:18 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:43:46 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ t_global_info	*parsing(int argc, char **argv);
 char			*str_dupe(char *str);
 void			str_ncpy(char *dest, char *src, int n_char);
 
-void			free_conf(t_conf *conf);
-void			free_map(t_map *map);
+void			free_info(t_global_info *info);
 void			print_error(char *error);
 
 int				str_len(char *str);
@@ -99,5 +98,7 @@ void			replace_all_charset_by_char_in_str_tab(char *charset,
 					char replace, char **str_tab);
 int				get_n_char_in_str_tab(char c, char **str_tab);
 bool			does_str_tab_contains_empty_str(char **str_tab);
+
+void	print_str_tab(char **str_tab);
 
 #endif

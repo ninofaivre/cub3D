@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 13:16:42 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:44:33 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:59:44 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,7 @@ int fd_conf, char *error)
 	if (fd_conf > 0)
 		close(fd_conf);
 	if (info)
-	{
-		if (info->conf)
-			free_conf(info->conf);
-		if (info->map)
-			free_map(info->map);
-		free(info);
-	}
+		free_info(info);
 	if (error)
 		print_error(error);
 	return (NULL);
@@ -70,6 +64,7 @@ static bool	init_info(t_global_info *info)
 	info->conf->texture_path[west] = NULL;
 	info->conf->texture_path[east] = NULL;
 	info->conf->texture_path[sprite] = NULL;
+	info->conf->texture_path[5] = NULL;
 	return (false);
 }
 
