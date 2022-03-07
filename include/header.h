@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/03 17:43:46 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/07 13:31:59 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 typedef struct s_position
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }	t_position;
 
 typedef struct s_rgb
@@ -31,7 +31,7 @@ typedef struct s_rgb
 typedef struct s_player
 {
 	struct s_position	position;
-	float				orientation;
+	double				orientation;
 }	t_player;
 
 typedef struct s_map

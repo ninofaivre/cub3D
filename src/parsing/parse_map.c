@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:33:18 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/07 14:16:17 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ static bool	is_map_closed(t_map *map)
 
 static void	fill_player(t_player *player, char **map)
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 
 	y = 0;
 	while (map[(int)y])
@@ -104,10 +104,10 @@ static void	fill_player(t_player *player, char **map)
 	}
 	player->position.x = x;
 	player->position.y = y;
-	player->orientation = (float)(90 *(((map[(int)y][(int)x] == 'E') * 0)
-				+ ((map[(int)y][(int)x] == 'S') * 1)
+	player->orientation = (double)(90 *(((map[(int)y][(int)x] == 'E') * 0)
+				+ ((map[(int)y][(int)x] == 'N') * 1)
 				+ ((map[(int)y][(int)x] == 'W') * 2)
-				+ ((map[(int)y][(int)x] == 'N') * 3)));
+				+ ((map[(int)y][(int)x] == 'S') * 3)));
 }
 
 bool	parse_map(t_map *map, t_player *player)

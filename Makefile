@@ -6,7 +6,7 @@
 #    By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 10:25:16 by nfaivre           #+#    #+#              #
-#    Updated: 2022/03/04 16:44:52 by nfaivre          ###   ########.fr        #
+#    Updated: 2022/03/07 13:34:05 by nfaivre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ VPATH =
 DIR_SRC = src
 DIR_OBJ = .obj
 
+LIB = -lm
 INCLUDE = -Iinclude
 
 SRC = $(wildcard $(DIR_SRC)/*/*.c)
@@ -31,7 +32,7 @@ mkdir_DIR_OBJ:
 	mkdir -p $(DIR_OBJ)
 
 $(DIR_OBJ)/%.o : $(DIR_SRC)/*/%.c
-	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE)
+	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE) $(LIB)
 
 $(NAME):
 	make -C Get-Next-Line DIR_OBJ=$(addprefix $(PWD)/, $(DIR_OBJ))
