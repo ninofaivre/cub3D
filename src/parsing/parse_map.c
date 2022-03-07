@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/07 14:16:17 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/07 22:09:09 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ static void	fill_player(t_player *player, char **map)
 			break ;
 		y++;
 	}
-	player->position.x = x;
-	player->position.y = y;
+	player->position.x = x + (double)0.5;
+	player->position.y = y + (double)0.5;
 	player->orientation = (double)(90 *(((map[(int)y][(int)x] == 'E') * 0)
 				+ ((map[(int)y][(int)x] == 'N') * 1)
 				+ ((map[(int)y][(int)x] == 'W') * 2)

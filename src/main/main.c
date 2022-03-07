@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/04 18:42:09 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/07 23:22:44 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-/*
 #include <stdio.h>
 
+/*
 static void	print_parsing(t_global_info *info)
 {
 	printf("conf :\n\npath :\n");
@@ -33,7 +33,9 @@ int	main(int argc, char **argv)
 	info = parsing(argc, argv);
 	if (!info)
 		exit(EXIT_FAILURE);
+	raycast(info->player, info->map->content);
 	//print_parsing(info);
+	//printf("%f\n", get_wall_distance(info->player.position, (double)135, info->map->content));
 	free_info(info);
 	exit(EXIT_SUCCESS);
 }
