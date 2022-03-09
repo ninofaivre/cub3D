@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/07 22:37:55 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/09 16:37:09 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ bool			does_str_tab_contains_empty_str(char **str_tab);
 void			print_str_tab(char **str_tab);
 
 double			get_wall_distance(t_position player_position, double angle, char **map);
-void			raycast(t_player player, char **map);
+void			display(t_player *player, char **map);
 
 #endif
