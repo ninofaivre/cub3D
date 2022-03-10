@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/09 16:37:09 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/10 21:37:04 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_global_info
 	struct s_conf	*conf;
 	struct s_map	*map;
 	struct s_player	player;
+	void			*mlx;
+	void			*win;
 }	t_global_info;
 
 char			*get_next_line(int fd);
@@ -102,6 +104,7 @@ bool			does_str_tab_contains_empty_str(char **str_tab);
 void			print_str_tab(char **str_tab);
 
 double			get_wall_distance(t_position player_position, double angle, char **map);
-void			display(t_player *player, char **map);
+void			display(t_player *player, t_map *map);
+double			degrees_to_radians(double degrees);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 13:32:54 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/07 22:08:28 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/10 20:40:54 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 #include <stdio.h>
 
-static double	degrees_to_radians(double degrees)
+double	degrees_to_radians(double degrees)
 {
 	return (degrees * (M_PI / (double)180));
 }
 
-static bool	does_position_touch_a_wall(t_position position, char **map)
+bool	does_position_touch_a_wall(t_position position, char **map)
 {
 	if (fmod(position.x, (double)1) > (double)0 && fmod(position.y, (double)1) > (double)0)
 		return (false);
@@ -32,8 +32,8 @@ static bool	does_position_touch_a_wall(t_position position, char **map)
 	}
 	else if (fmod(position.x, (double)1) > (double)0)
 	{
-		if (map[(int)position.y][(int)(position.x / (double)1)] == '1'
-			|| map[(int)position.y - 1][(int)(position.x / (double)1)] == '1')
+		if (map[(int)position.y][(int)position.x] == '1'
+			|| map[(int)position.y - 1][(int)position.x] == '1')
 			return (true);
 	}
 	else
@@ -59,6 +59,91 @@ static void	levelling(t_position *position, t_position plan_start, t_position pl
 		position->y = plan_end.y;
 }
 
+enum { TOP_RIGHT, TOP_LEFT, BOT_LEFT, BOT_RIGHT };
+
+static void	calc_new_intersection(t_position *position, t_position plan_start, t_position plan_end, double angle)
+{
+	double		x_adja;
+	double		y_adja;
+	double		x_oppo;
+	double		y_oppo;
+	int			quart;
+
+	if (angle >= (double)0 && angle <= (double)90)
+		quart = TOP_RIGHT;
+	else if (angle > (double)90 && angle <= (double)180)
+		quart = TOP_LEFT;
+	else if (angle > (double)180 && angle <= (double)270)
+		quart = BOT_LEFT;
+	else if (angle > (double)270 && angle < (double)360)
+		quart = BOT_RIGHT;
+	if (quart == TOP_RIGHT)
+	{
+		x_adja = position->y - plan_start.y;
+		y_adja = plan_end.x - position->x;
+	}
+	else if (quart == TOP_LEFT)
+	{
+		x_adja = position->y - plan_start.y;
+		y_adja = position->x - plan_start.x;
+	}
+	else if (quart == BOT_LEFT)
+	{
+		x_adja = plan_end.y - position->y;
+		y_adja = position->x - plan_start.x;
+	}
+	else if (quart == BOT_RIGHT)
+	{
+		x_adja = plan_end.y - position->y;
+		y_adja = plan_end.x - position->x;
+	}
+	if (quart == TOP_RIGHT)
+	{
+		x_oppo = x_adja * tan(degrees_to_radians((double)90 - angle));
+		y_oppo = y_adja * tan(degrees_to_radians(angle));
+	}
+	else if (quart == TOP_LEFT)
+	{
+		x_oppo = x_adja * tan(degrees_to_radians(angle - (double)90));
+		y_oppo = y_adja * tan(degrees_to_radians((double)180 - angle));
+	}
+	if (quart == BOT_LEFT)
+	{
+		x_oppo = x_adja * tan(degrees_to_radians((double)270 - angle));
+		y_oppo = y_adja * tan(degrees_to_radians(angle - (double)180));
+	}
+	if (quart == BOT_RIGHT)
+	{
+		x_oppo = x_adja * tan(degrees_to_radians(angle - (double)270));
+		y_oppo = y_adja * tan(degrees_to_radians((double)360 - angle));
+	}
+	if (x_oppo > y_adja)
+		x_oppo = y_adja;
+	else if (y_oppo > x_adja)
+		y_oppo = x_adja;
+	if (quart == TOP_RIGHT)
+	{
+		position->x += x_oppo;
+		position->y -= y_oppo;
+	}
+	else if (quart == TOP_LEFT)
+	{
+		position->x -= x_oppo;
+		position->y -= y_oppo;
+	}
+	else if (quart == BOT_LEFT)
+	{
+		position->x -= x_oppo;
+		position->y += y_oppo;
+	}
+	else if (quart == BOT_RIGHT)
+	{
+		position->x += x_oppo;
+		position->y += y_oppo;
+	}
+}
+
+/*
 static void	calc_new_intersection(t_position *position, t_position plan_start, t_position plan_end, double angle)
 {
 	t_position	new_position;
@@ -89,6 +174,7 @@ static void	calc_new_intersection(t_position *position, t_position plan_start, t
 	position->x = new_position.x;
 	position->y = new_position.y;
 }
+*/
 
 static void	get_next_intersection(t_position *position, double angle)
 {
