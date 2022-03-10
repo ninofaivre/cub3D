@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/10 21:37:04 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/10 22:44:15 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ bool			does_str_tab_contains_empty_str(char **str_tab);
 void			print_str_tab(char **str_tab);
 
 double			get_wall_distance(t_position player_position, double angle, char **map);
-void			display(t_player *player, t_map *map);
+void			display(t_global_info *info);
 double			degrees_to_radians(double degrees);
 
 #endif

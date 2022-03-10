@@ -4,8 +4,8 @@ WE ./textures/planks_big_oak.xpm
 EA ./textures/stone_bricks.xpm
 S ./textures/sprites.xpm
 
-F 220,100,0
-C 225,30,0
+F 000,000,255
+C 000,255,000
 
 11111111111111
 10000010000001

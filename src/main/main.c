@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/10 20:53:37 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/10 22:45:00 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 	info = parsing(argc, argv);
 	if (!info)
 		exit(EXIT_FAILURE);
-	display(&(info->player), info->map);
+	display(info);
 	//print_parsing(info);
 	//printf("%f\n", get_wall_distance(info->player.position, (double)135, info->map->content));
 	free_info(info);
