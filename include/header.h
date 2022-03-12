@@ -56,7 +56,10 @@ typedef struct s_global_info
 	struct s_player	player;
 	void			*mlx;
 	void			*win;
+	struct s_column_info	*column_info;
 }	t_global_info;
+
+# include "calculation.h"
 
 char			*get_next_line(int fd);
 
