@@ -27,6 +27,6 @@ typedef struct s_column_info
 }	t_column_info;
 
 bool	update_player(t_player *player, int keycode, t_map *map);
-bool	does_position_touch_a_wall(t_position position, char **map);
+char	does_position_touch_a_wall(t_position position, char **map);
 
 #endif

@@ -59,6 +59,13 @@ typedef struct s_global_info
 	struct s_column_info	*column_info;
 }	t_global_info;
 
+
+typedef struct s_wall
+{
+	char	orientation;
+	double	distance;
+}	t_wall;
+
 # include "calculation.h"
 
 char			*get_next_line(int fd);
@@ -106,7 +113,7 @@ bool			does_str_tab_contains_empty_str(char **str_tab);
 
 void			print_str_tab(char **str_tab);
 
-double			get_wall_distance(t_position player_position, double angle, char **map);
+t_wall			get_wall_distance(t_position player_position, double angle, char **map);
 void			display(t_global_info *info);
 double			degrees_to_radians(double degrees);
 

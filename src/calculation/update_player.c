@@ -66,8 +66,19 @@ static bool	moove_player(t_player *player, int keycode, t_map *map)
 	}
 	else if (keycode == 's')
 	{
-		incr_x = -(cos(degrees_to_radians(player->orientation)) * MOOVE_STEP);
-		incr_y = sin(degrees_to_radians(player->orientation)) * MOOVE_STEP;
+		incr_x = cos(degrees_to_radians(player->orientation - 180)) * MOOVE_STEP;
+		incr_y = -(sin(degrees_to_radians(player->orientation - 180)) * MOOVE_STEP);
+	}
+	else if (keycode == 'd')
+	{
+		incr_x = cos(degrees_to_radians(player->orientation - 90)) * MOOVE_STEP;
+		incr_y = -(sin(degrees_to_radians(player->orientation - 90)) * MOOVE_STEP);
+	}
+	else if (keycode == 'q')
+	{
+
+		incr_x = cos(degrees_to_radians(player->orientation + 90)) * MOOVE_STEP;
+		incr_y = -(sin(degrees_to_radians(player->orientation + 90)) * MOOVE_STEP);
 	}
 	else
 		return (false);

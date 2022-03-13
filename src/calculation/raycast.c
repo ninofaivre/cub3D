@@ -12,7 +12,7 @@
 
 #define FOV 60
 #define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 450
+#define SCREEN_HEIGHT 800
 #include <header.h>
 #include <calculation.h>
 
@@ -35,7 +35,7 @@ static int	rgb_to_put_pixel(t_rgb *rgb)
 	return ((rgb->b * pow(256, 0)) + (rgb->g * pow(256, 1)) + (rgb->r * pow(256, 2)));
 }
 
-static void	print_column(double	wall_distance, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame)
+static void	print_column(double	wall_distance, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, char wall_orientation)
 {
 	int	i;
 	int	column_height;
@@ -56,8 +56,17 @@ static void	print_column(double	wall_distance, void *mlx, void *win, int x, t_rg
 			mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(floor_rgb));
 		else if (i > draw_end && (i <= column_info->end || !care_about_last_frame))
 			mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(ceilling_rgb));
-		else if (i >= draw_start && i <= draw_end && (i < column_info->start || i > column_info->end || !care_about_last_frame))
-			mlx_pixel_put(mlx, win, x, i, 0x00FF0000);
+		else if (i >= draw_start && i <= draw_end)
+		{
+			if (wall_orientation == 'N')
+				mlx_pixel_put(mlx, win, x, i, 0x00FF0000);
+			else if (wall_orientation == 'S')
+				mlx_pixel_put(mlx, win, x, i, 0x00000000);
+			else if (wall_orientation == 'E')
+				mlx_pixel_put(mlx, win, x, i, 0x00FFFFFF);
+			else if (wall_orientation == 'O')
+				mlx_pixel_put(mlx, win, x, i, 0x00FFFF00);
+		}
 		i++;
 	}
 	column_info->start = draw_start;
@@ -66,6 +75,7 @@ static void	print_column(double	wall_distance, void *mlx, void *win, int x, t_rg
 
 static t_column_info	*display_first_frame(t_global_info *info)
 {
+	t_wall			wall;
 	double			angle;
 	int				n_column;
 	t_column_info	*column_info;
@@ -76,12 +86,13 @@ static t_column_info	*display_first_frame(t_global_info *info)
 		return (NULL);
 	while (n_column < SCREEN_WIDTH)
 	{
+		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_column * ((double)FOV / (double)SCREEN_WIDTH)));
 		if (angle < (double)0)
 			angle = (double)360 + angle;
 		else if (angle > (double)359)
 			angle = angle - (double)359;
-		print_column((get_wall_distance(info->player.position, angle, info->map->content) * cos(degrees_to_radians(angle - info->player.orientation))), info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false);
+		print_column(wall.distance * cos(degrees_to_radians(angle - info->player.orientation)), info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, wall.orientation);
 		n_column++;
 	}
 	return (column_info);
@@ -89,18 +100,20 @@ static t_column_info	*display_first_frame(t_global_info *info)
 
 static void	display_one_frame(t_global_info *info)
 {
+	t_wall	wall;
 	double	angle;
 	int		n_collumn;
 
 	n_collumn = 0;
 	while (n_collumn < SCREEN_WIDTH)
 	{
+		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_collumn * ((double)FOV / (double)SCREEN_WIDTH)));
 		if (angle < (double)0)
 			angle = (double)360 + angle;
 		else if (angle > (double)359)
 			angle  = angle - (double)359;
-		print_column((get_wall_distance(info->player.position, angle, info->map->content) * cos(degrees_to_radians(angle - info->player.orientation))), info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true);
+		print_column(wall.distance * cos(degrees_to_radians(angle - info->player.orientation)), info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, wall.orientation);
 		n_collumn++;
 	}
 }

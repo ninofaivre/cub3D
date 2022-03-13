@@ -20,29 +20,34 @@ double	degrees_to_radians(double degrees)
 	return (degrees * (M_PI / (double)180));
 }
 
-bool	does_position_touch_a_wall(t_position position, char **map)
+char	does_position_touch_a_wall(t_position position, char **map)
 {
 	if (fmod(position.x, (double)1) > (double)0 && fmod(position.y, (double)1) > (double)0)
-		return (false);
+		return ('\0');
 	if (fmod(position.y, (double)1) > (double)0)
 	{
-		if (map[(int)(position.y / (double)1)][(int)position.x] == '1'
-			|| map[(int)(position.y / (double)1)][(int)position.x - 1] == '1')
-			return (true);
+		if (map[(int)(position.y / (double)1)][(int)position.x] == '1')
+			return ('E');
+		else if (map[(int)(position.y / (double)1)][(int)position.x - 1] == '1')
+			return ('O');
 	}
 	else if (fmod(position.x, (double)1) > (double)0)
 	{
-		if (map[(int)position.y][(int)position.x] == '1'
-			|| map[(int)position.y - 1][(int)position.x] == '1')
-			return (true);
+		if (map[(int)position.y][(int)position.x] == '1')
+			return ('S');
+		else if (map[(int)position.y - 1][(int)position.x] == '1')
+			return ('N');
 	}
 	else
 	{
-		if (map[(int)position.y][(int)position.x] == '1'
-			|| map[(int)position.y][(int)position.x - 1] == '1'
-			|| map[(int)position.y - 1][(int)position.x] == '1'
-			|| map[(int)position.y - 1][(int)position.x - 1] == '1')
-			return (true);
+		if (map[(int)position.y][(int)position.x] == '1')
+			return ('E');
+		if (map[(int)position.y][(int)position.x - 1] == '1')
+			return ('N');
+		if (map[(int)position.y - 1][(int)position.x] == '1')
+			return ('O');
+		if (map[(int)position.y - 1][(int)position.x - 1] == '1')
+			return ('S');
 	}
 	return (false);
 }
@@ -217,14 +222,17 @@ static double	calc_distance(t_position position_1, t_position position_2)
 	return (sqrt(pow((position_1.x - position_2.x), 2) + pow((position_1.y - position_2.y), 2)));
 }
 
-double	get_wall_distance(t_position player_position, double angle, char **map)
+t_wall	get_wall_distance(t_position player_position, double angle, char **map)
 {
 	t_position	current_position;
+	t_wall		wall;
 
 	current_position.x = player_position.x;
 	current_position.y = player_position.y;
 	
 	while (!does_position_touch_a_wall(current_position, map))
 		get_next_intersection(&current_position, angle);
-	return (calc_distance(player_position, current_position));
+	wall.distance = calc_distance(player_position, current_position);
+	wall.orientation = does_position_touch_a_wall(current_position, map);
+	return (wall);
 }
