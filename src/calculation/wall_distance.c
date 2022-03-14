@@ -52,18 +52,14 @@ char	does_position_touch_a_wall(t_position position, char **map)
 	return (false);
 }
 
-static void	levelling(t_position *position, t_position plan_start, t_position plan_end)
+static void	levelling(double *x_oppo, double *y_oppo, double x_adja, double y_adja)
 {
-	if (position->x < plan_start.x)
-		position->x = plan_start.x;
-	else if (position->x > plan_end.x)
-		position->x = plan_end.x;
-	if (position->y < plan_start.y)
-		position->y = plan_start.y;
-	else if (position->y > plan_end.y)
-		position->y = plan_end.y;
-}
 
+	if (*x_oppo > y_adja)
+		*x_oppo = y_adja;
+	else if (*y_oppo > x_adja)
+		*y_oppo = x_adja;
+}
 enum { TOP_RIGHT, TOP_LEFT, BOT_LEFT, BOT_RIGHT };
 
 static void	calc_new_intersection(t_position *position, t_position plan_start, t_position plan_end, double angle)
@@ -122,10 +118,7 @@ static void	calc_new_intersection(t_position *position, t_position plan_start, t
 		x_oppo = x_adja * tan(degrees_to_radians(angle - (double)270));
 		y_oppo = y_adja * tan(degrees_to_radians((double)360 - angle));
 	}
-	if (x_oppo > y_adja)
-		x_oppo = y_adja;
-	else if (y_oppo > x_adja)
-		y_oppo = x_adja;
+	levelling(&x_oppo, &y_oppo, x_adja, y_adja);
 	if (quart == TOP_RIGHT)
 	{
 		position->x += x_oppo;

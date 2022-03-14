@@ -15,7 +15,7 @@
 NAME = cub3D
 
 CC = clang
-CFLAGS =
+CFLAGS = -Wall -Wextra
 
 VPATH =
 DIR_SRC = src

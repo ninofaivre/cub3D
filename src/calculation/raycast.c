@@ -138,6 +138,7 @@ void	display(t_global_info *info)
 	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "lkqsdflkskldfqk");
 	
 	mlx_hook(info->win, 02, 1L, key_hook, info);
+	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, info->mlx);
 	info->column_info = display_first_frame(info);
 	if (!info->column_info)
 		printf("first frame error !\n");
