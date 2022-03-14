@@ -111,6 +111,8 @@ static int	display_one_frame(void *param)
 
 	n_collumn = 0;
 	info = param;
+	if (update_player(&(info->player), keycode, info->map))
+		printf("orientation : %f\n", info->player.orientation);
 	while (n_collumn < SCREEN_WIDTH)
 	{
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_collumn * ((double)FOV / (double)SCREEN_WIDTH)));
@@ -127,18 +129,43 @@ static int	display_one_frame(void *param)
 	return (0);
 }
 
-static void	key_hook(int keycode, t_global_info *info)
+static void	key_hook(int keycode, bool *key)
 {
-	if (update_player(&(info->player), keycode, info->map))
-		printf("orientation : %f\n", info->player.orientation);
+	if (keycode == 'z')
+		key[z] = (key[z] == false) * true;
+	else if (keycode == 'q')
+		key[q] = (key[q] == false) * true;
+	else if (keycode == 's')
+		key[s] = (key[s] == false) * true;
+	else if (keycode == 'd')
+		key[d] = (key[d] == false) * true;
+	else if (keycode == KEY_LEFT_ARROW)
+		key[l] = (key[l] == false) * true;
+	else if (keycode == KEY_RIGHT_ARROW)
+		key[r] = (key[r] == false) * true;
+}
+
+void	init_info(t_global_info *info)
+{
+
+	info->mlx = mlx_init();
+	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB3D");
+	info->key[z] = false;
+	info->key[q] = false;
+	info->key[s] = false;
+	info->key[d] = false;
+	info->key[l] = false;
+	info->key[r] = false;
 }
 
 void	display(t_global_info *info)
 {
-	info->mlx = mlx_init();
-	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB3D");
-	
-	mlx_hook(info->win, 02, 1L, key_hook, info);
+	bool	keye[6];
+
+	info->key = &keye;
+	init_info(info);
+	mlx_hook(info->win, 02, 1L, key_hook, info->key);
+	mlx_hook(info->win, 03, 1L, key_hook, info->key);
 	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);
 	info->column_info = display_first_frame(info);
 	if (!info->column_info)

@@ -51,12 +51,13 @@ typedef struct s_conf
 
 typedef struct s_global_info
 {
-	struct s_conf	*conf;
-	struct s_map	*map;
-	struct s_player	player;
-	void			*mlx;
-	void			*win;
+	struct s_conf			*conf;
+	struct s_map			*map;
+	struct s_player			player;
+	void					*mlx;
+	void					*win;
 	struct s_column_info	*column_info;
+	bool					key[6];
 }	t_global_info;
 
 
@@ -65,6 +66,8 @@ typedef struct s_wall
 	char	orientation;
 	double	distance;
 }	t_wall;
+
+
 
 # include "calculation.h"
 
