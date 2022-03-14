@@ -54,16 +54,20 @@ static bool	orient_player(t_player *player, int keycode)
 	return (true);
 }
 
-static bool	moove_player(t_player *player, int keycode, t_map *map)
+static void	moove_player(t_player *player, t_key *key, t_map *map)
 {
 	double	incr_x;
 	double	incr_y;
+	double	correc;
 
-	if (keycode == 'z')
-	{
+	if (!key->z && !key->q && !key->s && !key->d)
+		return ;
+	correc = key->s * 180 + key->d * -90 + key->q * 90;
+
+
+
 		incr_x = cos(degrees_to_radians(player->orientation)) * MOOVE_STEP;
 		incr_y = -(sin(degrees_to_radians(player->orientation)) * MOOVE_STEP);
-	}
 	else if (keycode == 's')
 	{
 		incr_x = cos(degrees_to_radians(player->orientation - 180)) * MOOVE_STEP;
@@ -89,12 +93,11 @@ static bool	moove_player(t_player *player, int keycode, t_map *map)
 	return (true);
 }
 
-bool	update_player(t_player *player, int keycode, t_map *map) //update la struct player par rapport au keycode et return true si player change, false si non. Utiliser cette valeur de retour pour update ou non l'affichage
+bool	update_player(t_player *player, t_key *key, t_map *map) //update la struct player par rapport au keycode et return true si player change, false si non. Utiliser cette valeur de retour pour update ou non l'affichage
 {
-	if (keycode == 'z' || keycode == 'q' || keycode == 's' || keycode == 'd')
-		return (moove_player(player, keycode, map));
-	else if (keycode == KEY_RIGHT_ARROW || keycode == KEY_LEFT_ARROW)
-		return (orient_player(player, keycode));
-	else
+	if (!key->z && !key->q && !key->s && !key->d && !key->l_arrow && !key->r_arrow)
 		return (false);
+	moove_player(player, key, map);
+	orient_player(player, key);
+	return (true);
 }

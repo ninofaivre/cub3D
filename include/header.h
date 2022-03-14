@@ -57,7 +57,7 @@ typedef struct s_global_info
 	void					*mlx;
 	void					*win;
 	struct s_column_info	*column_info;
-	bool					key[6];
+	struct s_key			*key;
 }	t_global_info;
 
 
@@ -67,6 +67,15 @@ typedef struct s_wall
 	double	distance;
 }	t_wall;
 
+typedef struct s_key
+{
+	bool	z;
+	bool	q;
+	bool	s;
+	bool	d;
+	bool	l_arrow;
+	bool	r_arrow;
+}	t_key;
 
 
 # include "calculation.h"
