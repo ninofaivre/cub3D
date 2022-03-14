@@ -86,8 +86,8 @@ static t_column_info	*display_first_frame(t_global_info *info)
 		return (NULL);
 	while (n_column < SCREEN_WIDTH)
 	{
-		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_column * ((double)FOV / (double)SCREEN_WIDTH)));
+		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		if (angle < (double)0)
 			angle = (double)360 + angle;
 		else if (angle > (double)359)
@@ -111,11 +111,10 @@ static int	display_one_frame(void *param)
 
 	n_collumn = 0;
 	info = param;
-	printf("coucou\n");
 	while (n_collumn < SCREEN_WIDTH)
 	{
-		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_collumn * ((double)FOV / (double)SCREEN_WIDTH)));
+		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		if (angle < (double)0)
 			angle = (double)360 + angle;
 		else if (angle > (double)359)
