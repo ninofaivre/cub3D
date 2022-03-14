@@ -166,7 +166,7 @@ void	display(t_global_info *info)
 	info->key = &key;
 	init_info(info);
 	mlx_hook(info->win, 02, 1L, key_hook, info->key);
-	mlx_hook(info->win, 03, 1L, key_hook, info->key);
+	mlx_hook(info->win, 03, 1L<<1, key_hook, info->key);
 	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);
 	info->column_info = display_first_frame(info);
 	if (!info->column_info)

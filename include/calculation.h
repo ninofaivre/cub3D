@@ -17,8 +17,8 @@
 
 # define KEY_RIGHT_ARROW 65363
 # define KEY_LEFT_ARROW 65361
-# define ORIENT_STEP 1
-# define MOOVE_STEP 0.2
+# define ORIENT_STEP 0.5
+# define MOOVE_STEP 0.03
 
 typedef struct s_column_info
 {
@@ -26,7 +26,7 @@ typedef struct s_column_info
 	int	end;
 }	t_column_info;
 
-bool	update_player(t_player *player, int keycode, t_map *map);
+bool	update_player(t_player *player, t_key *key, t_map *map);
 char	does_position_touch_a_wall(t_position position, char **map);
 
 #endif

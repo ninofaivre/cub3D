@@ -36,61 +36,48 @@ static bool	is_in_a_wall(double x, double y, t_map *map)
 		return (false);
 }
 
-static bool	orient_player(t_player *player, int keycode)
+static void	orient_player(t_player *player, t_key *key)
 {
 	double	incr_orient;
 
-	if (keycode == KEY_RIGHT_ARROW)
+	if (key->r_arrow)
 		incr_orient = -ORIENT_STEP;
-	else if (keycode == KEY_LEFT_ARROW)
+	else if (key->l_arrow)
 		incr_orient = ORIENT_STEP;
 	else
-		return (false);
+		return ;
 	player->orientation += incr_orient;
 	if (player->orientation < 0)
 		player->orientation = 360 + player->orientation;
 	if (player->orientation > 359)
 		player->orientation = player->orientation - 360;
-	return (true);
+}
+
+static void	update_position(double *incr_x, double *incr_y, double alpha)
+{
+	*incr_x += cos(degrees_to_radians(alpha)) * MOOVE_STEP;
+	*incr_y += -(sin(degrees_to_radians(alpha)) * MOOVE_STEP);
 }
 
 static void	moove_player(t_player *player, t_key *key, t_map *map)
 {
 	double	incr_x;
 	double	incr_y;
-	double	correc;
 
-	if (!key->z && !key->q && !key->s && !key->d)
-		return ;
-	correc = key->s * 180 + key->d * -90 + key->q * 90;
-
-
-
-		incr_x = cos(degrees_to_radians(player->orientation)) * MOOVE_STEP;
-		incr_y = -(sin(degrees_to_radians(player->orientation)) * MOOVE_STEP);
-	else if (keycode == 's')
-	{
-		incr_x = cos(degrees_to_radians(player->orientation - 180)) * MOOVE_STEP;
-		incr_y = -(sin(degrees_to_radians(player->orientation - 180)) * MOOVE_STEP);
-	}
-	else if (keycode == 'd')
-	{
-		incr_x = cos(degrees_to_radians(player->orientation - 90)) * MOOVE_STEP;
-		incr_y = -(sin(degrees_to_radians(player->orientation - 90)) * MOOVE_STEP);
-	}
-	else if (keycode == 'q')
-	{
-
-		incr_x = cos(degrees_to_radians(player->orientation + 90)) * MOOVE_STEP;
-		incr_y = -(sin(degrees_to_radians(player->orientation + 90)) * MOOVE_STEP);
-	}
-	else
-		return (false);
+	incr_x = 0.0;
+	incr_y = 0.0;
+	if (key->z)
+		update_position(&incr_x, &incr_y, player->orientation);
+	if (key->q)
+		update_position(&incr_x, &incr_y, player->orientation + 90);
+	if (key->s)
+		update_position(&incr_x, &incr_y, player->orientation - 180);
+	if (key->d)
+		update_position(&incr_x, &incr_y, player->orientation - 90);
 	if (is_in_a_wall((player->position.x + incr_x), (player->position.y + incr_y), map))
-		return (false);
+		return ;
 	player->position.x += incr_x;
 	player->position.y += incr_y;
-	return (true);
 }
 
 bool	update_player(t_player *player, t_key *key, t_map *map) //update la struct player par rapport au keycode et return true si player change, false si non. Utiliser cette valeur de retour pour update ou non l'affichage
