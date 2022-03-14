@@ -87,11 +87,11 @@ static t_column_info	*display_first_frame(t_global_info *info)
 	while (n_column < SCREEN_WIDTH)
 	{
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_column * ((double)FOV / (double)SCREEN_WIDTH)));
-		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		if (angle < (double)0)
 			angle = (double)360 + angle;
 		else if (angle > (double)359)
 			angle = angle - (double)359;
+		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		print_column(wall.distance * cos(degrees_to_radians(angle - info->player.orientation)), info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, wall.orientation);
 		n_column++;
 	}
@@ -114,11 +114,11 @@ static int	display_one_frame(void *param)
 	while (n_collumn < SCREEN_WIDTH)
 	{
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_collumn * ((double)FOV / (double)SCREEN_WIDTH)));
-		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		if (angle < (double)0)
 			angle = (double)360 + angle;
 		else if (angle > (double)359)
 			angle  = angle - (double)359;
+		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		print_column(wall.distance * cos(degrees_to_radians(angle - info->player.orientation)), info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, wall.orientation);
 		n_collumn++;
 	}
