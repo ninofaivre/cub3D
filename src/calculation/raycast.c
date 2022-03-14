@@ -98,13 +98,20 @@ static t_column_info	*display_first_frame(t_global_info *info)
 	return (column_info);
 }
 
-static void	display_one_frame(t_global_info *info)
+static int	display_one_frame(void *param)
 {
+	t_global_info *info;
+	struct timeval time_before_frame;
+	struct timeval time_after_frame;
+	gettimeofday(&time_before_frame, NULL);
+
 	t_wall	wall;
 	double	angle;
 	int		n_collumn;
 
 	n_collumn = 0;
+	info = param;
+	printf("coucou\n");
 	while (n_collumn < SCREEN_WIDTH)
 	{
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
@@ -116,32 +123,27 @@ static void	display_one_frame(t_global_info *info)
 		print_column(wall.distance * cos(degrees_to_radians(angle - info->player.orientation)), info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, wall.orientation);
 		n_collumn++;
 	}
+	gettimeofday(&time_after_frame, NULL);
+	printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
+	return (0);
 }
 
 static void	key_hook(int keycode, t_global_info *info)
 {
 	if (update_player(&(info->player), keycode, info->map))
-	{
-		struct timeval time_before_frame;
-		struct timeval time_after_frame;
-		gettimeofday(&time_before_frame, NULL);
 		printf("orientation : %f\n", info->player.orientation);
-		display_one_frame(info);
-		gettimeofday(&time_after_frame, NULL);
-		printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
-	}
 }
 
 void	display(t_global_info *info)
 {
 	info->mlx = mlx_init();
-	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "lkqsdflkskldfqk");
+	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB3D");
 	
 	mlx_hook(info->win, 02, 1L, key_hook, info);
-	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, info->mlx);
+	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);
 	info->column_info = display_first_frame(info);
 	if (!info->column_info)
 		printf("first frame error !\n");
-	mlx_do_key_autorepeaton(info->mlx);
+	mlx_loop_hook(info->mlx, display_one_frame, info);
 	mlx_loop(info->mlx);
 }
