@@ -16,7 +16,7 @@
 #include <unistd.h>
 
 #include <stdio.h>
-
+#include <mlx.h>
 /*
 static void	print_parsing(t_global_info *info)
 {
@@ -38,4 +38,5 @@ int	main(int argc, char **argv)
 	//printf("%f\n", get_wall_distance(info->player.position, (double)135, info->map->content));
 	free_info(info);
 	exit(EXIT_SUCCESS);
+	mlx_do_key_autorepeaton(info->mlx);
 }

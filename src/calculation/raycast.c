@@ -113,7 +113,7 @@ static int	display_one_frame(void *param)
 	info = param;
 	if (!(update_player(&(info->player), info->key, info->map)))
 		return (0);
-	printf("orientation : %f\n", info->player.orientation);
+	//printf("orientation : %f\n", info->player.orientation);
 	while (n_collumn < SCREEN_WIDTH)
 	{
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_collumn * ((double)FOV / (double)SCREEN_WIDTH)));
@@ -126,12 +126,13 @@ static int	display_one_frame(void *param)
 		n_collumn++;
 	}
 	gettimeofday(&time_after_frame, NULL);
-	printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
+	//printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
 	return (0);
 }
 
 static void	key_hook(int keycode, t_key *key)
 {
+	printf("une touche a été pressée ou relâchée\n");
 	if (keycode == 'z')
 		key->z = (key->z == false) * true;
 	else if (keycode == 'q')
@@ -148,9 +149,9 @@ static void	key_hook(int keycode, t_key *key)
 
 void	init_info(t_global_info *info)
 {
-
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB3D");
+	mlx_do_key_autorepeatoff(info->mlx);
 	info->key->z = false;
 	info->key->q = false;
 	info->key->s = false;
