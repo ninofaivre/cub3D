@@ -58,13 +58,27 @@ typedef struct s_global_info
 	void					*win;
 	struct s_column_info	*column_info;
 	struct s_key			*key;
+	struct s_texture		*texture;
 }	t_global_info;
 
+typedef struct s_img
+{
+	void	*img;
+	char	*data;
+	int		width;
+	int		height;
+}	t_img;
+
+typedef struct s_texture
+{
+	struct s_img north;
+}	t_texture;
 
 typedef struct s_wall
 {
-	char	orientation;
-	double	distance;
+	char				orientation;
+	double				distance;
+	struct s_position	colision;
 }	t_wall;
 
 typedef struct s_key

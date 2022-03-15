@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #define FOV 60
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH 1600
+#define SCREEN_HEIGHT 1600
 #include <header.h>
 #include <calculation.h>
 
@@ -35,7 +35,35 @@ static int	rgb_to_put_pixel(t_rgb *rgb)
 	return ((rgb->b * pow(256, 0)) + (rgb->g * pow(256, 1)) + (rgb->r * pow(256, 2)));
 }
 
-static void	print_column(double	wall_distance, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, char wall_orientation)
+static int get_pixel(char *buffer, int x, int y)
+{
+	buffer+=(4 * y * 16 + 4 * x);
+	return (((buffer[0] & 0xFF) * pow(256, 0)) + ((buffer[1] & 0xFF) * pow(256, 1)) + ((buffer[2]  & 0xFF) * pow(256, 2)));
+}
+
+static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int draw_start, void *mlx, void *win, t_img north_texture)
+{
+	double	x_pix;
+	double	y_pix;
+
+	if (wall.orientation == 'N' || wall.orientation == 'S')
+	{
+		x_pix = fmod(wall.colision.x, 1) * 16;
+		x_pix -= fmod(x_pix,1);
+	}
+	else if (wall.orientation == 'E'|| wall.orientation == 'O')
+	{
+		x_pix = fmod(wall.colision.y, 1) * 16;
+		x_pix -= fmod(x_pix,1);
+	}
+	y_pix = ((double)(i - draw_start) / (double)column_height) * (double)16;
+	if (wall.orientation == 'N')
+		mlx_pixel_put(mlx, win, x, i, get_pixel(north_texture.data, (int)x_pix, (int)y_pix));
+	else
+		mlx_pixel_put(mlx, win, x, i, 0x00FF0000);
+}
+
+static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_img north_texture)
 {
 	int	i;
 	int	column_height;
@@ -43,7 +71,7 @@ static void	print_column(double	wall_distance, void *mlx, void *win, int x, t_rg
 	int	draw_end;
 
 	i = 0;
-	column_height = (int)((double)SCREEN_HEIGHT / wall_distance);
+	column_height = (int)((double)SCREEN_HEIGHT / wall.distance);
 	draw_start = (-column_height / 2) + (SCREEN_HEIGHT / 2);
 	if (draw_start < 0)
 		draw_start = 0;
@@ -57,16 +85,7 @@ static void	print_column(double	wall_distance, void *mlx, void *win, int x, t_rg
 		else if (i > draw_end && (i <= column_info->end || !care_about_last_frame))
 			mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(ceilling_rgb));
 		else if (i >= draw_start && i <= draw_end)
-		{
-			if (wall_orientation == 'N')
-				mlx_pixel_put(mlx, win, x, i, 0x00FF0000);
-			else if (wall_orientation == 'S')
-				mlx_pixel_put(mlx, win, x, i, 0x00000000);
-			else if (wall_orientation == 'E')
-				mlx_pixel_put(mlx, win, x, i, 0x00FFFFFF);
-			else if (wall_orientation == 'O')
-				mlx_pixel_put(mlx, win, x, i, 0x00FFFF00);
-		}
+			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, north_texture);
 		i++;
 	}
 	column_info->start = draw_start;
@@ -92,7 +111,8 @@ static t_column_info	*display_first_frame(t_global_info *info)
 		else if (angle > (double)359)
 			angle = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
-		print_column(wall.distance * cos(degrees_to_radians(angle - info->player.orientation)), info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, wall.orientation);
+		wall.distance = wall.distance * cos(degrees_to_radians(angle - info->player.orientation)); 
+		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture->north);
 		n_column++;
 	}
 	return (column_info);
@@ -122,7 +142,8 @@ static int	display_one_frame(void *param)
 		else if (angle > (double)359)
 			angle  = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
-		print_column(wall.distance * cos(degrees_to_radians(angle - info->player.orientation)), info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, wall.orientation);
+		wall.distance = wall.distance * cos(degrees_to_radians(angle - info->player.orientation));
+		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture->north);
 		n_collumn++;
 	}
 	gettimeofday(&time_after_frame, NULL);
@@ -162,10 +183,19 @@ void	init_info(t_global_info *info)
 
 void	display(t_global_info *info)
 {
-	t_key	key;
+	t_texture	texture;
+	t_key		key;
 
 	info->key = &key;
+	info->texture = &texture;
 	init_info(info);
+
+	int	bit_pix = 7;
+	int line_lenght = 16;
+	int endian = 0;
+	info->texture->north.img = mlx_xpm_file_to_image(info->mlx, info->conf->texture_path[north], &info->texture->north.width, &info->texture->north.height);
+	info->texture->north.data = mlx_get_data_addr(info->texture->north.img, &bit_pix, &line_lenght, &endian);
+	
 	mlx_hook(info->win, 02, 1L, key_hook, info->key);
 	mlx_hook(info->win, 03, 1L<<1, key_hook, info->key);
 	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);

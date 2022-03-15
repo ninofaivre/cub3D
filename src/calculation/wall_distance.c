@@ -141,38 +141,7 @@ static void	calc_new_intersection(t_position *position, t_position plan_start, t
 	}
 }
 
-/*
-static void	calc_new_intersection(t_position *position, t_position plan_start, t_position plan_end, double angle)
-{
-	t_position	new_position;
-	
-	if (angle >= (double)0 && angle <= (double)90)
-	{
-		new_position.x = position->x + ((position->y - plan_start.y) * tan(degrees_to_radians((double)90 - angle)));
-		new_position.y = position->y - ((plan_end.x - position->x) * tan(degrees_to_radians(angle)));
-	}
-	else if (angle > (double)90 && angle <= (double)180)
-	{
-		new_position.x = position->x - ((position->y - plan_start.y) * tan(degrees_to_radians(angle - (double)90)));
-		new_position.y = position->y - ((position->x - plan_start.x) * tan(degrees_to_radians((double)180 - angle)));
-	}
-	else if (angle > (double)180 && angle <= (double)270)
-	{
-		new_position.x = position->x - ((position->y - plan_end.y) * tan(degrees_to_radians((double)270 - angle)));
-		new_position.y = position->y + ((position->x - plan_start.x) * tan(degrees_to_radians(angle - (double)180)));
-	}
-	else if (angle > (double)270 && angle < (double)360)
-	{
-		new_position.x = position->x + ((position->y - plan_end.y) * tan(degrees_to_radians(angle - (double)270)));
-		new_position.y = position->y + ((plan_end.x - position->x) * tan(degrees_to_radians((double) 360 - angle)));
-	}
-	else
-		return ;
-	levelling(&new_position, plan_start, plan_end);
-	position->x = new_position.x;
-	position->y = new_position.y;
-}
-*/
+
 
 static void	get_next_intersection(t_position *position, double angle)
 {
@@ -227,5 +196,6 @@ t_wall	get_wall_distance(t_position player_position, double angle, char **map)
 		get_next_intersection(&current_position, angle);
 	wall.distance = calc_distance(player_position, current_position);
 	wall.orientation = does_position_touch_a_wall(current_position, map);
+	wall.colision = current_position;
 	return (wall);
 }
