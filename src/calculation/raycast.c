@@ -37,16 +37,14 @@ static int	rgb_to_put_pixel(t_rgb *rgb)
 
 static int get_pixel(t_img img, int x, int y)
 {
-	//printf("data.bpp : %i | data.line_lenght : %i\n", img.data.bpp, img.data.line_lenght);
+	unsigned char	*ptr_pix;
 
-	img.data.data += ((y * img.data.line_lenght) + ((x * img.data.bpp) / 8));
-	//int *test = (int *)img.data.data;
-	//printf("test[0] : %i\n", test[0] >> (img.data.bpp / 4) * 0 & 0xFF);
-	int	b = img.data.data[0];
-	int g = img.data.data[1];
-	int	r = img.data.data[2];
-	//int	a = (*img.data.data >> ((img.data.bpp / 4) * 4));
-	return ((b * pow(256, 0)) + (g * pow(256, 1)) + (r * pow(256, 2)));
+	ptr_pix = (unsigned char *)&img.data.data[(y * img.data.line_lenght) + ((x * img.data.bpp) / 8)];
+	if (img.data.endian == 0)
+		return (ptr_pix[3] << 24 | ptr_pix[2] << 16 | ptr_pix[1] << 8 | ptr_pix[0]);
+	else if (img.data.endian == 1)
+		return (ptr_pix[0] << 24 | ptr_pix[1] << 16 | ptr_pix[2] << 8 | ptr_pix[3]);
+	return (-1);
 }
 
 static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int draw_start, void *mlx, void *win, t_img north_texture)
@@ -157,7 +155,6 @@ static int	display_one_frame(void *param)
 
 static void	key_hook(int keycode, t_key *key)
 {
-	printf("une touche a été pressée ou relâchée\n");
 	if (keycode == 'z')
 		key->z = (key->z == false) * true;
 	else if (keycode == 'q')
