@@ -155,9 +155,11 @@ static t_column_info	*display_first_frame(t_global_info *info)
 			angle = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(angle - info->player.orientation));
-		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture, &info->frame);
+		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture, info->frame);
 		n_column++;
 	}
+	//mlx_sync(2, info->frame->img);
+	mlx_put_image_to_window(info->mlx, info->win, info->frame->img, 0, 0);
 	return (column_info);
 }
 
