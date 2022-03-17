@@ -17,8 +17,8 @@
 
 # define KEY_RIGHT_ARROW 65363
 # define KEY_LEFT_ARROW 65361
-# define ORIENT_STEP 0.5
-# define MOOVE_STEP 0.03
+# define ORIENT_STEP 2.1
+# define MOOVE_STEP 0.09
 
 typedef struct s_column_info
 {

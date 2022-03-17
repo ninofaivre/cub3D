@@ -35,10 +35,12 @@ static int	rgb_to_put_pixel(t_rgb *rgb)
 	return ((rgb->b * pow(256, 0)) + (rgb->g * pow(256, 1)) + (rgb->r * pow(256, 2)));
 }
 
-static int get_pixel(t_data data, int x, int y)
+static int get_data_pixel(t_data data, int x, int y)
 {
 	unsigned char	*ptr_pix;
 
+	if (x < 0 || y < 0)
+		return (-1);
 	ptr_pix = (unsigned char *)&data.data[(y * data.line_lenght) + ((x * data.bpp) / 8)];
 	if (data.endian == 0)
 		return (ptr_pix[3] << 24 | ptr_pix[2] << 16 | ptr_pix[1] << 8 | ptr_pix[0]);
@@ -47,7 +49,32 @@ static int get_pixel(t_data data, int x, int y)
 	return (-1);
 }
 
-static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int draw_start, void *mlx, void *win, t_texture *texture)
+static void	put_data_pixel(t_data data, int x, int y, int rgb)
+{
+	unsigned char	*ptr_pix;
+
+	if (x < 0 || y < 0 || rgb < 0)
+		return ;
+	ptr_pix = (unsigned char *)&data.data[(y * data.line_lenght) + ((x * data.bpp) / 8)];
+	if (get_data_pixel(data, x, y) == rgb)
+		return ;
+	if (data.endian == 0)
+	{
+		ptr_pix[0] = rgb;
+		ptr_pix[1] = rgb >> 8;
+		ptr_pix[2] = rgb >> 16;
+		ptr_pix[3] = rgb >> 24;
+	}
+	else if (data.endian == 1)
+	{
+		ptr_pix[3] = rgb;
+		ptr_pix[2] = rgb >> 8;
+		ptr_pix[1] = rgb >> 16;
+		ptr_pix[0] = rgb >> 24;
+	}
+}
+
+static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int draw_start, void *mlx, void *win, t_texture *texture, t_img *frame)
 {
 	double	x_pix;
 	double	y_pix;
@@ -73,19 +100,17 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int d
 		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->west.height;
 	}
 	x_pix -= fmod(x_pix, 1);
-	if (wall.orientation == 'M')
-		mlx_pixel_put(mlx, win, x, i, 0x00000000);
-	else if (wall.orientation == 'N')
-		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->north.data, (int)x_pix, (int)y_pix));
+	if (wall.orientation == 'N')
+		put_data_pixel(frame->data, x, i, get_data_pixel(texture->north.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->north.data, (int)x_pix, (int)y_pix));
 	else if(wall.orientation == 'S')
-		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->south.data, (int)x_pix, (int)y_pix));
+		put_data_pixel(frame->data, x, i, get_data_pixel(texture->south.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->south.data, (int)x_pix, (int)y_pix));
 	else if(wall.orientation == 'E')
-		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->east.data, (int)x_pix, (int)y_pix));
+		put_data_pixel(frame->data, x, i, get_data_pixel(texture->east.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->east.data, (int)x_pix, (int)y_pix));
 	else if(wall.orientation == 'O')
-		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->west.data, (int)x_pix, (int)y_pix));
+		put_data_pixel(frame->data, x, i, get_data_pixel(texture->west.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->west.data, (int)x_pix, (int)y_pix));
 }
 
-static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture)
+static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture, t_img *frame)
 {
 	int	i;
 	int	column_height;
@@ -99,11 +124,11 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 	while (i < SCREEN_HEIGHT)
 	{
 		if (i < draw_start && (i >= column_info->start || !care_about_last_frame))
-			mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(floor_rgb));
+			put_data_pixel(frame->data, x, i, rgb_to_put_pixel(floor_rgb));//mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(floor_rgb));
 		else if (i >= draw_end && (i < column_info->end || !care_about_last_frame))
-			mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(ceilling_rgb));
+			put_data_pixel(frame->data, x, i, rgb_to_put_pixel(ceilling_rgb));//mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(ceilling_rgb));
 		else if (i >= draw_start && i < draw_end)
-			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, texture);
+			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, texture, frame);
 		i++;
 	}
 	column_info->start = draw_start;
@@ -130,7 +155,7 @@ static t_column_info	*display_first_frame(t_global_info *info)
 			angle = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(angle - info->player.orientation));
-		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture);
+		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture, &info->frame);
 		n_column++;
 	}
 	return (column_info);
@@ -161,13 +186,12 @@ static int	display_one_frame(void *param)
 			angle  = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(info->player.orientation - angle));
-		//if (!fmod(wall.colision.x, 1) && !fmod(wall.colision.y, 1))
-			//printf("un rayon tome pile sur une arrete\n");
-		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture);
+		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture, info->frame);
 		n_collumn++;
 	}
+	mlx_put_image_to_window(info->mlx, info->win, info->frame->img, 0, 0);
 	gettimeofday(&time_after_frame, NULL);
-	//printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
+	printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
 	return (0);
 }
 
@@ -191,6 +215,8 @@ void	init_info(t_global_info *info)
 {
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB3D");
+	info->frame->img = mlx_new_image(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	info->frame->data.data = mlx_get_data_addr(info->frame->img, &info->frame->data.bpp, &info->frame->data.line_lenght, &info->frame->data.endian);
 	mlx_do_key_autorepeatoff(info->mlx);
 	info->key->z = false;
 	info->key->q = false;
@@ -215,10 +241,12 @@ void	init_texture(t_texture *texture, t_global_info *info)
 void	display(t_global_info *info)
 {
 	t_texture	texture;
+	t_img		frame;
 	t_key		key;
 
 	info->key = &key;
 	info->texture = &texture;
+	info->frame = &frame;
 	init_info(info);
 	init_texture(&texture, info);
 	mlx_hook(info->win, 02, 1L, key_hook, info->key);
