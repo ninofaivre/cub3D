@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #define FOV 60
-#define SCREEN_WIDTH 400
-#define SCREEN_HEIGHT 400
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 800
 #include <header.h>
 #include <calculation.h>
 
@@ -35,41 +35,57 @@ static int	rgb_to_put_pixel(t_rgb *rgb)
 	return ((rgb->b * pow(256, 0)) + (rgb->g * pow(256, 1)) + (rgb->r * pow(256, 2)));
 }
 
-static int get_pixel(t_img img, int x, int y)
+static int get_pixel(t_data data, int x, int y)
 {
 	unsigned char	*ptr_pix;
 
-	ptr_pix = (unsigned char *)&img.data.data[(y * img.data.line_lenght) + ((x * img.data.bpp) / 8)];
-	if (img.data.endian == 0)
+	ptr_pix = (unsigned char *)&data.data[(y * data.line_lenght) + ((x * data.bpp) / 8)];
+	if (data.endian == 0)
 		return (ptr_pix[3] << 24 | ptr_pix[2] << 16 | ptr_pix[1] << 8 | ptr_pix[0]);
-	else if (img.data.endian == 1)
+	else if (data.endian == 1)
 		return (ptr_pix[0] << 24 | ptr_pix[1] << 16 | ptr_pix[2] << 8 | ptr_pix[3]);
 	return (-1);
 }
 
-static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int draw_start, void *mlx, void *win, t_img north_texture)
+static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int draw_start, void *mlx, void *win, t_texture *texture)
 {
 	double	x_pix;
 	double	y_pix;
 
-	if (wall.orientation == 'N' || wall.orientation == 'S')
-	{
-		x_pix = fmod(wall.colision.x, 1) * north_texture.width;
-		x_pix -= fmod(x_pix, 1);
-	}
-	else if (wall.orientation == 'E'|| wall.orientation == 'O')
-	{
-		x_pix = fmod(wall.colision.y, 1) * north_texture.width;
-		x_pix -= fmod(x_pix, 1);
-	}
-	y_pix = ((double)(i - draw_start) / (double)column_height) * (double)north_texture.height;
 	if (wall.orientation == 'N')
-		mlx_pixel_put(mlx, win, x, i, get_pixel(north_texture, (int)x_pix, (int)y_pix));
-	else
-		mlx_pixel_put(mlx, win, x, i, 0x00FF0000);
+	{
+		x_pix = fmod(wall.colision.x, 1) * texture->north.width;
+		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->north.height;
+	}
+	else if (wall.orientation == 'S')
+	{
+		x_pix = fmod(wall.colision.x, 1) * texture->south.width;
+		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->south.height;
+	}
+	else if (wall.orientation == 'E')
+	{
+		x_pix = fmod(wall.colision.y, 1) * texture->east.width;
+		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->east.height;
+	}
+	else if (wall.orientation == 'O')
+	{
+		x_pix = fmod(wall.colision.y, 1) * texture->west.width;
+		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->west.height;
+	}
+	x_pix -= fmod(x_pix, 1);
+	if (wall.orientation == 'M')
+		mlx_pixel_put(mlx, win, x, i, 0x00000000);
+	else if (wall.orientation == 'N')
+		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->north.data, (int)x_pix, (int)y_pix));
+	else if(wall.orientation == 'S')
+		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->south.data, (int)x_pix, (int)y_pix));
+	else if(wall.orientation == 'E')
+		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->east.data, (int)x_pix, (int)y_pix));
+	else if(wall.orientation == 'O')
+		mlx_pixel_put(mlx, win, x, i, get_pixel(texture->west.data, (int)x_pix, (int)y_pix));
 }
 
-static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_img north_texture)
+static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture)
 {
 	int	i;
 	int	column_height;
@@ -87,7 +103,7 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 		else if (i >= draw_end && (i < column_info->end || !care_about_last_frame))
 			mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(ceilling_rgb));
 		else if (i >= draw_start && i < draw_end)
-			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, north_texture);
+			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, texture);
 		i++;
 	}
 	column_info->start = draw_start;
@@ -114,7 +130,7 @@ static t_column_info	*display_first_frame(t_global_info *info)
 			angle = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(angle - info->player.orientation));
-		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture->north);
+		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture);
 		n_column++;
 	}
 	return (column_info);
@@ -145,7 +161,9 @@ static int	display_one_frame(void *param)
 			angle  = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(info->player.orientation - angle));
-		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture->north);
+		//if (!fmod(wall.colision.x, 1) && !fmod(wall.colision.y, 1))
+			//printf("un rayon tome pile sur une arrete\n");
+		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture);
 		n_collumn++;
 	}
 	gettimeofday(&time_after_frame, NULL);
@@ -182,11 +200,16 @@ void	init_info(t_global_info *info)
 	info->key->r_arrow = false;
 }
 
-void	init_north(t_texture *texture, t_global_info *info)
+void	init_texture(t_texture *texture, t_global_info *info)
 {
-
 	texture->north.img = mlx_xpm_file_to_image(info->mlx, info->conf->texture_path[north], &info->texture->north.width, &info->texture->north.height);
 	texture->north.data.data = mlx_get_data_addr(texture->north.img, &texture->north.data.bpp, &texture->north.data.line_lenght, &texture->north.data.endian);
+	texture->west.img = mlx_xpm_file_to_image(info->mlx, info->conf->texture_path[west], &info->texture->west.width, &info->texture->west.height);
+	texture->west.data.data = mlx_get_data_addr(texture->west.img, &texture->west.data.bpp, &texture->west.data.line_lenght, &texture->west.data.endian);
+	texture->east.img = mlx_xpm_file_to_image(info->mlx, info->conf->texture_path[east], &info->texture->east.width, &info->texture->east.height);
+	texture->east.data.data = mlx_get_data_addr(texture->east.img, &texture->east.data.bpp, &texture->east.data.line_lenght, &texture->east.data.endian);
+	texture->south.img = mlx_xpm_file_to_image(info->mlx, info->conf->texture_path[south], &info->texture->south.width, &info->texture->south.height);
+	texture->south.data.data = mlx_get_data_addr(texture->south.img, &texture->south.data.bpp, &texture->south.data.line_lenght, &texture->south.data.endian);
 }
 
 void	display(t_global_info *info)
@@ -197,7 +220,7 @@ void	display(t_global_info *info)
 	info->key = &key;
 	info->texture = &texture;
 	init_info(info);
-	init_north(info->texture, info);
+	init_texture(&texture, info);
 	mlx_hook(info->win, 02, 1L, key_hook, info->key);
 	mlx_hook(info->win, 03, 1L<<1, key_hook, info->key);
 	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);

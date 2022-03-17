@@ -79,7 +79,10 @@ typedef struct s_img
 
 typedef struct s_texture
 {
-	struct s_img north;
+	t_img	north;
+	t_img	west;
+	t_img	south;
+	t_img	east;
 }	t_texture;
 
 typedef struct s_wall

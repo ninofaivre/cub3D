@@ -40,14 +40,25 @@ char	does_position_touch_a_wall(t_position position, char **map)
 	}
 	else
 	{
+		//if (map[(int)position.y][(int)position.x] == '1' || map[(int)position.y][(int)position.x - 1] == '1' || map[(int)position.y - 1][(int)position.x] == '1' || map[(int)position.y - 1][(int)position.x - 1] == '1')
+		//	return ('M');
+		if (map[(int)position.y][(int)position.x] == '1' && map[(int)position.y][(int)position.x -1] == '1')
+			return ('S');
+		if (map[(int)position.y - 1][(int)position.x] == '1' && map[(int)position.y - 1][(int)position.x - 1] == '1')
+			return ('N');
+		if (map[(int)position.y - 1][(int)position.x - 1] == '1' && map[(int)position.y][(int)position.x - 1] == '1')
+			return ('O');
+		if (map[(int)position.y - 1][(int)position.x] == '1' && map[(int)position.y][(int)position.x] == '1')
+			return ('E');
+		if (map[(int)position.y - 1][(int)position.x - 1] == '1')
+			return ('O');
+		if (map[(int)position.y - 1][(int)position.x] == '1')
+			return ('N');
+		if (map[(int)position.y][(int)position.x - 1] == '1')
+			return ('S');
 		if (map[(int)position.y][(int)position.x] == '1')
 			return ('E');
-		if (map[(int)position.y][(int)position.x - 1] == '1')
-			return ('N');
-		if (map[(int)position.y - 1][(int)position.x] == '1')
-			return ('O');
-		if (map[(int)position.y - 1][(int)position.x - 1] == '1')
-			return ('S');
+		return ('\0');
 	}
 	return (false);
 }
