@@ -61,10 +61,18 @@ typedef struct s_global_info
 	struct s_texture		*texture;
 }	t_global_info;
 
+typedef struct s_data
+{
+	int		bpp;
+	int		line_lenght;
+	int		endian;
+	char	*data;
+}	t_data;
+
 typedef struct s_img
 {
 	void	*img;
-	char	*data;
+	struct s_data	data;
 	int		width;
 	int		height;
 }	t_img;
