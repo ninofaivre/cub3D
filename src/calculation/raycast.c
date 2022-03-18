@@ -33,7 +33,7 @@ typedef	struct s_key_hook
 
 static int	rgb_to_put_pixel(t_rgb *rgb)
 {
-	return (rgb->r << 16 | rgb->g << 8 | rgb->b);
+	return ((rgb->b * pow(256, 0)) + (rgb->g * pow(256, 1)) + (rgb->r * pow(256, 2)));
 }
 
 static int get_data_pixel(t_data data, int x, int y)
@@ -232,9 +232,9 @@ static int	display_one_frame(void *param)
 
 	n_collumn = 0;
 	info = param;
+	reset_frame_new(info->frame_new);
 	if (!(update_player(&(info->player), info->key, info->map)))
 		return (0);
-	reset_frame_new(info->frame_new);
 	//printf("orientation : %f\n", info->player.orientation);
 	while (n_collumn < SCREEN_WIDTH)
 	{
