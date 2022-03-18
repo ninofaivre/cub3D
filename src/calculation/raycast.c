@@ -143,12 +143,12 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 	int	draw_end;
 
 	i = 0;
-	column_height = (int)((double)SCREEN_HEIGHT / wall.distance);
+	column_height = (int)(SCREEN_HEIGHT / wall.distance);
 	draw_start = (-column_height / 2) + (SCREEN_HEIGHT / 2);
 	draw_end = (column_height / 2) + (SCREEN_HEIGHT / 2);
 	while (i < SCREEN_HEIGHT)
 	{
-		if (i < draw_start)
+		if (i < draw_start && (i >= column_info->start || !care_about_last_frame))
 		{
 			if (get_data_pixel(frame_old->data, x, i) != rgb_to_put_pixel(floor_rgb))
 			{
@@ -156,7 +156,7 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 				put_data_pixel(frame_new->data, x, i, rgb_to_put_pixel(floor_rgb));
 			}
 		}
-		else if (i >= draw_end)
+		else if (i >= draw_end && (i < column_info->end || !care_about_last_frame))
 		{
 			if (get_data_pixel(frame_old->data, x, i) != rgb_to_put_pixel(ceilling_rgb))
 			{
@@ -183,7 +183,7 @@ static void	reset_frame_new(t_img *frame_new)
 		x = 0;
 		while (x < frame_new->width)
 		{
-			put_data_pixel(frame_new->data, x, y, 0xFFFFFFFF);
+			put_data_pixel(frame_new->data, x, y, 0xFF000000);
 			x++;
 		}
 		y++;
@@ -222,9 +222,6 @@ static t_column_info	*display_first_frame(t_global_info *info)
 static int	display_one_frame(void *param)
 {
 	t_global_info *info;
-	struct timeval time_before_frame;
-	struct timeval time_after_frame;
-	gettimeofday(&time_before_frame, NULL);
 
 	t_wall	wall;
 	double	angle;
@@ -249,8 +246,6 @@ static int	display_one_frame(void *param)
 		n_collumn++;
 	}
 	mlx_put_image_to_window(info->mlx, info->win, info->frame_new->img, 0, 0);
-	gettimeofday(&time_after_frame, NULL);
-	printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
 	return (0);
 }
 
