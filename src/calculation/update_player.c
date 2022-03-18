@@ -74,10 +74,10 @@ static void	moove_player(t_player *player, t_key *key, t_map *map)
 		update_position(&incr_x, &incr_y, player->orientation - 180);
 	if (key->d)
 		update_position(&incr_x, &incr_y, player->orientation - 90);
-	if (is_in_a_wall((player->position.x + incr_x), (player->position.y + incr_y), map))
-		return ;
-	player->position.x += incr_x;
-	player->position.y += incr_y;
+	if (!is_in_a_wall((player->position.x + incr_x), player->position.y, map))
+		player->position.x += incr_x;
+	if (!is_in_a_wall(player->position.x, (player->position.y + incr_y), map))
+		player->position.y += incr_y;
 }
 
 bool	update_player(t_player *player, t_key *key, t_map *map) //update la struct player par rapport au keycode et return true si player change, false si non. Utiliser cette valeur de retour pour update ou non l'affichage
