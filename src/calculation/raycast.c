@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #define FOV 60
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH 2560
+#define SCREEN_HEIGHT 1440
 #include <header.h>
 #include <calculation.h>
 
@@ -74,40 +74,51 @@ static void	put_data_pixel(t_data data, int x, int y, int rgb)
 	}
 }
 
-static void	put_texture_wall(t_wall wall, int column_height, int x, int i, int draw_start, void *mlx, void *win, t_texture *texture, t_img *frame)
+static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_start, int draw_end, void *mlx, void *win, t_texture *texture, t_img *frame)
 {
+	t_img	*ptr_texture;
 	double	x_pix;
 	double	y_pix;
+	double	y_step;
 
-	if (wall.orientation == 'N')
-	{
-		x_pix = fmod(wall.colision.x, 1) * texture->north.width;
-		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->north.height;
-	}
+	x_pix = 0.0;
+	y_pix = 0.0;
+	if (wall.orientation == 'N')	
+		ptr_texture = &texture->north;
 	else if (wall.orientation == 'S')
-	{
-		x_pix = fmod(wall.colision.x, 1) * texture->south.width;
-		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->south.height;
-	}
+		ptr_texture = &texture->south;
 	else if (wall.orientation == 'E')
-	{
-		x_pix = fmod(wall.colision.y, 1) * texture->east.width;
-		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->east.height;
-	}
+		ptr_texture = &texture->east;
 	else if (wall.orientation == 'O')
-	{
-		x_pix = fmod(wall.colision.y, 1) * texture->west.width;
-		y_pix = ((double)(i - draw_start) / (double)column_height) * (double)texture->west.height;
-	}
+		ptr_texture = &texture->west;
+	if (wall.orientation == 'O' || wall.orientation == 'E')
+		x_pix = fmod(wall.colision.y, 1) * ptr_texture->width;
+	else if (wall.orientation == 'N' || wall.orientation == 'S')
+		x_pix = fmod(wall.colision.x, 1) * ptr_texture->width;
 	x_pix -= fmod(x_pix, 1);
-	if (wall.orientation == 'N')
-		put_data_pixel(frame->data, x, i, get_data_pixel(texture->north.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->north.data, (int)x_pix, (int)y_pix));
-	else if(wall.orientation == 'S')
-		put_data_pixel(frame->data, x, i, get_data_pixel(texture->south.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->south.data, (int)x_pix, (int)y_pix));
-	else if(wall.orientation == 'E')
-		put_data_pixel(frame->data, x, i, get_data_pixel(texture->east.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->east.data, (int)x_pix, (int)y_pix));
-	else if(wall.orientation == 'O')
-		put_data_pixel(frame->data, x, i, get_data_pixel(texture->west.data, (int)x_pix, (int)y_pix));//mlx_pixel_put(mlx, win, x, i, get_pixel(texture->west.data, (int)x_pix, (int)y_pix));
+	y_step = ((double)1 / (double)column_height) * ptr_texture->height;
+	if (draw_start < 0)
+	{
+		y_pix = -draw_start * y_step;
+		draw_start = 0;
+	}
+	while (draw_start < draw_end)
+	{
+		put_data_pixel(frame->data, x, draw_start, get_data_pixel(ptr_texture->data, (int)x_pix, (int)y_pix));
+		draw_start++;
+		y_pix += y_step;
+	}
+}
+
+static void	put_floor_ceilling(int start, int end, int x, int rgb, t_data data)
+{
+	if (end < start)
+		return ;
+	while (start < end)
+	{
+		put_data_pixel(data, x, start, rgb);
+		start++;
+	}
 }
 
 static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture, t_img *frame)
@@ -121,7 +132,20 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 	column_height = (int)((double)SCREEN_HEIGHT / wall.distance);
 	draw_start = (-column_height / 2) + (SCREEN_HEIGHT / 2);
 	draw_end = (column_height / 2) + (SCREEN_HEIGHT / 2);
-	while (i < SCREEN_HEIGHT)
+	if (draw_end >= SCREEN_HEIGHT)
+		draw_end = SCREEN_HEIGHT - 1;
+	if (!care_about_last_frame)
+	{
+		put_floor_ceilling(0, draw_start, x, rgb_to_put_pixel(floor_rgb), frame->data);
+		put_floor_ceilling(draw_end, SCREEN_HEIGHT, x, rgb_to_put_pixel(ceilling_rgb), frame->data);
+	}
+	else
+	{
+		put_floor_ceilling(column_info->start, draw_start, x, rgb_to_put_pixel(floor_rgb), frame->data);
+		put_floor_ceilling(draw_end, column_info->end, x, rgb_to_put_pixel(ceilling_rgb), frame->data);
+	}
+	put_texture_wall(wall, column_height, x, draw_start, draw_end, mlx, win, texture, frame);
+	/*while (i < SCREEN_HEIGHT)
 	{
 		if (i < draw_start && (i >= column_info->start || !care_about_last_frame))
 			put_data_pixel(frame->data, x, i, rgb_to_put_pixel(floor_rgb));//mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(floor_rgb));
@@ -130,7 +154,7 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 		else if (i >= draw_start && i < draw_end)
 			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, texture, frame);
 		i++;
-	}
+	}*/
 	column_info->start = draw_start;
 	column_info->end = draw_end;
 }
