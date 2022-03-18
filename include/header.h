@@ -59,7 +59,8 @@ typedef struct s_global_info
 	struct s_column_info	*column_info;
 	struct s_key			*key;
 	struct s_texture		*texture;
-	struct s_img			*frame;
+	struct s_img			*frame_old;
+	struct s_img			*frame_new;
 }	t_global_info;
 
 typedef struct s_data
