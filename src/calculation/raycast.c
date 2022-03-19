@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #define FOV 60
-#define SCREEN_WIDTH 2560
-#define SCREEN_HEIGHT 1440
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 800
 #include <header.h>
 #include <calculation.h>
 
@@ -74,16 +74,9 @@ static void	put_data_pixel(t_data data, int x, int y, int rgb)
 	}
 }
 
-static void	cpy_data_pixel(t_data data1, t_data data2, int x1, int y1, int x2, int y2)
+static void	cpy_data_pixel(unsigned char *ptr_pix_data1, unsigned char *ptr_pix_data2, bool same_endian)
 {
-	unsigned char	*ptr_pix_data1;
-	unsigned char	*ptr_pix_data2;
-
-	if (x1 < 0 || x2 < 0 || y1 < 0 || y2 < 0)
-		return ;
-	ptr_pix_data1 = (unsigned char *)&data1.data[(y1 * data1.line_lenght) + ((x1 * data1.bpp) / 8)];
-	ptr_pix_data2 = (unsigned char *)&data2.data[(y2 * data2.line_lenght) + ((x2 * data2.bpp) / 8)];
-	if (data1.endian == data2.endian)
+	if (same_endian)
 	{
 		ptr_pix_data1[0] = ptr_pix_data2[0];
 		ptr_pix_data1[1] = ptr_pix_data2[1];
@@ -104,6 +97,7 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_sta
 {
 	t_img	*ptr_texture;
 	double	x_pix;
+	int		integer_x_pix;
 	double	y_pix;
 	double	y_step;
 
@@ -122,6 +116,7 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_sta
 	else if (wall.orientation == 'N' || wall.orientation == 'S')
 		x_pix = fmod(wall.colision.x, 1) * ptr_texture->width;
 	x_pix -= fmod(x_pix, 1);
+	integer_x_pix = (int)x_pix;
 	y_step = ((double)1 / (double)column_height) * ptr_texture->height;
 	if (draw_start < 0)
 	{
@@ -130,7 +125,7 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_sta
 	}
 	while (draw_start < draw_end)
 	{
-		cpy_data_pixel(frame->data, ptr_texture->data, x, draw_start, (int)x_pix, (int)y_pix); // this need to be tested deeper but cpy_data_pixel seems to be more effiscient in this case than a put_data_pixel (need to be tested on mac)
+		cpy_data_pixel((unsigned char *)&frame->data.data[(draw_start * frame->data.line_lenght) + (x * 4)], (unsigned char *)&ptr_texture->data.data[((int)y_pix * ptr_texture->data.line_lenght) + (integer_x_pix * 4)], (frame->data.endian == ptr_texture->data.endian)); // this need to be tested deeper but cpy_data_pixel seems to be more effiscient in this case than a put_data_pixel (need to be tested on mac)
 		//put_data_pixel(frame->data, x, draw_start, get_data_pixel(ptr_texture->data, (int)x_pix, (int)y_pix));
 		draw_start++;
 		y_pix += y_step;
@@ -139,8 +134,6 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_sta
 
 static void	put_floor_ceilling(int start, int end, int x, int rgb, t_data data)
 {
-	if (end < start)
-		return ;
 	while (start < end)
 	{
 		put_data_pixel(data, x, start, rgb);
