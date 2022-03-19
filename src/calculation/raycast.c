@@ -74,6 +74,32 @@ static void	put_data_pixel(t_data data, int x, int y, int rgb)
 	}
 }
 
+static void	cpy_data_pixel(t_data data1, t_data data2, int x1, int y1, int x2, int y2)
+{
+	unsigned char	*ptr_pix_data1;
+	unsigned char	*ptr_pix_data2;
+
+	if (x1 < 0 || x2 < 0 || y1 < 0 || y2 < 0)
+		return ;
+	ptr_pix_data1 = (unsigned char *)&data1.data[(y1 * data1.line_lenght) + ((x1 * data1.bpp) / 8)];
+	ptr_pix_data2 = (unsigned char *)&data2.data[(y2 * data2.line_lenght) + ((x2 * data2.bpp) / 8)];
+	if (data1.endian == data2.endian)
+	{
+		ptr_pix_data1[0] = ptr_pix_data2[0];
+		ptr_pix_data1[1] = ptr_pix_data2[1];
+		ptr_pix_data1[2] = ptr_pix_data2[2];
+		ptr_pix_data1[3] = ptr_pix_data2[3];
+	}
+	else
+	{
+		ptr_pix_data1[0] = ptr_pix_data2[3];
+		ptr_pix_data1[1] = ptr_pix_data2[2];
+		ptr_pix_data1[2] = ptr_pix_data2[1];
+		ptr_pix_data1[3] = ptr_pix_data2[0];
+
+	}
+}
+
 static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_start, int draw_end, void *mlx, void *win, t_texture *texture, t_img *frame)
 {
 	t_img	*ptr_texture;
@@ -104,7 +130,8 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_sta
 	}
 	while (draw_start < draw_end)
 	{
-		put_data_pixel(frame->data, x, draw_start, get_data_pixel(ptr_texture->data, (int)x_pix, (int)y_pix));
+		cpy_data_pixel(frame->data, ptr_texture->data, x, draw_start, (int)x_pix, (int)y_pix); // this need to be tested deeper but cpy_data_pixel seems to be more effiscient in this case than a put_data_pixel (need to be tested on mac)
+		//put_data_pixel(frame->data, x, draw_start, get_data_pixel(ptr_texture->data, (int)x_pix, (int)y_pix));
 		draw_start++;
 		y_pix += y_step;
 	}
