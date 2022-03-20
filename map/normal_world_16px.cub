@@ -1,8 +1,8 @@
-SO ./textures/brick.xpm
-NO ./textures/cobblestone_mossy.xpm
-WE ./textures/planks_big_oak.xpm
-EA ./textures/stone_bricks.xpm
-S ./textures/sprites.xpm
+SO ./textures/16px/normal_world/brick.xpm
+NO ./textures/16px/normal_world/cobblestone_mossy.xpm
+WE ./textures/16px/normal_world/planks_big_oak.xpm
+EA ./textures/16px/normal_world/stone_bricks.xpm
+S ./textures/16px/normal_world/sprites.xpm
 
 F 000,000,255
 C 000,255,000
@@ -19,9 +19,9 @@ C 000,255,000
 10000000011000000000000001
 10001000011000000000000001
 10001000000000000000000001
-10000000000000N00000000001
-10000000000000000000000001
-10000000000000000000000001
+10001000000000N00000000001
+10001000000000000000000001
+10001000000000000000000001
 10000000000000000000000001
 10000000000000000000000001
 10000000000000000000000001

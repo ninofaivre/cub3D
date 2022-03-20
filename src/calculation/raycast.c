@@ -21,6 +21,7 @@
 #include <math.h>
 #include <sys/time.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 typedef	struct s_key_hook
 {
@@ -74,7 +75,7 @@ static void	put_data_pixel(t_data data, int x, int y, int rgb)
 	}
 }
 
-static void	cpy_data_pixel(unsigned char *ptr_pix_data1, unsigned char *ptr_pix_data2, bool same_endian)
+static void	cpy_data_pixel(char *ptr_pix_data1, char *ptr_pix_data2, bool same_endian)
 {
 	if (same_endian)
 	{
@@ -89,46 +90,38 @@ static void	cpy_data_pixel(unsigned char *ptr_pix_data1, unsigned char *ptr_pix_
 		ptr_pix_data1[1] = ptr_pix_data2[2];
 		ptr_pix_data1[2] = ptr_pix_data2[1];
 		ptr_pix_data1[3] = ptr_pix_data2[0];
-
 	}
 }
 
-static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_start, int draw_end, void *mlx, void *win, t_texture *texture, t_img *frame)
+static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_start, int draw_end, t_texture *texture, t_img *frame, t_put_texture *put_texture)
 {
-	t_img	*ptr_texture;
-	double	x_pix;
-	int		integer_x_pix;
-	double	y_pix;
-	double	y_step;
-
-	x_pix = 0.0;
-	y_pix = 0.0;
-	if (wall.orientation == 'N')	
-		ptr_texture = &texture->north;
+	put_texture->y_pix = 0.0;
+	if (wall.orientation == 'N')
+		put_texture->ptr_texture = &texture->north;
 	else if (wall.orientation == 'S')
-		ptr_texture = &texture->south;
+		put_texture->ptr_texture = &texture->south;
 	else if (wall.orientation == 'E')
-		ptr_texture = &texture->east;
+		put_texture->ptr_texture = &texture->east;
 	else if (wall.orientation == 'O')
-		ptr_texture = &texture->west;
+		put_texture->ptr_texture = &texture->west;
+	put_texture->is_same_endian = (frame->data.endian == put_texture->ptr_texture->data.endian);
 	if (wall.orientation == 'O' || wall.orientation == 'E')
-		x_pix = fmod(wall.colision.y, 1) * ptr_texture->width;
+		put_texture->ptr_pix_texture = &put_texture->ptr_texture->data.data[(int)(fmod(wall.colision.y, 1) * put_texture->ptr_texture->width) * 4];
 	else if (wall.orientation == 'N' || wall.orientation == 'S')
-		x_pix = fmod(wall.colision.x, 1) * ptr_texture->width;
-	x_pix -= fmod(x_pix, 1);
-	integer_x_pix = (int)x_pix;
-	y_step = ((double)1 / (double)column_height) * ptr_texture->height;
+		put_texture->ptr_pix_texture = &put_texture->ptr_texture->data.data[(int)(fmod(wall.colision.x, 1) * put_texture->ptr_texture->width) * 4];
+	put_texture->y_step = ((double)1 / (double)column_height) * put_texture->ptr_texture->height;
 	if (draw_start < 0)
 	{
-		y_pix = -draw_start * y_step;
+		put_texture->y_pix = -draw_start * put_texture->y_step;
 		draw_start = 0;
 	}
+	put_texture->ptr_pix_frame = &frame->data.data[(draw_start * frame->data.line_lenght) + (x * 4)];
 	while (draw_start < draw_end)
 	{
-		cpy_data_pixel((unsigned char *)&frame->data.data[(draw_start * frame->data.line_lenght) + (x * 4)], (unsigned char *)&ptr_texture->data.data[((int)y_pix * ptr_texture->data.line_lenght) + (integer_x_pix * 4)], (frame->data.endian == ptr_texture->data.endian)); // this need to be tested deeper but cpy_data_pixel seems to be more effiscient in this case than a put_data_pixel (need to be tested on mac)
-		//put_data_pixel(frame->data, x, draw_start, get_data_pixel(ptr_texture->data, (int)x_pix, (int)y_pix));
+		cpy_data_pixel(put_texture->ptr_pix_frame, &put_texture->ptr_pix_texture[(int)put_texture->y_pix * put_texture->ptr_texture->data.line_lenght], put_texture->is_same_endian); // this need to be tested deeper but cpy_data_pixel seems to be more effiscient in this case than a put_data_pixel (need to be tested on mac)
 		draw_start++;
-		y_pix += y_step;
+		put_texture->y_pix += put_texture->y_step;
+		put_texture->ptr_pix_frame += frame->data.line_lenght;
 	}
 }
 
@@ -141,7 +134,7 @@ static void	put_floor_ceilling(int start, int end, int x, int rgb, t_data data)
 	}
 }
 
-static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture, t_img *frame)
+static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture, t_img *frame, t_put_texture *put_texture)
 {
 	int	i;
 	int	column_height;
@@ -157,14 +150,14 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 	if (!care_about_last_frame)
 	{
 		put_floor_ceilling(0, draw_start, x, rgb_to_put_pixel(floor_rgb), frame->data);
-		put_floor_ceilling(draw_end, SCREEN_HEIGHT, x, rgb_to_put_pixel(ceilling_rgb), frame->data);
+		put_floor_ceilling(draw_end, SCREEN_HEIGHT - 1, x, rgb_to_put_pixel(ceilling_rgb), frame->data);
 	}
 	else
 	{
 		put_floor_ceilling(column_info->start, draw_start, x, rgb_to_put_pixel(floor_rgb), frame->data);
 		put_floor_ceilling(draw_end, column_info->end, x, rgb_to_put_pixel(ceilling_rgb), frame->data);
 	}
-	put_texture_wall(wall, column_height, x, draw_start, draw_end, mlx, win, texture, frame);
+	put_texture_wall(wall, column_height, x, draw_start, draw_end, texture, frame, put_texture);
 	/*while (i < SCREEN_HEIGHT)
 	{
 		if (i < draw_start && (i >= column_info->start || !care_about_last_frame))
@@ -175,6 +168,8 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, texture, frame);
 		i++;
 	}*/
+	if (draw_start < 0)
+		draw_start = 0;
 	column_info->start = draw_start;
 	column_info->end = draw_end;
 }
@@ -199,7 +194,7 @@ static t_column_info	*display_first_frame(t_global_info *info)
 			angle = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(angle - info->player.orientation));
-		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture, info->frame);
+		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture, info->frame, info->put_texture);
 		n_column++;
 	}
 	//mlx_sync(2, info->frame->img);
@@ -232,7 +227,7 @@ static int	display_one_frame(void *param)
 			angle  = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(info->player.orientation - angle));
-		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture, info->frame);
+		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture, info->frame, info->put_texture);
 		n_collumn++;
 	}
 	mlx_put_image_to_window(info->mlx, info->win, info->frame->img, 0, 0);
@@ -286,6 +281,7 @@ void	init_texture(t_texture *texture, t_global_info *info)
 
 void	display(t_global_info *info)
 {
+	t_put_texture	put_texture;
 	t_texture	texture;
 	t_img		frame;
 	t_key		key;
@@ -293,6 +289,7 @@ void	display(t_global_info *info)
 	info->key = &key;
 	info->texture = &texture;
 	info->frame = &frame;
+	info->put_texture = &put_texture;
 	init_info(info);
 	init_texture(&texture, info);
 	mlx_hook(info->win, 02, 1L, key_hook, info->key);

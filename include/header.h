@@ -60,6 +60,7 @@ typedef struct s_global_info
 	struct s_key			*key;
 	struct s_texture		*texture;
 	struct s_img			*frame;
+	struct s_put_texture	*put_texture;
 }	t_global_info;
 
 typedef struct s_data
@@ -103,6 +104,15 @@ typedef struct s_key
 	bool	r_arrow;
 }	t_key;
 
+typedef  struct s_put_texture
+{
+    t_img	*ptr_texture;
+	double	y_pix;
+	double	y_step;
+	bool	is_same_endian;
+	char	*ptr_pix_frame;
+	char	*ptr_pix_texture;
+}	t_put_texture;
 
 # include "calculation.h"
 
