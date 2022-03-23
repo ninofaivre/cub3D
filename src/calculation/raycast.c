@@ -6,13 +6,13 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/10 22:47:45 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/22 15:09:18 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define FOV 60
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH 2560
+#define SCREEN_HEIGHT 1440
 #include <header.h>
 #include <calculation.h>
 
@@ -22,58 +22,6 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-typedef	struct s_key_hook
-{
-	void		*mlx;
-	void		*win;
-	t_player	*player;
-	t_map		*map;
-}	t_key_hook;
-
-static int	rgb_to_put_pixel(t_rgb *rgb)
-{
-	return ((rgb->b * pow(256, 0)) + (rgb->g * pow(256, 1)) + (rgb->r * pow(256, 2)));
-}
-
-static int get_data_pixel(t_data data, int x, int y)
-{
-	unsigned char	*ptr_pix;
-
-	if (x < 0 || y < 0)
-		return (-1);
-	ptr_pix = (unsigned char *)&data.data[(y * data.line_lenght) + ((x * data.bpp) / 8)];
-	if (data.endian == 0)
-		return (ptr_pix[3] << 24 | ptr_pix[2] << 16 | ptr_pix[1] << 8 | ptr_pix[0]);
-	else if (data.endian == 1)
-		return (ptr_pix[0] << 24 | ptr_pix[1] << 16 | ptr_pix[2] << 8 | ptr_pix[3]);
-	return (-1);
-}
-
-static void	put_data_pixel(t_data data, int x, int y, int rgb)
-{
-	unsigned char	*ptr_pix;
-
-	if (x < 0 || y < 0 || rgb < 0)
-		return ;
-	ptr_pix = (unsigned char *)&data.data[(y * data.line_lenght) + ((x * data.bpp) / 8)];
-	if (get_data_pixel(data, x, y) == rgb)
-		return ;
-	if (data.endian == 0)
-	{
-		ptr_pix[0] = rgb;
-		ptr_pix[1] = rgb >> 8;
-		ptr_pix[2] = rgb >> 16;
-		ptr_pix[3] = rgb >> 24;
-	}
-	else if (data.endian == 1)
-	{
-		ptr_pix[3] = rgb;
-		ptr_pix[2] = rgb >> 8;
-		ptr_pix[1] = rgb >> 16;
-		ptr_pix[0] = rgb >> 24;
-	}
-}
 
 static void	cpy_data_pixel(char *ptr_pix_data1, char *ptr_pix_data2, bool same_endian)
 {
@@ -125,16 +73,16 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_sta
 	}
 }
 
-static void	put_floor_ceilling(int start, int end, int x, int rgb, t_data data)
+static void	put_floor_ceilling(int start, int end, int x, char *rgb, t_data data)
 {
 	while (start < end)
 	{
-		put_data_pixel(data, x, start, rgb);
+		cpy_data_pixel(&data.data[start * data.line_lenght + x * 4], rgb, (1 == data.endian));
 		start++;
 	}
 }
 
-static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_rgb, t_rgb *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture, t_img *frame, t_put_texture *put_texture)
+static void	print_column(t_wall wall, void *mlx, void *win, int x, char *floor_rgb, char *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture, t_img *frame, t_put_texture *put_texture)
 {
 	int	i;
 	int	column_height;
@@ -149,25 +97,15 @@ static void	print_column(t_wall wall, void *mlx, void *win, int x, t_rgb *floor_
 		draw_end = SCREEN_HEIGHT - 1;
 	if (!care_about_last_frame)
 	{
-		put_floor_ceilling(0, draw_start, x, rgb_to_put_pixel(floor_rgb), frame->data);
-		put_floor_ceilling(draw_end, SCREEN_HEIGHT - 1, x, rgb_to_put_pixel(ceilling_rgb), frame->data);
+		put_floor_ceilling(0, draw_start, x, floor_rgb, frame->data);
+		put_floor_ceilling(draw_end, SCREEN_HEIGHT - 1, x, ceilling_rgb, frame->data);
 	}
 	else
 	{
-		put_floor_ceilling(column_info->start, draw_start, x, rgb_to_put_pixel(floor_rgb), frame->data);
-		put_floor_ceilling(draw_end, column_info->end, x, rgb_to_put_pixel(ceilling_rgb), frame->data);
+		put_floor_ceilling(column_info->start, draw_start, x, floor_rgb, frame->data);
+		put_floor_ceilling(draw_end, column_info->end, x, ceilling_rgb, frame->data);
 	}
 	put_texture_wall(wall, column_height, x, draw_start, draw_end, texture, frame, put_texture);
-	/*while (i < SCREEN_HEIGHT)
-	{
-		if (i < draw_start && (i >= column_info->start || !care_about_last_frame))
-			put_data_pixel(frame->data, x, i, rgb_to_put_pixel(floor_rgb));//mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(floor_rgb));
-		else if (i >= draw_end && (i < column_info->end || !care_about_last_frame))
-			put_data_pixel(frame->data, x, i, rgb_to_put_pixel(ceilling_rgb));//mlx_pixel_put(mlx, win, x, i, rgb_to_put_pixel(ceilling_rgb));
-		else if (i >= draw_start && i < draw_end)
-			put_texture_wall(wall, column_height, x, i, draw_start, mlx, win, texture, frame);
-		i++;
-	}*/
 	if (draw_start < 0)
 		draw_start = 0;
 	column_info->start = draw_start;
@@ -236,20 +174,36 @@ static int	display_one_frame(void *param)
 	return (0);
 }
 
-static void	key_hook(int keycode, t_key *key)
+static void	key_hook_press(int keycode, t_key *key)
 {
 	if (keycode == 'z')
-		key->z = (key->z == false) * true;
+		key->z = true;
 	else if (keycode == 'q')
-		key->q = (key->q == false) * true;
+		key->q = true;
 	else if (keycode == 's')
-		key->s = (key->s == false) * true;
+		key->s = true;
 	else if (keycode == 'd')
-		key->d = (key->d == false) * true;
+		key->d = true;
 	else if (keycode == KEY_LEFT_ARROW)
-		key->l_arrow = (key->l_arrow == false) * true;
+		key->l_arrow = true;
 	else if (keycode == KEY_RIGHT_ARROW)
-		key->r_arrow = (key->r_arrow == false) * true;
+		key->r_arrow = true;
+}
+
+static void	key_hook_release(int keycode, t_key *key)
+{
+	if (keycode == 'z')
+		key->z = false;
+	else if (keycode == 'q')
+		key->q = false;
+	else if (keycode == 's')
+		key->s = false;
+	else if (keycode == 'd')
+		key->d = false;
+	else if (keycode == KEY_LEFT_ARROW)
+		key->l_arrow = false;
+	else if (keycode == KEY_RIGHT_ARROW)
+		key->r_arrow = false;
 }
 
 void	init_info(t_global_info *info)
@@ -292,8 +246,8 @@ void	display(t_global_info *info)
 	info->put_texture = &put_texture;
 	init_info(info);
 	init_texture(&texture, info);
-	mlx_hook(info->win, 02, 1L, key_hook, info->key);
-	mlx_hook(info->win, 03, 1L<<1, key_hook, info->key);
+	mlx_hook(info->win, 02, 1L, key_hook_press, info->key);
+	mlx_hook(info->win, 03, 1L<<1, key_hook_release, info->key);
 	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);
 	info->column_info = display_first_frame(info);
 	if (!info->column_info)

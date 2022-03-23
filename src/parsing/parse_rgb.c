@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/04 18:34:02 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/22 14:29:40 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,19 @@ bool	error_rgb(int error, int r, int g, int b)
 		return (true);
 }
 
-bool	pars_rgb(char *str, int i, t_rgb **rgb)
+bool	pars_rgb(char *str, int i, char **rgb)
 {
-	if (*rgb)
+	if (*rgb != NULL)
 		return (error_rgb(1, 0, 0, 0));
-	*rgb = malloc(sizeof(t_rgb));
+	*rgb = malloc(sizeof(char) * 4);
 	if (!*rgb)
 		return (error_rgb(-1, 0, 0, 0));
+	(*rgb)[0] = 0;
 	i = skip_space(str, ++i);
-	(*rgb)->r = fake_atoi(str, i);
+	(*rgb)[1] = fake_atoi(str, i);
 	i = next_nb(str, i);
-	(*rgb)->g = fake_atoi(str, i);
+	(*rgb)[2]  = fake_atoi(str, i);
 	i = next_nb(str, i);
-	(*rgb)->b = fake_atoi(str, i);
-	return (error_rgb(0, (*rgb)->r, (*rgb)->g, (*rgb)->b));
+	(*rgb)[3] = fake_atoi(str, i);
+	return (error_rgb(0, (unsigned char)(*rgb)[1], (unsigned char)(*rgb)[2], (unsigned char)(*rgb)[3]));
 }
