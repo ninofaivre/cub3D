@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_rgb.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/22 14:29:40 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/28 20:52:12 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ bool	pars_rgb(char *str, int i, char **rgb)
 	i = skip_space(str, ++i);
 	(*rgb)[1] = fake_atoi(str, i);
 	i = next_nb(str, i);
-	(*rgb)[2]  = fake_atoi(str, i);
+	(*rgb)[2] = fake_atoi(str, i);
 	i = next_nb(str, i);
 	(*rgb)[3] = fake_atoi(str, i);
-	return (error_rgb(0, (unsigned char)(*rgb)[1], (unsigned char)(*rgb)[2], (unsigned char)(*rgb)[3]));
+	return (error_rgb(0, (unsigned char)(*rgb)[1], (unsigned char)(*rgb)[2],
+			(unsigned char)(*rgb)[3]));
 }
