@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculation.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:42:44 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/10 17:17:12 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/28 12:05:08 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,10 @@ typedef struct s_column_info
 
 bool	update_player(t_player *player, t_key *key, t_map *map);
 char	does_position_touch_a_wall(t_position position, char **map);
+
+bool	is_in_a_wall(double x, double y, t_map *map);
+
+void	init_texture(t_texture *texture, t_global_info *info);
+void	init_raycast_info(t_global_info *info);
 
 #endif
