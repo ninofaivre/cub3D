@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wall_distance.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
+/*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 13:32:54 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/10 20:40:54 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/28 20:39:34 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ char	does_position_touch_a_wall(t_position position, char **map)
 	}
 	else
 	{
-		//if (map[(int)position.y][(int)position.x] == '1' || map[(int)position.y][(int)position.x - 1] == '1' || map[(int)position.y - 1][(int)position.x] == '1' || map[(int)position.y - 1][(int)position.x - 1] == '1')
-		//	return ('M');
 		if (map[(int)position.y][(int)position.x] == '1' && map[(int)position.y][(int)position.x -1] == '1')
 			return ('S');
 		if (map[(int)position.y - 1][(int)position.x] == '1' && map[(int)position.y - 1][(int)position.x - 1] == '1')

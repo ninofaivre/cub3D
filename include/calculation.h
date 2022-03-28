@@ -6,7 +6,7 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:42:44 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/28 12:05:08 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/28 20:34:06 by paboutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,8 @@ bool	is_in_a_wall(double x, double y, t_map *map);
 
 void	init_texture(t_texture *texture, t_global_info *info);
 void	init_raycast_info(t_global_info *info);
+
+void	key_hook_press(int keycode, t_key *key);
+void	key_hook_release(int keycode, t_key *key);
 
 #endif
