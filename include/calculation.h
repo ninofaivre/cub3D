@@ -33,8 +33,16 @@ bool	is_in_a_wall(double x, double y, t_map *map);
 
 void	init_texture(t_texture *texture, t_global_info *info);
 void	init_raycast_info(t_global_info *info);
+t_column_info	*init_column_info(void);
 
 void	key_hook_press(int keycode, t_key *key);
 void	key_hook_release(int keycode, t_key *key);
+
+void	cpy_data_pixel(char *ptr_pix_data1, char *ptr_pix_data2, bool same_endian);
+double	calculate_angle(int orientation, int n_collumn);
+
+void	print_column(t_wall wall, int x, t_global_info *info);
+void	put_floor_ceilling(int start, int end, int x, char *rgb, t_data data);
+void	put_texture_wall(t_wall wall, int column_height, int x, int draw_start, int draw_end, t_texture *texture, t_img *frame, t_put_texture *put_texture);
 
 #endif

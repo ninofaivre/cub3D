@@ -67,3 +67,21 @@ void	init_texture(t_texture *texture, t_global_info *info)
 			&texture->south.data.bpp, &texture->south.data.line_lenght,
 			&texture->south.data.endian);
 }
+
+t_column_info	*init_column_info(void)
+{
+	int				i;
+	t_column_info	*column_info;
+
+	i = 0;
+	column_info = malloc(sizeof(t_column_info) * SCREEN_WIDTH);
+	if (!column_info)
+		return (NULL);
+	while (i < SCREEN_WIDTH)
+	{
+		column_info[i].start = 0;
+		column_info[i].end = SCREEN_HEIGHT - 1;
+		i++;
+	}
+	return (column_info);
+}
