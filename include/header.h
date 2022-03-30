@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/22 14:26:51 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/03/30 15:03:41 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_global_info
 	struct s_texture		*texture;
 	struct s_img			*frame;
 	struct s_put_texture	*put_texture;
+	bool					first_frame;
 }	t_global_info;
 
 typedef struct s_data

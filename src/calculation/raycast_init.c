@@ -6,7 +6,7 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/28 12:06:52 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/30 15:12:21 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	init_raycast_info(t_global_info *info)
 	info->frame->data.data = mlx_get_data_addr(info->frame->img,
 			&info->frame->data.bpp, &info->frame->data.line_lenght,
 			&info->frame->data.endian);
+	info->first_frame = true;
 	mlx_do_key_autorepeatoff(info->mlx);
 	info->key->z = false;
 	info->key->q = false;
