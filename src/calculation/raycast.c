@@ -6,22 +6,21 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/28 20:36:07 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/03/30 12:16:51 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define FOV 60
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
 #include <header.h>
 #include <calculation.h>
-
 #include <stdio.h>
 #include <mlx.h>
 #include <math.h>
 #include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#define FOV 60
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 800
 
 static void	cpy_data_pixel(char *ptr_pix_data1, char *ptr_pix_data2, bool same_endian)
 {
@@ -66,7 +65,7 @@ static void	put_texture_wall(t_wall wall, int column_height, int x, int draw_sta
 	put_texture->ptr_pix_frame = &frame->data.data[(draw_start * frame->data.line_lenght) + (x * 4)];
 	while (draw_start < draw_end)
 	{
-		cpy_data_pixel(put_texture->ptr_pix_frame, &put_texture->ptr_pix_texture[(int)put_texture->y_pix * put_texture->ptr_texture->data.line_lenght], put_texture->is_same_endian); // this need to be tested deeper but cpy_data_pixel seems to be more effiscient in this case than a put_data_pixel (need to be tested on mac)
+		cpy_data_pixel(put_texture->ptr_pix_frame, &put_texture->ptr_pix_texture[(int)put_texture->y_pix * put_texture->ptr_texture->data.line_lenght], put_texture->is_same_endian);
 		draw_start++;
 		put_texture->y_pix += put_texture->y_step;
 		put_texture->ptr_pix_frame += frame->data.line_lenght;
@@ -82,7 +81,7 @@ static void	put_floor_ceilling(int start, int end, int x, char *rgb, t_data data
 	}
 }
 
-static void	print_column(t_wall wall, void *mlx, void *win, int x, char *floor_rgb, char *ceilling_rgb, t_column_info *column_info, bool care_about_last_frame, t_texture *texture, t_img *frame, t_put_texture *put_texture)
+static void	print_column(t_wall wall, int x, t_column_info *column_info, bool care_about_last_frame, t_put_texture *put_texture)
 {
 	int	i;
 	int	column_height;
@@ -132,10 +131,9 @@ static t_column_info	*display_first_frame(t_global_info *info)
 			angle = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(angle - info->player.orientation));
-		print_column(wall, info->mlx, info->win, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture, info->frame, info->put_texture);
+		print_column(wall, n_column, info->conf->floor_rgb, info->conf->ceilling_rgb, &column_info[n_column], false, info->texture, info->frame, info->put_texture);
 		n_column++;
 	}
-	//mlx_sync(2, info->frame->img);
 	mlx_put_image_to_window(info->mlx, info->win, info->frame->img, 0, 0);
 	return (column_info);
 }
@@ -143,10 +141,6 @@ static t_column_info	*display_first_frame(t_global_info *info)
 static int	display_one_frame(void *param)
 {
 	t_global_info *info;
-	struct timeval time_before_frame;
-	struct timeval time_after_frame;
-	gettimeofday(&time_before_frame, NULL);
-
 	t_wall	wall;
 	double	angle;
 	int		n_collumn;
@@ -155,7 +149,6 @@ static int	display_one_frame(void *param)
 	info = param;
 	if (!(update_player(&(info->player), info->key, info->map)))
 		return (0);
-	//printf("orientation : %f\n", info->player.orientation);
 	while (n_collumn < SCREEN_WIDTH)
 	{
 		angle = ((double)(info->player.orientation + ((double)FOV / (double)2)) - (double)((double)n_collumn * ((double)FOV / (double)SCREEN_WIDTH)));
@@ -165,12 +158,10 @@ static int	display_one_frame(void *param)
 			angle  = angle - (double)359;
 		wall = get_wall_distance(info->player.position, angle, info->map->content);
 		wall.distance *= cos(degrees_to_radians(info->player.orientation - angle));
-		print_column(wall, info->mlx, info->win, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture, info->frame, info->put_texture);
+		print_column(wall, n_collumn, info->conf->floor_rgb, info->conf->ceilling_rgb, &info->column_info[n_collumn], true, info->texture, info->frame, info->put_texture);
 		n_collumn++;
 	}
 	mlx_put_image_to_window(info->mlx, info->win, info->frame->img, 0, 0);
-	gettimeofday(&time_after_frame, NULL);
-	printf("temps de rendu d'une frame : %ld ms, fps : %ld\n", (time_after_frame.tv_usec - time_before_frame.tv_usec) / 1000, 1000000 / (time_after_frame.tv_usec - time_before_frame.tv_usec));
 	return (0);
 }
 
