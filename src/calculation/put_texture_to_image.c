@@ -58,8 +58,8 @@ void	put_floor_ceilling(int start, int end, int x, char *rgb, t_data data)
 {
 	while (start < end)
 	{
-		cpy_data_pixel(&info->frame->data.data[start * info->frame->data.line_lenght + x * 4],
-			info->conf->floor_rgb, (1 == info->frame->data.endian));
+		cpy_data_pixel(&data.data[start * data.line_lenght + x * 4],
+			rgb, (1 == data.endian));
 		start++;
 	}
 }
@@ -78,13 +78,9 @@ void	print_column(t_wall wall, int x, t_global_info *info)
 	if (draw_end >= SCREEN_HEIGHT)
 		draw_end = SCREEN_HEIGHT - 1;
 	put_floor_ceilling(info->column_info[x].start, draw_start, x,
-		info);
+			info->conf->floor_rgb, info->frame->data);
 	put_floor_ceilling(draw_end, info->column_info[x].end, x,
-		info);
-	/*put_floor_ceilling(info->column_info[x].start, draw_start, x,
-		info->conf->floor_rgb, info->frame->data);
-	put_floor_ceilling(draw_end, info->column_info[x].end, x,
-		info->conf->ceilling_rgb, info->frame->data);*/
+		info->conf->ceilling_rgb, info->frame->data);
 	put_texture_wall(wall, column_height, x, draw_start, draw_end,
 		info->texture, info->frame, info->put_texture);
 	if (draw_start < 0)
