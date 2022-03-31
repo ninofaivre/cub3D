@@ -43,6 +43,5 @@ double	calculate_angle(int orientation, int n_collumn);
 
 void	print_column(t_wall wall, int x, t_global_info *info);
 void	put_floor_ceilling(int start, int end, int x, char *rgb, t_data data);
-void	put_texture_wall(t_wall wall, int column_height, int x, int draw_start, int draw_end, t_texture *texture, t_img *frame, t_put_texture *put_texture);
 
 #endif

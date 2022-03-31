@@ -106,6 +106,8 @@ typedef  struct s_put_texture
 	bool	is_same_endian;
 	char	*ptr_pix_frame;
 	char	*ptr_pix_texture;
+	int	x;
+	int	column_height;
 }	t_put_texture;
 
 # include "calculation.h"
