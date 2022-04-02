@@ -110,6 +110,14 @@ typedef  struct s_put_texture
 	int	column_height;
 }	t_put_texture;
 
+typedef struct s_side_lenght
+{
+	double	x_adja;
+	double	y_adja;
+	double	x_oppo;
+	double	y_oppo;
+}	t_side_lenght;
+
 # include "calculation.h"
 
 char			*get_next_line(int fd);

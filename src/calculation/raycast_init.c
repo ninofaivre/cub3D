@@ -31,7 +31,6 @@ void	init_raycast_info(t_global_info *info)
 			&info->frame->data.bpp, &info->frame->data.line_lenght,
 			&info->frame->data.endian);
 	info->first_frame = true;
-	mlx_do_key_autorepeatoff(info->mlx);
 	info->key->z = false;
 	info->key->q = false;
 	info->key->s = false;

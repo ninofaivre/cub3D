@@ -17,14 +17,6 @@
 
 #include <stdio.h>
 #include <mlx.h>
-/*
-static void	print_parsing(t_global_info *info)
-{
-	printf("conf :\n\npath :\n");
-	print_str_tab(info->conf->texture_path);
-	printf("rgb_floor :\nr : %i\ng : %i\nb : %i\n", info->conf->floor_rgb->r, info->conf->floor_rgb->g, info->conf->floor_rgb->b);
-	printf("ceilling_floor :\nr : %i\ng : %i\nb : %i\n", info->conf->ceilling_rgb->r, info->conf->ceilling_rgb->g, info->conf->ceilling_rgb->b);
-}*/
 
 int	main(int argc, char **argv)
 {
@@ -34,10 +26,6 @@ int	main(int argc, char **argv)
 	if (!info)
 		exit(EXIT_FAILURE);
 	display(info);
-	//print_parsing(info);
-	//printf("%f\n", get_wall_distance(info->player.position, (double)135, info->map->content));
-	mlx_do_key_autorepeatoff(info->mlx);
-	mlx_do_key_autorepeaton(info->mlx);
 	free_info(info);
 	printf("fin normal du programme atteinte");
 	exit(EXIT_SUCCESS);

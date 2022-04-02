@@ -65,139 +65,93 @@ char	does_position_touch_a_wall(t_position position, char **map)
 			return ('N');
 	}
 	else
-		return (does_position_touch_a_wall(position, map));
+		return (does_position_touch_a_wall_cross(position, map));
 	return (false);
 }
 
-static void	levelling(double *x_oppo, double *y_oppo,
-double x_adja, double y_adja)
+static void	levelling(t_side_lenght *side_lenght)
 {
-	if (*x_oppo > y_adja)
-		*x_oppo = y_adja;
-	else if (*y_oppo > x_adja)
-		*y_oppo = x_adja;
+	if (side_lenght->x_oppo > side_lenght->y_adja)
+		side_lenght->x_oppo = side_lenght->y_adja;
+	else if (side_lenght->y_oppo > side_lenght->x_adja)
+		side_lenght->y_oppo = side_lenght->x_adja;
 }
-enum { TOP_RIGHT, TOP_LEFT, BOT_LEFT, BOT_RIGHT };
 
-static void	calc_new_intersection(t_position *position, t_position plan_start, t_position plan_end, double angle)
+static void	calc_oppo(t_side_lenght *sl, double angle)
 {
-	double		x_adja;
-	double		y_adja;
-	double		x_oppo;
-	double		y_oppo;
-	int			quart;
-
 	if (angle >= (double)0 && angle <= (double)90)
-		quart = TOP_RIGHT;
+	{
+		sl->x_oppo = sl->x_adja * tan(degrees_to_radians((double)90 - angle));
+		sl->y_oppo = sl->y_adja * tan(degrees_to_radians(angle));
+	}
 	else if (angle > (double)90 && angle <= (double)180)
-		quart = TOP_LEFT;
+	{
+		sl->x_oppo = sl->x_adja * tan(degrees_to_radians(angle - (double)90));
+		sl->y_oppo = sl->y_adja * tan(degrees_to_radians((double)180 - angle));
+	}
 	else if (angle > (double)180 && angle <= (double)270)
-		quart = BOT_LEFT;
+	{
+		sl->x_oppo = sl->x_adja * tan(degrees_to_radians((double)270 - angle));
+		sl->y_oppo = sl->y_adja * tan(degrees_to_radians(angle - (double)180));
+	}
 	else if (angle > (double)270 && angle < (double)360)
-		quart = BOT_RIGHT;
-	if (quart == TOP_LEFT || quart == TOP_RIGHT)
-		x_adja = position->y - plan_start.y;
-	else if (quart == BOT_LEFT || quart == BOT_RIGHT)
-		x_adja = plan_end.y - position->y;
-	if (quart == TOP_LEFT || quart == BOT_LEFT)
-		y_adja = position->x - plan_start.x;
-	else if (quart == TOP_LEFT || quart == TOP_RIGHT)
-		y_adja = plan_end.x - position->x;
-	/*if (quart == TOP_RIGHT)
 	{
-		x_adja = position->y - plan_start.y;
-		y_adja = plan_end.x - position->x;
-	}
-	else if (quart == TOP_LEFT)
-	{
-		x_adja = position->y - plan_start.y;
-		y_adja = position->x - plan_start.x;
-	}
-	else if (quart == BOT_LEFT)
-	{
-		x_adja = plan_end.y - position->y;
-		y_adja = position->x - plan_start.x;
-	}
-	else if (quart == BOT_RIGHT)
-	{
-		x_adja = plan_end.y - position->y;
-		y_adja = plan_end.x - position->x;
-	}*/
-	if (quart == TOP_RIGHT)
-	{
-		x_oppo = x_adja * tan(degrees_to_radians((double)90 - angle));
-		y_oppo = y_adja * tan(degrees_to_radians(angle));
-	}
-	else if (quart == TOP_LEFT)
-	{
-		x_oppo = x_adja * tan(degrees_to_radians(angle - (double)90));
-		y_oppo = y_adja * tan(degrees_to_radians((double)180 - angle));
-	}
-	if (quart == BOT_LEFT)
-	{
-		x_oppo = x_adja * tan(degrees_to_radians((double)270 - angle));
-		y_oppo = y_adja * tan(degrees_to_radians(angle - (double)180));
-	}
-	if (quart == BOT_RIGHT)
-	{
-		x_oppo = x_adja * tan(degrees_to_radians(angle - (double)270));
-		y_oppo = y_adja * tan(degrees_to_radians((double)360 - angle));
-	}
-	levelling(&x_oppo, &y_oppo, x_adja, y_adja);
-	if (quart == TOP_RIGHT)
-	{
-		position->x += x_oppo;
-		position->y -= y_oppo;
-	}
-	else if (quart == TOP_LEFT)
-	{
-		position->x -= x_oppo;
-		position->y -= y_oppo;
-	}
-	else if (quart == BOT_LEFT)
-	{
-		position->x -= x_oppo;
-		position->y += y_oppo;
-	}
-	else if (quart == BOT_RIGHT)
-	{
-		position->x += x_oppo;
-		position->y += y_oppo;
+		sl->x_oppo = sl->x_adja * tan(degrees_to_radians(angle - (double)270));
+		sl->y_oppo = sl->y_adja * tan(degrees_to_radians((double)360 - angle));
 	}
 }
 
+static void	calc_new_intersection(t_position *position, t_position plan_start,
+t_position plan_end, double angle)
+{
+	t_side_lenght	side_lenght;
 
+	side_lenght.x_adja = (double)0.0;
+	side_lenght.y_adja = (double)0.0;
+	side_lenght.x_oppo = (double)0.0;
+	side_lenght.y_oppo = (double)0.0;
+	if (angle >= (double)0 && angle <= (double)180)
+		side_lenght.x_adja = position->y - plan_start.y;
+	else if (angle > (double)180 && angle < (double)360)
+		side_lenght.x_adja = plan_end.y - position->y;
+	if (angle > (double)90 && angle <= (double)270)
+		side_lenght.y_adja = position->x - plan_start.x;
+	else if (angle > (double)270 || angle <= 90)
+		side_lenght.y_adja = plan_end.x - position->x;
+	calc_oppo(&side_lenght, angle);
+	levelling(&side_lenght);
+	if (angle > (double)270 || angle <= 90)
+		position->x += side_lenght.x_oppo;
+	else if (angle > (double)90 && angle <= (double)270)
+		position->x -= side_lenght.x_oppo;
+	if (angle >= (double)0 && angle <= (double)180)
+		position->y -= side_lenght.y_oppo;
+	else if (angle > (double)180 && angle < (double)360)
+		position->y += side_lenght.y_oppo;
+}
 
 static void	get_next_intersection(t_position *position, double angle)
 {
 	t_position	plan_start;
 	t_position	plan_end;
 
-	if (fmod(position->x, (double)1) > (double)0 && fmod(position->y, (double)1) > (double)0)
+	if (fmod(position->x, (double)1) > (double)0)
 	{
 		plan_start.x = position->x - fmod(position->x, (double)1);
 		plan_end.x = plan_start.x + (double)1;
-		plan_start.y = position->y - fmod(position->y, (double)1);
-		plan_end.y = plan_start.y + (double)1;
-	}
-	else if (fmod(position->y, (double)1) > (double)0)
-	{
-		plan_start.x = position->x - (double)1;
-		plan_end.x = position->x + (double)1;
-		plan_start.y = position->y - fmod(position->y, (double)1);
-		plan_end.y = plan_start.y + (double)1;
-	}
-	else if (fmod(position->x, (double)1) > (double)0)
-	{
-		plan_start.x = position->x - fmod(position->x, (double)1);
-		plan_end.x = plan_start.x + (double)1;
-		plan_start.y = position->y - (double)1;
-		plan_end.y = position->y + (double)1;
 	}
 	else
 	{
 		plan_start.x = position->x - (double)1;
 		plan_end.x = position->x + (double)1;
+	}
+	if (fmod(position->y, (double)1) > (double)0)
+	{
+		plan_start.y = position->y - fmod(position->y, (double)1);
+		plan_end.y = plan_start.y + (double)1;
+	}
+	else
+	{
 		plan_start.y = position->y - (double)1;
 		plan_end.y = position->y + (double)1;
 	}
@@ -206,7 +160,8 @@ static void	get_next_intersection(t_position *position, double angle)
 
 static double	calc_distance(t_position position_1, t_position position_2)
 {
-	return (sqrt(pow((position_1.x - position_2.x), 2) + pow((position_1.y - position_2.y), 2)));
+	return (sqrt(pow((position_1.x - position_2.x), 2)
+			+ pow((position_1.y - position_2.y), 2)));
 }
 
 t_wall	get_wall_distance(t_position player_position, double angle, char **map)
