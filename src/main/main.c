@@ -36,7 +36,9 @@ int	main(int argc, char **argv)
 	display(info);
 	//print_parsing(info);
 	//printf("%f\n", get_wall_distance(info->player.position, (double)135, info->map->content));
+	mlx_do_key_autorepeatoff(info->mlx);
 	mlx_do_key_autorepeaton(info->mlx);
 	free_info(info);
+	printf("fin normal du programme atteinte");
 	exit(EXIT_SUCCESS);
 }

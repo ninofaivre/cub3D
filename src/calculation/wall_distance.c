@@ -20,9 +20,35 @@ double	degrees_to_radians(double degrees)
 	return (degrees * (M_PI / (double)180));
 }
 
+static char	does_position_touch_a_wall_cross(t_position position, char **map)
+{
+	if (map[(int)position.y][(int)position.x] == '1'
+		&& map[(int)position.y][(int)position.x - 1] == '1')
+		return ('S');
+	if (map[(int)position.y - 1][(int)position.x] == '1'
+		&& map[(int)position.y - 1][(int)position.x - 1] == '1')
+		return ('N');
+	if (map[(int)position.y - 1][(int)position.x - 1] == '1'
+		&& map[(int)position.y][(int)position.x - 1] == '1')
+		return ('O');
+	if (map[(int)position.y - 1][(int)position.x] == '1'
+		&& map[(int)position.y][(int)position.x] == '1')
+		return ('E');
+	if (map[(int)position.y - 1][(int)position.x - 1] == '1')
+		return ('O');
+	if (map[(int)position.y - 1][(int)position.x] == '1')
+		return ('N');
+	if (map[(int)position.y][(int)position.x - 1] == '1')
+		return ('S');
+	if (map[(int)position.y][(int)position.x] == '1')
+		return ('E');
+	return ('\0');
+}
+
 char	does_position_touch_a_wall(t_position position, char **map)
 {
-	if (fmod(position.x, (double)1) > (double)0 && fmod(position.y, (double)1) > (double)0)
+	if (fmod(position.x, (double)1) > (double)0
+		&& fmod(position.y, (double)1) > (double)0)
 		return ('\0');
 	if (fmod(position.y, (double)1) > (double)0)
 	{
@@ -39,29 +65,12 @@ char	does_position_touch_a_wall(t_position position, char **map)
 			return ('N');
 	}
 	else
-	{
-		if (map[(int)position.y][(int)position.x] == '1' && map[(int)position.y][(int)position.x -1] == '1')
-			return ('S');
-		if (map[(int)position.y - 1][(int)position.x] == '1' && map[(int)position.y - 1][(int)position.x - 1] == '1')
-			return ('N');
-		if (map[(int)position.y - 1][(int)position.x - 1] == '1' && map[(int)position.y][(int)position.x - 1] == '1')
-			return ('O');
-		if (map[(int)position.y - 1][(int)position.x] == '1' && map[(int)position.y][(int)position.x] == '1')
-			return ('E');
-		if (map[(int)position.y - 1][(int)position.x - 1] == '1')
-			return ('O');
-		if (map[(int)position.y - 1][(int)position.x] == '1')
-			return ('N');
-		if (map[(int)position.y][(int)position.x - 1] == '1')
-			return ('S');
-		if (map[(int)position.y][(int)position.x] == '1')
-			return ('E');
-		return ('\0');
-	}
+		return (does_position_touch_a_wall(position, map));
 	return (false);
 }
 
-static void	levelling(double *x_oppo, double *y_oppo, double x_adja, double y_adja)
+static void	levelling(double *x_oppo, double *y_oppo,
+double x_adja, double y_adja)
 {
 	if (*x_oppo > y_adja)
 		*x_oppo = y_adja;
@@ -86,7 +95,15 @@ static void	calc_new_intersection(t_position *position, t_position plan_start, t
 		quart = BOT_LEFT;
 	else if (angle > (double)270 && angle < (double)360)
 		quart = BOT_RIGHT;
-	if (quart == TOP_RIGHT)
+	if (quart == TOP_LEFT || quart == TOP_RIGHT)
+		x_adja = position->y - plan_start.y;
+	else if (quart == BOT_LEFT || quart == BOT_RIGHT)
+		x_adja = plan_end.y - position->y;
+	if (quart == TOP_LEFT || quart == BOT_LEFT)
+		y_adja = position->x - plan_start.x;
+	else if (quart == TOP_LEFT || quart == TOP_RIGHT)
+		y_adja = plan_end.x - position->x;
+	/*if (quart == TOP_RIGHT)
 	{
 		x_adja = position->y - plan_start.y;
 		y_adja = plan_end.x - position->x;
@@ -105,7 +122,7 @@ static void	calc_new_intersection(t_position *position, t_position plan_start, t
 	{
 		x_adja = plan_end.y - position->y;
 		y_adja = plan_end.x - position->x;
-	}
+	}*/
 	if (quart == TOP_RIGHT)
 	{
 		x_oppo = x_adja * tan(degrees_to_radians((double)90 - angle));
