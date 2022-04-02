@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:24:37 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/30 15:03:41 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 17:03:55 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,5 +168,7 @@ void			print_str_tab(char **str_tab);
 t_wall			get_wall_distance(t_position player_position, double angle, char **map);
 void			display(t_global_info *info);
 double			degrees_to_radians(double degrees);
+void	get_next_intersection(t_position *position, double angle);
+double	calc_distance(t_position position_1, t_position position_2);
 
 #endif
