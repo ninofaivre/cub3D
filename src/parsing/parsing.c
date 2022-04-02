@@ -6,13 +6,14 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 13:16:42 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/03 17:59:44 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:12:16 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include <unistd.h>
+#include "parsing.h"
+#include "utils.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>
 
 static bool	is_valid_file_name(char *file_name)

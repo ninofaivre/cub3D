@@ -6,13 +6,12 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 13:32:54 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 16:56:56 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:27:14 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "calculation.h"
 #include <math.h>
-#include <stdio.h>
 
 static char	does_position_touch_a_wall_cross(t_position position, char **map)
 {

@@ -6,14 +6,12 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:54:15 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/28 11:46:49 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/04/02 18:26:48 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "calculation.h"
 #include <math.h>
-
-#include <stdio.h>
 
 static void	orient_player(t_player *player, t_key *key)
 {

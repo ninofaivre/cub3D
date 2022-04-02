@@ -6,12 +6,14 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/28 20:35:35 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/04/02 18:29:33 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.h>
-#include <calculation.h>
+#include <main.h>
+
+#define KEY_RIGHT_ARROW 65363
+#define KEY_LEFT_ARROW 65361
 
 void	key_hook_press(int keycode, t_key *key)
 {

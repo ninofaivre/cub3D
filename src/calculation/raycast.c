@@ -6,23 +6,38 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/30 16:24:24 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:57:37 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.h>
 #include <calculation.h>
-#include <stdio.h>
 #include <mlx.h>
 #include <math.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <unistd.h>
-#define FOV 60
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
 
-static int	display_one_frame(void *param)
+static void	print_column(t_wall wall, int x, t_global_info *info)
+{
+	int	column_height;
+	int	draw_start;
+	int	draw_end;
+
+	column_height = (int)((double)SCREEN_HEIGHT / wall.distance);
+	draw_start = (-column_height / 2) + (SCREEN_HEIGHT / 2);
+	draw_end = (column_height / 2) + (SCREEN_HEIGHT / 2);
+	if (draw_end >= SCREEN_HEIGHT)
+		draw_end = SCREEN_HEIGHT - 1;
+	put_floor(info, x, draw_start);
+	put_ceilling(info, x, draw_end);
+	info->put_texture->x = x;
+	info->put_texture->column_height = column_height;
+	init_put_texture(wall, info->texture, info-> frame, info->put_texture);
+	put_texture_wall(draw_start, draw_end, info->frame, info->put_texture);
+	if (draw_start < 0)
+		draw_start = 0;
+	info->column_info[x].start = draw_start;
+	info->column_info[x].end = draw_end;
+}
+
+int	display_one_frame(void *param)
 {
 	t_global_info	*info;
 	t_wall			wall;
@@ -48,27 +63,4 @@ static int	display_one_frame(void *param)
 	}
 	mlx_put_image_to_window(info->mlx, info->win, info->frame->img, 0, 0);
 	return (0);
-}
-
-void	display(t_global_info *info)
-{
-	t_put_texture	put_texture;
-	t_texture		texture;
-	t_img			frame;
-	t_key			key;
-
-	info->key = &key;
-	info->texture = &texture;
-	info->frame = &frame;
-	info->put_texture = &put_texture;
-	init_raycast_info(info);
-	init_texture(&texture, info);
-	mlx_hook(info->win, 02, 1L, key_hook_press, info->key);
-	mlx_hook(info->win, 03, 1L << 1, key_hook_release, info->key);
-	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);
-	info->column_info = init_column_info();
-	if (!info->column_info)
-		printf("first frame error !\n");
-	mlx_loop_hook(info->mlx, display_one_frame, info);
-	mlx_loop(info->mlx);
 }

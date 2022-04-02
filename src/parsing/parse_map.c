@@ -6,13 +6,12 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/07 22:09:09 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:04:14 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include <stdio.h>
-#include <unistd.h>
+#include "parsing.h"
+#include "utils.h"
 
 static bool	parse_map_wrong_char(char **map)
 {

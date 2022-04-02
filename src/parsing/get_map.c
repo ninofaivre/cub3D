@@ -6,13 +6,13 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 14:45:56 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 15:25:50 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:01:42 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "parsing.h"
+#include "utils.h"
 #include <stdlib.h>
-#include <unistd.h>
 
 static char	*skip_empty_line(int fd_conf)
 {

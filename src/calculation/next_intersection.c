@@ -6,11 +6,11 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 16:54:11 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 17:01:23 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:04:39 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "calculation.h"
 #include <math.h>
 
 static void	levelling(t_side_lenght *side_lenght)

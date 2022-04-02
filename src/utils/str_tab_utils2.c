@@ -6,11 +6,11 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 12:41:34 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 13:05:20 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:13:14 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "utils.h"
 
 void	replace_all_charset_by_char_in_str_tab(char *charset,
 char replace, char **str_tab)

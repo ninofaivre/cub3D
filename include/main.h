@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math_utils.c                                       :+:      :+:    :+:   */
+/*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/02 16:53:48 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 18:00:35 by nfaivre          ###   ########.fr       */
+/*   Created: 2022/04/02 17:49:33 by nfaivre           #+#    #+#             */
+/*   Updated: 2022/04/02 17:53:25 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "calculation.h"
-#include <math.h>
+#ifndef MAIN_H
+# define MAIN_H
 
-double	degrees_to_radians(double degrees)
-{
-	return (degrees * (M_PI / (double)180));
-}
+# include <stdbool.h>
 
-double	calc_distance(t_position position_1, t_position position_2)
+typedef struct s_key
 {
-	return (sqrt(pow((position_1.x - position_2.x), 2)
-			+ pow((position_1.y - position_2.y), 2)));
-}
+	bool	z;
+	bool	q;
+	bool	s;
+	bool	d;
+	bool	l_arrow;
+	bool	r_arrow;
+}	t_key;
+
+void	key_hook_press(int keycode, t_key *key);
+void	key_hook_release(int keycode, t_key *key);
+
+#endif

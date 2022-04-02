@@ -6,17 +6,15 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:42:12 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/22 14:25:24 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:36:53 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include <unistd.h>
+#include "parsing.h"
+#include "utils.h"
 #include <stdlib.h>
-#include <fcntl.h>
-#include <stdio.h>
 
-bool	pars_string_info(char *str, t_conf *conf)
+static bool	pars_string_info(char *str, t_conf *conf)
 {
 	int	i;
 
@@ -32,7 +30,7 @@ bool	pars_string_info(char *str, t_conf *conf)
 		return (false);
 }
 
-bool	is_info_full(t_conf *conf)
+static bool	is_info_full(t_conf *conf)
 {
 	if (!conf->texture_path[north])
 		return (false);

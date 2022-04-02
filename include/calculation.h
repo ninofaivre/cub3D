@@ -6,19 +6,22 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:42:44 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/28 20:34:06 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/04/02 19:19:02 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CALCULATION_H
 # define CALCULATION_H
 
-# include "header.h"
+# include "parsing.h"
+# include "main.h"
+# include <stdbool.h>
 
-# define KEY_RIGHT_ARROW 65363
-# define KEY_LEFT_ARROW 65361
 # define ORIENT_STEP 2.1
 # define MOOVE_STEP 0.09
+# define FOV 60
+# define SCREEN_WIDTH 800
+# define SCREEN_HEIGHT 800
 
 typedef struct s_column_info
 {
@@ -26,22 +29,86 @@ typedef struct s_column_info
 	int	end;
 }	t_column_info;
 
-bool	update_player(t_player *player, t_key *key, t_map *map);
-char	does_position_touch_a_wall(t_position position, char **map);
+typedef struct s_data
+{
+	int		bpp;
+	int		line_lenght;
+	int		endian;
+	char	*data;
+}	t_data;
 
-bool	is_in_a_wall(double x, double y, t_map *map);
+typedef struct s_img
+{
+	void	*img;
+	t_data	data;
+	int		width;
+	int		height;
+}	t_img;
 
-void	init_texture(t_texture *texture, t_global_info *info);
-void	init_raycast_info(t_global_info *info);
+typedef struct s_texture
+{
+	t_img	north;
+	t_img	west;
+	t_img	south;
+	t_img	east;
+}	t_texture;
+
+typedef struct s_wall
+{
+	char				orientation;
+	double				distance;
+	struct s_position	colision;
+}	t_wall;
+
+typedef struct s_put_texture
+{
+	t_img	*ptr_texture;
+	double	y_pix;
+	double	y_step;
+	bool	is_same_endian;
+	char	*ptr_pix_frame;
+	char	*ptr_pix_texture;
+	int		x;
+	int		column_height;
+}	t_put_texture;
+
+typedef struct s_side_lenght
+{
+	double	x_adja;
+	double	y_adja;
+	double	x_oppo;
+	double	y_oppo;
+}	t_side_lenght;
+
+double			degrees_to_radians(double degrees);
+double			calc_distance(t_position position_1, t_position position_2);
+
+void			get_next_intersection(t_position *position, double angle);
+
+bool			is_in_a_wall(double x, double y, t_map *map);
+
+void			init_put_texture(t_wall wall, t_texture *texture,
+					t_img *frame, t_put_texture *put_texture);
+void			put_texture_wall(int draw_start, int draw_end,
+					t_img *frame, t_put_texture *put_texture);
+void			put_floor(t_global_info *info, int x, int end);
+void			put_ceilling(t_global_info *info, int x, int start);
+
+int				display_one_frame(void *param);
+
+void			init_raycast_info(t_global_info *info);
+void			init_texture(t_texture *texture, t_global_info *info);
 t_column_info	*init_column_info(void);
 
-void	key_hook_press(int keycode, t_key *key);
-void	key_hook_release(int keycode, t_key *key);
+void			cpy_data_pixel(char *ptr_pix_data1, char *ptr_pix_data2,
+					bool same_endian);
+double			calculate_angle(int orientation, int n_collumn);
 
-void	cpy_data_pixel(char *ptr_pix_data1, char *ptr_pix_data2, bool same_endian);
-double	calculate_angle(int orientation, int n_collumn);
+bool			update_player(t_player *player, t_key *key, t_map *map);
 
-void	print_column(t_wall wall, int x, t_global_info *info);
-void	put_floor_ceilling(int start, int end, int x, char *rgb, t_data data);
+char			does_position_touch_a_wall(t_position position, char **map);
+
+t_wall			get_wall_distance(t_position player_position,
+					double angle, char **map);
 
 #endif

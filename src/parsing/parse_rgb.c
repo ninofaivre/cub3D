@@ -6,17 +6,15 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/28 20:52:12 by paboutel         ###   ########.fr       */
+/*   Updated: 2022/04/02 19:10:55 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include <unistd.h>
+#include "parsing.h"
+#include "utils.h"
 #include <stdlib.h>
-#include <fcntl.h>
-#include <stdio.h>
 
-int	fake_atoi(char *str, int i)
+static int	fake_atoi(char *str, int i)
 {
 	int	nb;
 
@@ -31,7 +29,7 @@ int	fake_atoi(char *str, int i)
 	return (nb);
 }
 
-int	next_nb(char *str, int i)
+static int	next_nb(char *str, int i)
 {
 	while (str[i] != ',' && str[i])
 		i++;
@@ -40,7 +38,7 @@ int	next_nb(char *str, int i)
 	return (i);
 }
 
-bool	error_rgb(int error, int r, int g, int b)
+static bool	error_rgb(int error, int r, int g, int b)
 {
 	if (error > 0)
 	{

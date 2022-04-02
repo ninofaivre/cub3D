@@ -6,11 +6,11 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:56:33 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/01 12:43:08 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:13:24 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 

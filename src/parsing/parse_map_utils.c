@@ -6,11 +6,12 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 12:38:31 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/02 13:02:01 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:05:46 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "parsing.h"
+#include "utils.h"
 
 void	replace_connected_1_by_3(char **map, int y, int x)
 {

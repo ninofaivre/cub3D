@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_texture_to_image.c                             :+:      :+:    :+:   */
+/*   put_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/30 15:12:21 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:56:28 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.h>
-#include <calculation.h>
-#include <stdio.h>
-#include <mlx.h>
+#include "calculation.h"
 #include <math.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <unistd.h>
-#define FOV 60
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
 
-static void	init_put_texture(t_wall wall, t_texture *texture,
+void	init_put_texture(t_wall wall, t_texture *texture,
 t_img *frame, t_put_texture *put_texture)
 {
 	put_texture->y_pix = 0.0;
@@ -70,7 +61,7 @@ t_img *frame, t_put_texture *put_texture)
 	}
 }
 
-static void	put_floor(t_global_info *info, int x, int end)
+void	put_floor(t_global_info *info, int x, int end)
 {
 	while (info->column_info[x].start < end)
 	{
@@ -81,7 +72,7 @@ static void	put_floor(t_global_info *info, int x, int end)
 	}
 }
 
-static void	put_ceilling(t_global_info *info, int x, int start)
+void	put_ceilling(t_global_info *info, int x, int start)
 {
 	while (start < info->column_info[x].end)
 	{
@@ -90,27 +81,4 @@ static void	put_ceilling(t_global_info *info, int x, int start)
 			(1 == info->frame->data.endian));
 		start++;
 	}
-}
-
-void	print_column(t_wall wall, int x, t_global_info *info)
-{
-	int	column_height;
-	int	draw_start;
-	int	draw_end;
-
-	column_height = (int)((double)SCREEN_HEIGHT / wall.distance);
-	draw_start = (-column_height / 2) + (SCREEN_HEIGHT / 2);
-	draw_end = (column_height / 2) + (SCREEN_HEIGHT / 2);
-	if (draw_end >= SCREEN_HEIGHT)
-		draw_end = SCREEN_HEIGHT - 1;
-	put_floor(info, x, draw_start);
-	put_ceilling(info, x, draw_end);
-	info->put_texture->x = x;
-	info->put_texture->column_height = column_height;
-	init_put_texture(wall, info->texture, info-> frame, info->put_texture);
-	put_texture_wall(draw_start, draw_end, info->frame, info->put_texture);
-	if (draw_start < 0)
-		draw_start = 0;
-	info->column_info[x].start = draw_start;
-	info->column_info[x].end = draw_end;
 }

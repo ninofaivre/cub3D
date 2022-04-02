@@ -6,21 +6,13 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/30 15:12:21 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 18:21:56 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <header.h>
 #include <calculation.h>
-#include <stdio.h>
 #include <mlx.h>
-#include <math.h>
-#include <sys/time.h>
 #include <stdlib.h>
-#include <unistd.h>
-#define FOV 60
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
 
 void	init_raycast_info(t_global_info *info)
 {

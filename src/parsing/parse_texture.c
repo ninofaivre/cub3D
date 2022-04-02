@@ -6,17 +6,17 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/03/03 18:03:34 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/02 19:11:52 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-#include <unistd.h>
+#include "parsing.h"
+#include "utils.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>
-#include <stdio.h>
 
-char	*open_texture(char *str, int i)
+static char	*open_texture(char *str, int i)
 {
 	int	fd;
 
@@ -30,7 +30,7 @@ char	*open_texture(char *str, int i)
 	return (str_dupe(&str[i]));
 }
 
-bool	put_texture_in_struct(char *str, int i, char **ptr_path_texture)
+static bool	put_texture_in_struct(char *str, int i, char **ptr_path_texture)
 {
 	i += 1 + !(str[i] == 'S' && str[i + 1] != 'O');
 	i = skip_space(str, i);
