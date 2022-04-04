@@ -6,22 +6,56 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 18:21:56 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/04 21:50:16 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <calculation.h>
+#include "calculation.h"
 #include <mlx.h>
 #include <stdlib.h>
 
-void	init_raycast_info(t_global_info *info)
+static bool	load_image(char *texture_path, t_img *img, void *mlx)
 {
+	img->img = mlx_xpm_file_to_image(mlx, texture_path, &img->width, &img->height);
+	if (!img->img)
+	{
+		print_error("A malloc failed (xpm_file_to_image)");
+		return (true);
+	}
+	img->data.data = mlx_get_data_addr(img->img, &img->data.bpp, &img->data.line_lenght, &img->data.endian);
+	if (!img->data.data)
+	{
+		mlx_destroy_image(mlx, img->img);
+		print_error("A malloc failed (get_data_addr)\n");
+		return (true);
+	}
+	if (img->data.bpp != 32)
+	{
+		print_error("Bit Per Pixel from one of the assets is different than 32, please try again with a bpp of 32 !\n");
+		free(img->data.data);
+		mlx_destroy_image(mlx, img->img);
+		return (true);
+	}
+	return (false);
+}
+
+bool	init_raycast_info(t_global_info *info)
+{
+	info->win = NULL;
+	info->frame->img = NULL;
+	info->frame->data.data = NULL;
 	info->mlx = mlx_init();
+	if (!info->mlx)
+		return (true);
 	info->win = mlx_new_window(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "CUB3D");
 	info->frame->img = mlx_new_image(info->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (!info->win || !info->frame->img)
+		return (true);
 	info->frame->data.data = mlx_get_data_addr(info->frame->img,
 			&info->frame->data.bpp, &info->frame->data.line_lenght,
 			&info->frame->data.endian);
+	if (!info->frame->data.data)
+		return (true);
 	info->first_frame = true;
 	info->key->z = false;
 	info->key->q = false;
@@ -29,34 +63,28 @@ void	init_raycast_info(t_global_info *info)
 	info->key->d = false;
 	info->key->l_arrow = false;
 	info->key->r_arrow = false;
+	return (false);
 }
 
-void	init_texture(t_texture *texture, t_global_info *info)
+bool	init_texture(t_texture *texture, t_global_info *info)
 {
-	texture->north.img = mlx_xpm_file_to_image(info->mlx,
-			info->conf->texture_path[north], &info->texture->north.width,
-			&info->texture->north.height);
-	texture->north.data.data = mlx_get_data_addr(texture->north.img,
-			&texture->north.data.bpp, &texture->north.data.line_lenght,
-			&texture->north.data.endian);
-	texture->west.img = mlx_xpm_file_to_image(info->mlx,
-			info->conf->texture_path[west], &info->texture->west.width,
-			&info->texture->west.height);
-	texture->west.data.data = mlx_get_data_addr(texture->west.img,
-			&texture->west.data.bpp, &texture->west.data.line_lenght,
-			&texture->west.data.endian);
-	texture->east.img = mlx_xpm_file_to_image(info->mlx,
-			info->conf->texture_path[east], &info->texture->east.width,
-			&info->texture->east.height);
-	texture->east.data.data = mlx_get_data_addr(texture->east.img,
-			&texture->east.data.bpp, &texture->east.data.line_lenght,
-			&texture->east.data.endian);
-	texture->south.img = mlx_xpm_file_to_image(info->mlx,
-			info->conf->texture_path[south], &info->texture->south.width,
-			&info->texture->south.height);
-	texture->south.data.data = mlx_get_data_addr(texture->south.img,
-			&texture->south.data.bpp, &texture->south.data.line_lenght,
-			&texture->south.data.endian);
+	texture->north.img = NULL;
+	texture->north.data.data = NULL;	
+	texture->west.img = NULL;
+	texture->west.data.data = NULL;	
+	texture->east.img = NULL;
+	texture->east.data.data = NULL;	
+	texture->south.img = NULL;
+	texture->south.data.data = NULL;	
+	if (load_image(info->conf->texture_path[north], &texture->north, info->mlx))
+		return (true);
+	if (load_image(info->conf->texture_path[west], &texture->west, info->mlx))
+		return (true);
+	if (load_image(info->conf->texture_path[east], &texture->east, info->mlx))
+		return (true);
+	if (load_image(info->conf->texture_path[south], &texture->south, info->mlx))
+		return (true);
+	return (false);
 }
 
 t_column_info	*init_column_info(void)

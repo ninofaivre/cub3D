@@ -6,11 +6,11 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 18:24:06 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/04 21:50:30 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <calculation.h>
+#include "calculation.h"
 
 void	cpy_data_pixel(char *ptr_pix_data1, char *ptr_pix_data2,
 bool same_endian)

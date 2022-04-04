@@ -6,11 +6,11 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 18:29:33 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/04 21:50:53 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <main.h>
+#include "main.h"
 
 #define KEY_RIGHT_ARROW 65363
 #define KEY_LEFT_ARROW 65361
