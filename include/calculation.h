@@ -14,8 +14,6 @@
 # define CALCULATION_H
 
 # include "parsing.h"
-# include "main.h"
-# include <stdbool.h>
 
 # define ORIENT_STEP 2.1
 # define MOOVE_STEP 0.09
@@ -55,9 +53,9 @@ typedef struct s_texture
 
 typedef struct s_wall
 {
-	char				orientation;
-	double				distance;
-	struct s_position	colision;
+	char		orientation;
+	double		distance;
+	t_position	colision;
 }	t_wall;
 
 typedef struct s_put_texture

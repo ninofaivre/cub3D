@@ -13,6 +13,7 @@
 #ifndef PARSING_H
 # define PARSING_H
 
+# include "main.h"
 # include <stdbool.h>
 
 typedef struct s_position
@@ -44,13 +45,13 @@ typedef struct s_conf
 
 typedef struct s_global_info
 {
-	struct s_conf			*conf;
-	struct s_map			*map;
-	struct s_player			player;
+	t_conf					*conf;
+	t_map					*map;
+	t_player				player;
 	void					*mlx;
 	void					*win;
 	struct s_column_info	*column_info;
-	struct s_key			*key;
+	t_key					*key;
 	struct s_texture		*texture;
 	struct s_img			*frame;
 	struct s_put_texture	*put_texture;

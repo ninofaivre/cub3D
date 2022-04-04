@@ -12,7 +12,6 @@
 
 #include <calculation.h>
 #include <mlx.h>
-#include <math.h>
 
 static void	print_column(t_wall wall, int x, t_global_info *info)
 {
