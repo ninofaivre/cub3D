@@ -24,7 +24,7 @@ static bool	parse_map_wrong_char(char **map)
 		line = *map;
 		while (*line)
 		{
-			if (!is_charset(*line, "012 NSOE"))
+			if (!is_charset(*line, "01 NSOE"))
 			{
 				print_error("wrong char\n");
 				return (true);

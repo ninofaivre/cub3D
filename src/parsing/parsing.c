@@ -57,15 +57,13 @@ static bool	init_info(t_global_info *info)
 		return (true);
 	info->conf->ceilling_rgb = NULL;
 	info->conf->floor_rgb = NULL;
-	info->conf->texture_path = malloc(sizeof(char *) * 6);
+	info->conf->texture_path = malloc(sizeof(char *) * 4);
 	if (!info->conf->texture_path)
 		return (true);
 	info->conf->texture_path[north] = NULL;
 	info->conf->texture_path[south] = NULL;
 	info->conf->texture_path[west] = NULL;
 	info->conf->texture_path[east] = NULL;
-	info->conf->texture_path[sprite] = NULL;
-	info->conf->texture_path[5] = NULL;
 	return (false);
 }
 

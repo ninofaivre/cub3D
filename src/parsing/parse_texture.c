@@ -32,7 +32,7 @@ static char	*open_texture(char *str, int i)
 
 static bool	put_texture_in_struct(char *str, int i, char **ptr_path_texture)
 {
-	i += 1 + !(str[i] == 'S' && str[i + 1] != 'O');
+	i += 2;
 	i = skip_space(str, i);
 	if (*ptr_path_texture)
 	{
@@ -55,8 +55,6 @@ bool	pars_texture_info(char *str, int i, t_conf *conf)
 		return (put_texture_in_struct(str, i, &conf->texture_path[west]));
 	else if (str[i] == 'E' && str[i + 1] == 'A')
 		return (put_texture_in_struct(str, i, &conf->texture_path[east]));
-	else if (str[i] == 'S' && str[i + 1] == ' ')
-		return (put_texture_in_struct(str, i, &conf->texture_path[sprite]));
 	else
 		return (false);
 	return (true);

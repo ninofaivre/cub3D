@@ -33,7 +33,7 @@ typedef struct s_map
 	int		height;
 }	t_map;
 
-enum { north, south, west, east, sprite };
+enum { north, south, west, east };
 
 typedef struct s_conf
 {

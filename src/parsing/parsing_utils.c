@@ -26,8 +26,6 @@ static void	free_texture_path(char **texture_path)
 		free(texture_path[west]);
 	if (texture_path[east])
 		free(texture_path[east]);
-	if (texture_path[sprite])
-		free(texture_path[sprite]);
 	free(texture_path);
 }
 

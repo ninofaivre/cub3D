@@ -2,7 +2,6 @@ SO ./textures/64px/normal_world/acacia_planks.xpm
 NO ./textures/64px/normal_world/bricks.xpm
 WE ./textures/64px/normal_world/basalt_top.xpm
 EA ./textures/64px/normal_world/sandstone_top.xpm
-S ./textures/64px/normal_world/basalt_top.xpm
 
 F 000,000,255
 C 000,255,000

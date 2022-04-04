@@ -2,7 +2,6 @@ SO ./textures/64px/beeeeeeeeeees_world/beehive_front_honey.xpm
 NO ./textures/64px/beeeeeeeeeees_world/bee_nest_bottom.xpm
 WE ./textures/64px/beeeeeeeeeees_world/bee_nest_side.xpm
 EA ./textures/64px/beeeeeeeeeees_world/honeycomb_block.xpm
-S ./textures/64px/beeeeeeeeeees_world/honeycomb_block.xpm
 
 C 0,0,255
 F 0,0,0

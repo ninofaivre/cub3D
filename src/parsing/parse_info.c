@@ -40,8 +40,6 @@ static bool	is_info_full(t_conf *conf)
 		return (false);
 	else if (!conf->texture_path[west])
 		return (false);
-	else if (!conf->texture_path[sprite])
-		return (false);
 	else if (!conf->ceilling_rgb)
 		return (false);
 	else if (!conf->floor_rgb)
