@@ -27,7 +27,10 @@ static bool	pars_string_info(char *str, t_conf *conf)
 	else if (str[i] == 'C')
 		return (pars_rgb(str, i, &conf->ceilling_rgb));
 	else
+	{
+		print_error("Wrong info\n");
 		return (false);
+	}
 }
 
 static bool	is_info_full(t_conf *conf)

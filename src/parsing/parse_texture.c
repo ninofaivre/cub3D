@@ -18,16 +18,20 @@
 
 static char	*open_texture(char *str, int i)
 {
-	int	fd;
+	int		fd;
+	char	*path_texture;
 
 	fd = open(&str[i], O_RDONLY);
 	if (fd == -1)
 	{
-		print_error("Wrong texture's PATH/NAME \n");
+		print_error("Wrong texture's RIGHT/PATH/NAME\n");
 		return (NULL);
 	}
 	close(fd);
-	return (str_dupe(&str[i]));
+	path_texture = str_dupe(&str[i]);
+	if (!path_texture)
+		print_error("A malloc failed\n");
+	return (path_texture);
 }
 
 static bool	put_texture_in_struct(char *str, int i, char **ptr_path_texture)
@@ -56,6 +60,9 @@ bool	pars_texture_info(char *str, int i, t_conf *conf)
 	else if (str[i] == 'E' && str[i + 1] == 'A')
 		return (put_texture_in_struct(str, i, &conf->texture_path[east]));
 	else
+	{
+		print_error("Wrong info\n");
 		return (false);
+	}
 	return (true);
 }

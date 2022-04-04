@@ -19,7 +19,9 @@ static int	fake_atoi(char *str, int i)
 	int	nb;
 
 	nb = 0;
-	while (str[i] >= '0' && str[i] <= '9')
+	if (str[i] < '0' || str[i] > '9')
+		return (-1);
+	while (str[i] != ',' && str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
 			return (-1);
@@ -38,11 +40,11 @@ static int	next_nb(char *str, int i)
 	return (i);
 }
 
-static bool	error_rgb(int error, int r, int g, int b)
+static bool	error_rgb(int error)
 {
 	if (error > 0)
 	{
-		print_error("too much F or C\n");
+		print_error("Too much F or C\n");
 		return (false);
 	}
 	if (error == -1)
@@ -50,26 +52,43 @@ static bool	error_rgb(int error, int r, int g, int b)
 		print_error("Alloc\n");
 		return (false);
 	}
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (false);
-	else
-		return (true);
+	return (true);
+}
+
+static bool	check_fake_atoi(int color_value)
+{
+	if (color_value == -1)
+		print_error("Wrong char in color value\n");
+	else if (color_value > 255)
+		print_error("Color value too high\n");
+	return (color_value >= 0 && color_value <= 255);
 }
 
 bool	pars_rgb(char *str, int i, char **rgb)
 {
 	if (*rgb != NULL)
-		return (error_rgb(1, 0, 0, 0));
+		return (error_rgb(1));
 	*rgb = malloc(sizeof(char) * 4);
 	if (!*rgb)
-		return (error_rgb(-1, 0, 0, 0));
+		return (error_rgb(-1));
 	(*rgb)[0] = 0;
 	i = skip_space(str, ++i);
+	if (!check_fake_atoi(fake_atoi(str, i)))
+		return (false);
 	(*rgb)[1] = fake_atoi(str, i);
 	i = next_nb(str, i);
+	if (!check_fake_atoi(fake_atoi(str, i)))
+		return (false);
 	(*rgb)[2] = fake_atoi(str, i);
 	i = next_nb(str, i);
+	if (!check_fake_atoi(fake_atoi(str, i)))
+		return (false);
 	(*rgb)[3] = fake_atoi(str, i);
-	return (error_rgb(0, (unsigned char)(*rgb)[1], (unsigned char)(*rgb)[2],
-			(unsigned char)(*rgb)[3]));
+	i = next_nb(str, i);
+	if (str[i] || str[i - 1] == ',')
+	{
+		print_error("Char after last number\n");
+		return (false);
+	}
+	return (true);
 }

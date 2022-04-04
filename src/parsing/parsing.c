@@ -40,6 +40,7 @@ static bool	check_argc_and_file_name(int argc, char **argv)
 static t_global_info	*error_parsing(t_global_info *info,
 int fd_conf, char *error)
 {
+	get_next_line(-1);
 	if (fd_conf > 0)
 		close(fd_conf);
 	if (info)
