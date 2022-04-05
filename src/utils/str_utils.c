@@ -6,13 +6,12 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 18:56:33 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 19:13:24 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 21:20:45 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 char	*str_dupe(char *str)
 {

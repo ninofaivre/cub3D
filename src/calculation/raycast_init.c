@@ -6,12 +6,12 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/05 19:41:45 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 21:15:56 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "calculation.h"
-#include <mlx.h>
+#include "mlx.h"
 #include <stdlib.h>
 
 static bool	load_image(char *texture_path, t_img *img, void *mlx)
@@ -41,7 +41,7 @@ static bool	load_image(char *texture_path, t_img *img, void *mlx)
 	return (false);
 }
 
-void	set_info_and_texture_ptr_null(t_global_info *info)
+static void	set_info_and_texture_ptr_null(t_global_info *info)
 {
 	info->mlx = NULL;
 	info->win = NULL;
@@ -61,6 +61,7 @@ void	set_info_and_texture_ptr_null(t_global_info *info)
 
 bool	init_raycast_info(t_global_info *info)
 {
+	set_info_and_texture_ptr_null(info);
 	info->mlx = mlx_init();
 	if (!info->mlx)
 		return (true);

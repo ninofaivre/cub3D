@@ -6,7 +6,7 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:42:44 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/05 19:59:34 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 21:14:51 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void			put_ceilling(t_global_info *info, int x, int start);
 
 int				display_one_frame(void *param);
 
-void			set_info_and_texture_ptr_null(t_global_info *info);
 bool			init_raycast_info(t_global_info *info);
 bool			init_texture(t_texture *texture, t_global_info *info);
 t_column_info	*init_column_info(void);

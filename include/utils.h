@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:38:02 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 19:15:43 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 21:21:20 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	**str_tab_dupe(char **str_tab);
 char	**add_str_to_str_tab(char **str_tab, char *str);
 int		str_tab_len(char **str_tab);
 char	**free_str_tab(char ***str_tab);
-void	print_str_tab(char **str_tab);
 void	replace_all_charset_by_char_in_str_tab(char *charset,
 			char replace, char **str_tab);
 int		get_n_char_in_str_tab(char c, char **str_tab);

@@ -6,24 +6,12 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 20:42:00 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 19:13:04 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 21:20:28 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include <stdlib.h>
-#include <stdio.h>
-
-void	print_str_tab(char **str_tab)
-{
-	if (!str_tab)
-		return ;
-	while (*str_tab)
-	{
-		printf("%s\n", *str_tab);
-		str_tab++;
-	}
-}
 
 char	**free_str_tab(char ***str_tab)
 {

@@ -6,13 +6,13 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/04 21:30:08 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 21:18:35 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "calculation.h"
+#include "mlx.h"
 #include <math.h>
-#include <mlx.h>
 
 static void	print_column(t_wall wall, int x, t_global_info *info)
 {
