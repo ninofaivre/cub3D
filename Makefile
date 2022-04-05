@@ -6,7 +6,7 @@
 #    By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 10:25:16 by nfaivre           #+#    #+#              #
-#    Updated: 2022/03/07 22:50:32 by nfaivre          ###   ########.fr        #
+#    Updated: 2022/04/05 22:45:18 by nfaivre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,18 @@
 
 NAME = cub3D
 
+QWERTY ?= 0
+
+ifneq ($(QWERTY), 0)
+ifneq ($(QWERTY), 1)
+	override QWERTY = 0
+endif
+endif
+
+DEFINE_FLAG = -D QWERTY=${QWERTY}
+
 CC = clang
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 
 VPATH =
 DIR_SRC = src
@@ -32,7 +42,7 @@ mkdir_DIR_OBJ:
 	mkdir -p $(DIR_OBJ)
 
 $(DIR_OBJ)/%.o : $(DIR_SRC)/*/%.c
-	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE)
+	$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDE) $(DEFINE_FLAG)
 
 $(NAME):
 	make -C mlx_linux
