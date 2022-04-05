@@ -6,7 +6,7 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/04 21:50:16 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:41:45 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,51 @@
 
 static bool	load_image(char *texture_path, t_img *img, void *mlx)
 {
-	img->img = mlx_xpm_file_to_image(mlx, texture_path, &img->width, &img->height);
+	img->img = mlx_xpm_file_to_image(mlx, texture_path, &img->width,
+			&img->height);
 	if (!img->img)
 	{
-		print_error("A malloc failed (xpm_file_to_image)");
+		print_error("Mlx function xpm_file_to_image failed to load an asset\n");
 		return (true);
 	}
-	img->data.data = mlx_get_data_addr(img->img, &img->data.bpp, &img->data.line_lenght, &img->data.endian);
+	img->data.data = mlx_get_data_addr(img->img, &img->data.bpp,
+			&img->data.line_lenght, &img->data.endian);
 	if (!img->data.data)
 	{
 		mlx_destroy_image(mlx, img->img);
-		print_error("A malloc failed (get_data_addr)\n");
+		print_error("Mlx function get_data_addr failed to load an asset\n");
 		return (true);
 	}
 	if (img->data.bpp != 32)
 	{
-		print_error("Bit Per Pixel from one of the assets is different than 32, please try again with a bpp of 32 !\n");
-		free(img->data.data);
+		print_error("Bit Per Pixel from one of the assets is different than 32,\
+				please try again with a bpp of 32 !\n");
 		mlx_destroy_image(mlx, img->img);
 		return (true);
 	}
 	return (false);
 }
 
-bool	init_raycast_info(t_global_info *info)
+void	set_info_and_texture_ptr_null(t_global_info *info)
 {
+	info->mlx = NULL;
 	info->win = NULL;
 	info->frame->img = NULL;
 	info->frame->data.data = NULL;
+	info->column_info = NULL;
+	info->texture->north.img = NULL;
+	info->texture->north.data.data = NULL;
+	info->texture->west.img = NULL;
+	info->texture->west.data.data = NULL;
+	info->texture->east.img = NULL;
+	info->texture->east.data.data = NULL;
+	info->texture->south.img = NULL;
+	info->texture->south.data.data = NULL;
+	info->key->mlx = NULL;
+}
+
+bool	init_raycast_info(t_global_info *info)
+{
 	info->mlx = mlx_init();
 	if (!info->mlx)
 		return (true);
@@ -63,19 +80,12 @@ bool	init_raycast_info(t_global_info *info)
 	info->key->d = false;
 	info->key->l_arrow = false;
 	info->key->r_arrow = false;
+	info->key->mlx = info->mlx;
 	return (false);
 }
 
 bool	init_texture(t_texture *texture, t_global_info *info)
 {
-	texture->north.img = NULL;
-	texture->north.data.data = NULL;	
-	texture->west.img = NULL;
-	texture->west.data.data = NULL;	
-	texture->east.img = NULL;
-	texture->east.data.data = NULL;	
-	texture->south.img = NULL;
-	texture->south.data.data = NULL;	
 	if (load_image(info->conf->texture_path[north], &texture->north, info->mlx))
 		return (true);
 	if (load_image(info->conf->texture_path[west], &texture->west, info->mlx))
@@ -95,7 +105,10 @@ t_column_info	*init_column_info(void)
 	i = 0;
 	column_info = malloc(sizeof(t_column_info) * SCREEN_WIDTH);
 	if (!column_info)
+	{
+		print_error("Malloc failed in function init_column_info\n");
 		return (NULL);
+	}
 	while (i < SCREEN_WIDTH)
 	{
 		column_info[i].start = 0;

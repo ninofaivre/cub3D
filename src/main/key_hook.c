@@ -6,7 +6,7 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:30:17 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/04 21:50:53 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:39:27 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 #define KEY_RIGHT_ARROW 65363
 #define KEY_LEFT_ARROW 65361
+#define KEY_ESCAPE 65307
 
 void	key_hook_press(int keycode, t_key *key)
 {
-	if (keycode == 'z')
+	if (keycode == KEY_ESCAPE)
+		mlx_loop_end(key->mlx);
+	else if (keycode == 'z')
 		key->z = true;
 	else if (keycode == 'q')
 		key->q = true;

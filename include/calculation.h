@@ -6,7 +6,7 @@
 /*   By: paboutel <paboutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:42:44 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/04 20:02:38 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:27:48 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void			put_ceilling(t_global_info *info, int x, int start);
 
 int				display_one_frame(void *param);
 
+void			set_info_and_texture_ptr_null(t_global_info *info);
 bool			init_raycast_info(t_global_info *info);
 bool			init_texture(t_texture *texture, t_global_info *info);
 t_column_info	*init_column_info(void);
@@ -108,5 +109,7 @@ char			does_position_touch_a_wall(t_position position, char **map);
 
 t_wall			get_wall_distance(t_position player_position,
 					double angle, char **map);
+
+void			raycast_clean(t_global_info *info);
 
 #endif

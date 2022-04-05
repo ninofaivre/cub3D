@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/04 21:45:02 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:35:26 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,23 @@ static void	start_raycast(t_global_info *info)
 	info->texture = &texture;
 	info->frame = &frame;
 	info->put_texture = &put_texture;
+	set_info_and_texture_ptr_null(info);
 	if (init_raycast_info(info))
 	{
-		printf("error");
+		print_error("Mlx function failed in function init_raycast_info\n");
 		exit(EXIT_FAILURE);
 	}
 	if (init_texture(&texture, info))
-	{
-		printf("error");
 		exit(EXIT_FAILURE);
-	}
+	info->column_info = init_column_info();
+	if (!info->column_info)
+		exit(EXIT_FAILURE);
 	mlx_hook(info->win, 02, 1L, key_hook_press, info->key);
 	mlx_hook(info->win, 03, 1L << 1, key_hook_release, info->key);
 	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);
-	info->column_info = init_column_info();
-	if (!info->column_info)
-	{
-		printf("error");
-		exit(EXIT_FAILURE);
-	}
 	mlx_loop_hook(info->mlx, display_one_frame, info);
 	mlx_loop(info->mlx);
+	raycast_clean(info);
 }
 
 int	main(int argc, char **argv)
@@ -61,7 +57,5 @@ int	main(int argc, char **argv)
 	if (!info)
 		exit(EXIT_FAILURE);
 	start_raycast(info);
-	free_info(info);
-	printf("fin normal du programme atteinte");
 	exit(EXIT_SUCCESS);
 }

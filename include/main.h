@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:49:33 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 17:53:25 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:40:16 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_key
 	bool	d;
 	bool	l_arrow;
 	bool	r_arrow;
+	void	*mlx;
 }	t_key;
 
 void	key_hook_press(int keycode, t_key *key);
