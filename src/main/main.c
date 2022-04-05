@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:25:05 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/05 19:35:26 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:58:53 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ static void	start_raycast(t_global_info *info)
 	if (init_raycast_info(info))
 	{
 		print_error("Mlx function failed in function init_raycast_info\n");
-		exit(EXIT_FAILURE);
+		raycast_clean(info, true);
 	}
 	if (init_texture(&texture, info))
-		exit(EXIT_FAILURE);
+		raycast_clean(info, true);
 	info->column_info = init_column_info();
 	if (!info->column_info)
-		exit(EXIT_FAILURE);
+		raycast_clean(info, true);
 	mlx_hook(info->win, 02, 1L, key_hook_press, info->key);
 	mlx_hook(info->win, 03, 1L << 1, key_hook_release, info->key);
-	mlx_hook(info->win, 17, 1L << 17, mlx_loop_end, (void *)info->mlx);
+	mlx_hook(info->win, 17, 1L << 17, (void *)mlx_loop_end, (void *)info->mlx);
 	mlx_loop_hook(info->mlx, display_one_frame, info);
 	mlx_loop(info->mlx);
-	raycast_clean(info);
+	raycast_clean(info, false);
 }
 
 int	main(int argc, char **argv)
