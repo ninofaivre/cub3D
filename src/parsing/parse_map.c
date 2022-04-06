@@ -6,7 +6,7 @@
 /*   By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 18:47:19 by nfaivre           #+#    #+#             */
-/*   Updated: 2022/04/02 19:04:14 by nfaivre          ###   ########.fr       */
+/*   Updated: 2022/04/06 11:43:03 by nfaivre          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	parse_map_wrong_char(char **map)
 		line = *map;
 		while (*line)
 		{
-			if (!is_charset(*line, "01 NSOE"))
+			if (!is_charset(*line, "01 NSWE"))
 			{
 				print_error("wrong char\n");
 				return (true);
@@ -121,7 +121,7 @@ bool	parse_map(t_map *map, t_player *player)
 	else if ((get_n_char_in_str_tab('N', map->content)
 			+ get_n_char_in_str_tab('S', map->content)
 			+ get_n_char_in_str_tab('E', map->content)
-			+ get_n_char_in_str_tab('O', map->content)) != 1)
+			+ get_n_char_in_str_tab('W', map->content)) != 1)
 	{
 		print_error("n_player\n");
 		return (true);
