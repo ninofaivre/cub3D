@@ -6,7 +6,7 @@
 #    By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 10:25:16 by nfaivre           #+#    #+#              #
-#    Updated: 2022/04/06 11:02:06 by paboutel         ###   ########.fr        #
+#    Updated: 2022/04/06 11:13:52 by nfaivre          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ $(NAME):
 all: mkdir_DIR_OBJ $(OBJ) $(NAME)
 
 clean:
+	make $@ -C mlx_linux
 	make $@ -C Get-Next-Line DIR_OBJ=$(addprefix $(PWD)/, $(DIR_OBJ))
 	rm -f $(OBJ)
 
