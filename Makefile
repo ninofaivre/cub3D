@@ -6,7 +6,7 @@
 #    By: nfaivre <nfaivre@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 10:25:16 by nfaivre           #+#    #+#              #
-#    Updated: 2022/04/06 10:32:35 by nfaivre          ###   ########.fr        #
+#    Updated: 2022/04/06 11:02:06 by paboutel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,6 @@ $(NAME):
 	$(CC) $(CFLAGS) $(OBJ) $(GNL_OBJ) -o $(NAME) $(LIB)
 
 all: mkdir_DIR_OBJ $(OBJ) $(NAME)
-	@echo $(QWERTY)
 
 clean:
 	make $@ -C Get-Next-Line DIR_OBJ=$(addprefix $(PWD)/, $(DIR_OBJ))
